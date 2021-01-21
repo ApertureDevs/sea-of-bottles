@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  markdown-linter:
+    build:
+      context: docker/markdown-linter
+    volumes:
+      - ./:/app
+    working_dir: /app
+
+  yaml-linter:
+    build:
+      context: docker/yaml-linter
+    volumes:
+      - ./:/app
+    working_dir: /app
+
+  commit-linter:
+    build:
+      context: docker/commit-linter
+    volumes:
+      - ./:/app
+    working_dir: /app
