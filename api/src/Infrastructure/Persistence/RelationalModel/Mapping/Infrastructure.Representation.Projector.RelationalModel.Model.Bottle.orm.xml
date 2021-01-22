@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Infrastructure\Representation\Projector\RelationalModel\Model\Bottle">
+        <id name="id" type="string" length="36">
+            <generator strategy="NONE"/>
+        </id>
+
+        <field name="message" type="string" length="5000" />
+
+        <field name="createDate" type="datetime_immutable" />
+
+        <field name="receiveDate" type="datetime_immutable" nullable="true" />
+
+        <many-to-one field="receiver" target-entity="App\Infrastructure\Representation\Projector\RelationalModel\Model\Sailor">
+            <join-column name="receiver_id" referenced-column-name="id" />
+        </many-to-one>
+    </entity>
+
+</doctrine-mapping>

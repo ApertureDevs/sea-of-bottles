@@ -24,3 +24,59 @@ jobs:
         run: |
           task global-commit-linter-check --summary
           task global-commit-linter-check
+
+  api-ci:
+    name: API CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Add Task runner
+        run: |
+          curl -sL https://taskfile.dev/install.sh | sh && echo "./bin" >> $GITHUB_PATH
+      - name: Composer vulnerability check
+        run: |
+          task api-composer-security-check --summary
+          task api-composer-security-check
+      - name: Test Database
+        run: |
+          task api-database-create-test --summary
+          task api-database-create-test
+          task api-database-migration-test --summary
+          task api-database-migration-test
+          task api-database-fixture-test --summary
+          task api-database-fixture-test
+          task api-database-schema-check --summary
+          task api-database-schema-check
+      - name: PHP linter
+        run: |
+          task api-php-linter-check --summary
+          task api-php-linter-check
+      - name: PHPStan analysis
+        run: |
+          task api-phpstan-check --summary
+          task api-phpstan-check
+      - name: PHP dependencies check
+        run: |
+          task api-composer-check --summary
+          task api-composer-check
+      - name: PHP layers dependencies analysis
+        run: |
+          task api-layers-check --summary
+          task api-layers-check
+      - name: PHP unit tests
+        run: |
+          task api-phpunit --summary
+          task api-phpunit
+      - name: Behat tests
+        run: |
+          task api-behat --summary
+          task api-behat
+      - name: Build Prod
+        run: |
+          task api-build --summary
+          BUILD_ENV=prod task api-build
+      - name: Build Dev
+        run: |
+          task api-build --summary
+          BUILD_ENV=dev task api-build

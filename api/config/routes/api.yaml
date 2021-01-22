@@ -1,0 +1,19 @@
+create_bottle:
+  path: /api/bottle
+  methods: POST
+  controller: App\Presentation\Api\Controller\Message\CreateBottleController
+
+create_sailor:
+  path: /api/sailor
+  methods: POST
+  controller: App\Presentation\Api\Controller\Message\CreateSailorController
+
+delete_sailor:
+  path: /api/sailor
+  methods: DELETE
+  controller: App\Presentation\Api\Controller\Message\DeleteSailorController
+
+show_sea:
+  path: /api/sea
+  methods: GET
+  controller: App\Presentation\Api\Controller\Message\ShowSeaController

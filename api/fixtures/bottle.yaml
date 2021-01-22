@@ -1,0 +1,87 @@
+App\Core\SharedKernel\Domain\Event\Message\BottleCreated:
+  bottle_1.event.bottle_created:
+    __factory:
+      create:
+        id: 'da36c552-533e-4d28-8b4f-dcdf59191650'
+        message: 'Hello world!'
+        createDate: "<(new \\DateTimeImmutable('2020-01-01'))>"
+  bottle_2.event.bottle_created:
+    __factory:
+      create:
+        id: 'd11a4336-7158-4f6d-b029-d7de2626f08d'
+        message: 'Hello there!'
+        createDate: "<(new \\DateTimeImmutable('2020-01-02'))>"
+
+App\Core\SharedKernel\Domain\Event\Message\BottleReceived:
+  bottle_2.event.bottle_received:
+    __factory:
+      create:
+        receiverId: 'dadcd1ef-5654-4929-9a27-dd8dd46fa599'
+        receiveDate: "<(new \\DateTimeImmutable('2020-01-03'))>"
+
+App\Core\SharedKernel\Domain\Event\EventRecord:
+  bottle_1.record_1:
+    __factory:
+      fromEventStore:
+        id: '4002edf1-d3f9-43f8-b553-c3c18d539656'
+        aggregateId: 'da36c552-533e-4d28-8b4f-dcdf59191650'
+        playHead: 0
+        event: '@bottle_1.event.bottle_created'
+        recordDate: "<(new \\DateTimeImmutable('2020-01-01'))>"
+  bottle_2.record_1:
+    __factory:
+      fromEventStore:
+        id: '739e6c27-bffb-468e-a9d8-5a8ec567b34f'
+        aggregateId: 'd11a4336-7158-4f6d-b029-d7de2626f08d'
+        playHead: 0
+        event: '@bottle_2.event.bottle_created'
+        recordDate: "<(new \\DateTimeImmutable('2020-01-02'))>"
+  bottle_2.record_2:
+    __factory:
+      fromEventStore:
+        id: '4749caf3-6ea8-4a34-89f9-0158e1638e4c'
+        aggregateId: 'd11a4336-7158-4f6d-b029-d7de2626f08d'
+        playHead: 1
+        event: '@bottle_2.event.bottle_received'
+        recordDate: "<(new \\DateTimeImmutable('2020-01-03'))>"
+
+App\Infrastructure\Persistence\EventStore\StorableEventRecord:
+  bottle_1.storable_record_1:
+    __factory:
+      createFromEventRecord:
+        eventRecord: '@bottle_1.record_1'
+        event: '{"id":"da36c552-533e-4d28-8b4f-dcdf59191650","message":"Hello world!","create_date":"2020-01-01T00:00:00+00:00"}'
+        eventType: 'bottle_created'
+        context: 'message'
+  bottle_2.storable_record_1:
+    __factory:
+      createFromEventRecord:
+        eventRecord: '@bottle_2.record_1'
+        event: '{"id":"d11a4336-7158-4f6d-b029-d7de2626f08d","message":"Hello there!","create_date":"2020-01-02T00:00:00+00:00"}'
+        eventType: 'bottle_created'
+        context: 'message'
+  bottle_2.storable_record_2:
+    __factory:
+      createFromEventRecord:
+        eventRecord: '@bottle_2.record_2'
+        event: '{"receiver_id":"dadcd1ef-5654-4929-9a27-dd8dd46fa599","receive_date":"2020-01-03T00:00:00+00:00"}'
+        eventType: 'bottle_created'
+        context: 'message'
+
+App\Infrastructure\Representation\Projector\RelationalModel\Model\Bottle:
+  bottle_1.projection.relational_model:
+    __factory:
+      create:
+        id: 'da36c552-533e-4d28-8b4f-dcdf59191650'
+        message: 'Hello World!'
+        createDate: "<(new \\DateTimeImmutable('2020-01-01'))>"
+  bottle_2.projection.relational_model:
+    __factory:
+      create:
+        id: 'd11a4336-7158-4f6d-b029-d7de2626f08d'
+        message: 'Hello there!'
+        createDate: "<(new \\DateTimeImmutable('2020-01-02'))>"
+    __calls:
+      - receive:
+          - "@sailor_1.projection.relational_model"
+          - "<(new \\DateTimeImmutable('2020-01-03'))>"

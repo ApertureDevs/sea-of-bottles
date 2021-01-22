@@ -1,0 +1,27 @@
+paths:
+  - src
+  - vendor
+layers:
+  - name: Core/Message
+    collectors:
+      - type: directory
+        regex: src/Core/Component/Message/.*
+  - name: Core/SharedKernel
+    collectors:
+      - type: directory
+        regex: src/Core/SharedKernel/.*
+  - name: Infrastructure
+    collectors:
+      - type: directory
+        regex: src/Infrastructure/.*
+  - name: Vendor
+    collectors:
+      - type: directory
+        regex: vendor/.*
+ruleset:
+  Infrastructure:
+    - Vendor
+    - Core/Message
+    - Core/SharedKernel
+  Core/Message:
+    - Core/SharedKernel

@@ -1,0 +1,66 @@
+<?php
+
+namespace App\Infrastructure\Persistence\RelationalModel\Repository;
+
+use App\Infrastructure\Persistence\RelationalModel\QueryNameGenerator;
+use App\Infrastructure\Representation\Projector\RelationalModel\Model\EntityInterface;
+use Doctrine\ORM\EntityManagerInterface;
+
+abstract class Repository
+{
+    protected EntityManagerInterface $entityManager;
+
+    protected QueryNameGenerator $queryNameGenerator;
+
+    public function __construct(EntityManagerInterface $relationalModelEntityManager, QueryNameGenerator $queryNameGenerator)
+    {
+        $this->entityManager = $relationalModelEntityManager;
+        $this->queryNameGenerator = $queryNameGenerator;
+    }
+
+    public function save(EntityInterface $entity): void
+    {
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
+    }
+
+    public function remove(EntityInterface $entity): void
+    {
+        $this->entityManager->remove($entity);
+        $this->entityManager->flush();
+    }
+
+    public function getEntity(string $id): ?EntityInterface
+    {
+        $entity = $this->entityManager->find($this->getEntityClass(), $id);
+
+        if (null === $entity) {
+            return null;
+        }
+
+        if (!$entity instanceof EntityInterface) {
+            throw new \RuntimeException('Invalid entity instance generated.');
+        }
+
+        return $entity;
+    }
+
+    /**
+     * @return EntityInterface[]
+     */
+    public function getEntities(): array
+    {
+        $rootAlias = $this->queryNameGenerator->generateAliasName('root');
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select($rootAlias)
+            ->from($this->getEntityClass(), $rootAlias)
+        ;
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * @return class-string<mixed>
+     */
+    abstract protected function getEntityClass(): string;
+}

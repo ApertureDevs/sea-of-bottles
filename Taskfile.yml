@@ -6,6 +6,17 @@ tasks:
   # MAIN #
   ########
 
+  install:
+    desc: Install Sea of Bottle Project
+    cmds:
+      - task: api-dependencies
+      - task: api-database-create
+      - task: api-database-migration
+      - task: api-database-fixture
+      - task: api-database-create-test
+      - task: api-database-migration-test
+      - task: api-database-fixture-test
+
   check:
     desc: Check and fix sources
     cmds:
@@ -13,11 +24,34 @@ tasks:
       - task: global-commit-linter-check
       - task: global-yaml-linter-check
       - task: global-markdown-linter-check
+      - task: api-phpstan-check
+      - task: api-layers-check
+      - task: test
+      - task: api-database-schema-check
+      - task: api-composer-check
+
+  serve:
+    desc: Start a local development stack
+    cmds:
+      - docker-compose up -d api-webserver
+    deps:
+      - frontend-dependencies
+      - api-dependencies
+
+  test:
+    desc: Launch tests suites
+    cmds:
+      - task: api-database-create-test
+      - task: api-database-migration-test
+      - task: api-database-fixture-test
+      - task: api-phpunit
+      - task: api-behat
 
   lint:
     desc: Lint sources
     cmds:
       - task: global-markdown-linter
+      - task: api-php-linter
 
   ##########
   # GLOBAL #
@@ -31,14 +65,204 @@ tasks:
   global-markdown-linter:
     desc: Apply linter rules to markdown files
     cmds:
-      - docker-compose run --rm markdown-linter markdownlint '**/*.md' -c .markdownlint.yaml --fix
+      - docker-compose run --rm markdown-linter markdownlint '**/*.md' -c .markdownlint.yaml --ignore api/vendor --ignore api/dist --fix
 
   global-markdown-linter-check:
     desc: Check linter rules to markdown files
     cmds:
-      - docker-compose run --rm markdown-linter markdownlint '**/*.md' -c .markdownlint.yaml
+      - docker-compose run --rm markdown-linter markdownlint '**/*.md' -c .markdownlint.yaml --ignore api/vendor --ignore api/dist
 
   global-commit-linter-check:
     desc: Checks if commit messages meet the conventional commit format
     cmds:
       - docker-compose run --rm commit-linter commitlint --from $(git rev-list --max-parents=0 HEAD)
+
+  #######
+  # API #
+  #######
+
+  api-build:
+    desc: |
+      Build api into dist folder
+      "BUILD_ENV=prod task api-build" to build in production mode (default)
+      "BUILD_ENV=dev task api-build" to build in development mode
+    cmds:
+      - docker-compose run --rm --no-deps api-cli mkdir -p {{.BUILD_DIR}}
+      - docker-compose run --rm --no-deps api-cli rm -rf {{.BUILD_DIR}}/*
+      - docker-compose run --rm --no-deps api-cli cp -r bin config public fixtures src .env composer.json composer.lock symfony.lock {{.BUILD_DIR}}
+      - docker-compose run --rm --no-deps -e APP_ENV={{.APP_ENV}} api-cli composer install {{.BUILD_OPTIONS}} --working-dir {{.BUILD_DIR}}
+      - docker-compose run --rm --no-deps -e APP_ENV={{.APP_ENV}} api-cli {{.BUILD_DIR}}/bin/console cache:warmup
+    deps:
+      - api-dependencies
+    vars:
+      BUILD_OPTIONS:
+        sh: |
+          if [ -z $BUILD_ENV ] || [ 'prod' = $BUILD_ENV ]
+          then
+            echo "--prefer-dist --no-suggest --no-dev --optimize-autoloader --classmap-authoritative"
+            exit 0
+          fi
+          if [ $BUILD_ENV = 'dev' ]
+          then
+            echo "--prefer-dist --no-suggest"
+            exit 0
+          fi
+          exit 1
+      BUILD_DIR:
+        sh: |
+          if [ -z $BUILD_ENV ] || [ 'prod' = $BUILD_ENV ]
+          then
+            echo "dist/prod"
+            exit 0
+          fi
+          if [ $BUILD_ENV = 'dev' ]
+          then
+            echo "dist/dev"
+            exit 0
+          fi
+          exit 1
+      APP_ENV:
+        sh: |
+          if [ -z $BUILD_ENV ] || [ 'prod' = $BUILD_ENV ]
+          then
+            echo "prod"
+            exit 0
+          fi
+          if [ $BUILD_ENV = 'dev' ]
+          then
+            echo "dev"
+            exit 0
+          fi
+          exit 1
+
+  api-dependencies:
+    desc: Install API dependencies
+    cmds:
+      - docker-compose run --rm --no-deps api-cli composer install
+    sources:
+      - api/composer.lock
+    generates:
+      - api/vendor/**/*
+    method: checksum
+
+  api-database-create:
+    desc: Create/Recreate API database
+    cmds:
+      - docker-compose run --rm shell-runner /app/scripts/confirmation.sh "All data in database will be lost when executing this task. Are you sure?"
+      - docker-compose run --rm api-cli dockerize -wait tcp://api-database:5432 bin/console doctrine:database:drop --force --if-exists --connection=event_store
+      - docker-compose run --rm api-cli dockerize -wait tcp://api-database:5432 bin/console doctrine:database:create --connection=event_store
+      - docker-compose run --rm api-cli dockerize -wait tcp://api-database:5432 bin/console doctrine:database:drop --force --if-exists --connection=relational_model
+      - docker-compose run --rm api-cli dockerize -wait tcp://api-database:5432 bin/console doctrine:database:create --connection=relational_model
+    deps:
+      - api-dependencies
+
+  api-database-create-test:
+    desc: Create/Recreate API database for test suites
+    cmds:
+      - docker-compose run --rm api-cli dockerize -wait tcp://api-database:5432 bin/console doctrine:database:drop --force --if-exists --connection=event_store --env=test
+      - docker-compose run --rm api-cli dockerize -wait tcp://api-database:5432 bin/console doctrine:database:create --connection=event_store --env=test
+      - docker-compose run --rm api-cli dockerize -wait tcp://api-database:5432 bin/console doctrine:database:drop --force --if-exists --connection=relational_model --env=test
+      - docker-compose run --rm api-cli dockerize -wait tcp://api-database:5432 bin/console doctrine:database:create --connection=relational_model --env=test
+    deps:
+      - api-dependencies
+
+  api-database-migration:
+    desc: Execute API database migrations
+    cmds:
+      - docker-compose run --rm api-cli dockerize -wait tcp://api-database:5432 bin/console doctrine:migration:migrate --configuration=src/Infrastructure/Persistence/EventStore/Migration/doctrine_migrations.yaml --db event_store --no-interaction
+      - docker-compose run --rm api-cli dockerize -wait tcp://api-database:5432 bin/console doctrine:migration:migrate --configuration=src/Infrastructure/Persistence/RelationalModel/Migration/doctrine_migrations.yaml --db relational_model --no-interaction
+    deps:
+      - api-dependencies
+
+  api-database-migration-test:
+    desc: Execute API database migrations for test suites
+    cmds:
+      - docker-compose run --rm api-cli dockerize -wait tcp://api-database:5432 bin/console doctrine:migration:migrate --configuration=src/Infrastructure/Persistence/EventStore/Migration/doctrine_migrations.yaml --db event_store --no-interaction --env=test
+      - docker-compose run --rm api-cli dockerize -wait tcp://api-database:5432 bin/console doctrine:migration:migrate --configuration=src/Infrastructure/Persistence/RelationalModel/Migration/doctrine_migrations.yaml --db relational_model --no-interaction --env=test
+    deps:
+      - api-dependencies
+
+  api-database-migration-diff:
+    desc: Generate API database migrations
+    cmds:
+      - docker-compose run --rm api-cli dockerize -wait tcp://api-database:5432 bin/console doctrine:migration:diff --configuration=src/Infrastructure/Persistence/EventStore/Migration/doctrine_migrations.yaml --em event_store --no-interaction
+      - docker-compose run --rm api-cli dockerize -wait tcp://api-database:5432 bin/console doctrine:migration:diff --configuration=src/Infrastructure/Persistence/RelationalModel/Migration/doctrine_migrations.yaml --em relational_model --no-interaction
+    deps:
+      - api-dependencies
+
+  api-database-fixture:
+    desc: Generate API database fixtures
+    cmds:
+      - docker-compose run --rm api-cli dockerize -wait tcp://api-database:5432 bin/console hautelook:fixtures:load --manager=event_store --append --no-interaction
+      - docker-compose run --rm api-cli dockerize -wait tcp://api-database:5432 bin/console hautelook:fixtures:load --manager=relational_model --append --no-interaction
+    deps:
+      - api-dependencies
+
+  api-database-fixture-test:
+    desc: Generate API database fixtures for test suites
+    cmds:
+      - docker-compose run --rm api-cli dockerize -wait tcp://api-database:5432 bin/console hautelook:fixtures:load --manager=event_store --append --no-interaction --env=test
+      - docker-compose run --rm api-cli dockerize -wait tcp://api-database:5432 bin/console hautelook:fixtures:load --manager=relational_model --append --no-interaction --env=test
+    deps:
+      - api-dependencies
+
+  api-database-schema-check:
+    desc: Check if there is a difference between API database and ORM data mapping
+    cmds:
+      - docker-compose run --rm api-cli dockerize -wait tcp://api-database:5432 bin/console doctrine:schema:validate --env=test
+    deps:
+      - api-dependencies
+
+  api-php-linter:
+    desc: Apply API linter rules to PHP sources
+    cmds:
+      - docker-compose run --rm --no-deps api-cli vendor/bin/php-cs-fixer fix -v --show-progress=dots --diff-format=udiff
+    deps:
+      - api-dependencies
+
+  api-php-linter-check:
+    desc: Check API linter rules to PHP sources
+    cmds:
+      - docker-compose run --rm --no-deps api-cli vendor/bin/php-cs-fixer fix -v --show-progress=dots --diff-format=udiff --dry-run
+    deps:
+      - api-dependencies
+
+  api-phpstan-check:
+    desc: Check API PHP sources with phpstan
+    cmds:
+      - docker-compose run --rm --no-deps api-cli vendor/bin/phpstan analyse
+    deps:
+      - api-dependencies
+
+  api-composer-check:
+    desc: Analyse API composer dependencies and verify that no unknown symbols are used in the sources of a package
+    cmds:
+      - docker-compose run --rm --no-deps api-cli vendor/bin/composer-require-checker check composer.json --config-file=.composer-require-checker.json
+    deps:
+      - api-dependencies
+
+  api-layers-check:
+    desc: Check dependencies between API layers with deptrac
+    cmds:
+      - docker-compose run --rm --no-deps api-cli vendor/bin/deptrac analyze depfile.yaml
+    deps:
+      - api-dependencies
+
+  api-composer-security-check:
+    desc: Check API dependencies known security vulnerabilities
+    cmds:
+      - docker-compose run --rm --no-deps api-cli symfony security:check
+
+  api-phpunit:
+    desc: Execute API PHPUnit unit test suites
+    cmds:
+      - docker-compose run --rm --no-deps api-cli bin/phpunit
+    deps:
+      - api-dependencies
+
+  api-behat:
+    desc: Execute API Behat test suites
+    cmds:
+      - docker-compose run --rm --no-deps api-cli vendor/bin/behat --verbose --stop-on-failure --rerun
+    deps:
+      - api-dependencies

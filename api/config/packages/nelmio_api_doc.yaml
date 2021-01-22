@@ -1,0 +1,198 @@
+nelmio_api_doc:
+  documentation:
+    info:
+      title: Sea of Bottles
+      description: An open project to bring people together
+      version: 1.0.0
+      contact:
+        name: ApertureDevs
+        url: https://github.com/ApertureDevs
+        email: contact@aperturedevs.com
+      license:
+        name: MIT License
+        url: https://github.com/ApertureDevs/sea-of-bottles/blob/master/LICENSE
+    paths:
+      /api/bottle:
+        post:
+          summary: Create a Bottle
+          operationId: createBottle
+          tags: ["bottle"]
+          requestBody:
+            description: Bottle information
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: Hello World!
+                  required:
+                    - message
+          responses:
+            201:
+              description: Successful Bottle creation
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: Bottle Id
+                        example: dadcd1ef-5654-4929-9a27-dd8dd46fa599
+            5XX:
+              description: Unexpected Error
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Error'
+
+      /api/sailor:
+        post:
+          summary: Create a Sailor
+          operationId: createSailor
+          tags: ["sailor"]
+          requestBody:
+            description: Sailor information
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      example: test@aperturedevs.com
+                  required:
+                    - email
+          responses:
+            201:
+              description: Successful Sailor creation
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: Sailor Id
+                        example: dadcd1ef-5654-4929-9a27-dd8dd46fa599
+            400:
+              description: Invalid Command Error
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Error'
+            5XX:
+              description: Unexpected Error
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Error'
+        delete:
+          summary: Delete a Sailor
+          operationId: deleteSailor
+          tags: ["sailor"]
+          requestBody:
+            description: Sailor information
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      example: test@aperturedevs.com
+                  required:
+                    - email
+          responses:
+            200:
+              description: Successful Sailor deletion
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: Sailor Id
+                        example: dadcd1ef-5654-4929-9a27-dd8dd46fa599
+            400:
+              description: Invalid Command Error
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Error'
+            404:
+              description: Unknown Resource Error
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Error'
+            5XX:
+              description: Unexpected Error
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Error'
+      /api/sea:
+        get:
+          summary: Show information about the Sea
+          operationId: showSea
+          tags: ["sea"]
+          responses:
+            200:
+              description: Successful Sea information display
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Sea'
+            5XX:
+              description: Unexpected Error
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Error'
+
+    components:
+      schemas:
+        Sea:
+          type: object
+          properties:
+            bottles_remaining:
+              type: number
+              example: 90
+              description: Number of bottles remaining in the sea (waiting a sailor)
+            bottles_recovered:
+              type: number
+              example: 10
+              description: Number of bottles recovered by a sailor
+            bottles_total:
+              type: number
+              example: 100
+              description: Number of bottles throw to the sea
+            sailor_total:
+              type: number
+              example: 100
+              description: Number of sailors sailing through the sea
+        Error:
+          type: object
+          properties:
+            title:
+              type: string
+              example: 'Unexpected Error'
+              description: Error title
+            description:
+              type: string
+              example: 'Something went wrong.'
+              description: Error description
+            status:
+              type: number
+              example: 500
+              description: Error status code
+  areas:
+    path_patterns:
+      - ^/api/(?!(doc|doc.json)$)

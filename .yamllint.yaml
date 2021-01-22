@@ -1,5 +1,10 @@
 extends: default
 
+ignore: |
+  api/bin
+  api/dist
+  api/vendor
+
 rules:
   document-start: disable
   line-length: disable
