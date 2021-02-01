@@ -6,6 +6,7 @@
     "require": {
         "php": "^7.4.0",
         "ext-ctype": "*",
+        "ext-filter": "*",
         "ext-iconv": "*",
         "doctrine/dbal": "^2.12",
         "doctrine/doctrine-migrations-bundle": "^2.2",

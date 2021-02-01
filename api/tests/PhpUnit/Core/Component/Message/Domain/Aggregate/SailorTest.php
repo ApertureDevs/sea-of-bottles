@@ -17,7 +17,7 @@ class SailorTest extends TestCase
     {
         $sailor = SailorAggregateFactory::createSailor();
 
-        self::assertSame('test@aperturedevs.com', $sailor->getEmail());
+        self::assertSame('test@aperturedevs.com', $sailor->getEmail()->getAddress());
         self::assertInstanceOf(\DateTimeImmutable::class, $sailor->getCreateDate());
         self::assertIsString($sailor->getId());
     }

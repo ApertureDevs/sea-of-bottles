@@ -6,11 +6,12 @@ use App\Core\Component\Message\Domain\Exception\UndeletableSailorException;
 use App\Core\SharedKernel\Domain\Event\Aggregate;
 use App\Core\SharedKernel\Domain\Event\Message\SailorCreated;
 use App\Core\SharedKernel\Domain\Event\Message\SailorDeleted;
+use App\Core\SharedKernel\Domain\Model\Email;
 
 class Sailor extends Aggregate
 {
     private string $id;
-    private string $email;
+    private Email $email;
     private \DateTimeInterface $createDate;
     private ?\DateTimeInterface $deleteDate = null;
 
@@ -23,7 +24,8 @@ class Sailor extends Aggregate
             throw new \RuntimeException('Sailor id cannot be null.');
         }
 
-        $sailor->apply(SailorCreated::create($id, $email, new \DateTimeImmutable()));
+        $email = Email::create($email);
+        $sailor->apply(SailorCreated::create($id, $email->getAddress(), new \DateTimeImmutable()));
 
         return $sailor;
     }
@@ -42,7 +44,7 @@ class Sailor extends Aggregate
         return $this->id;
     }
 
-    public function getEmail(): string
+    public function getEmail(): Email
     {
         return $this->email;
     }
@@ -65,7 +67,7 @@ class Sailor extends Aggregate
     protected function applySailorCreated(SailorCreated $event): void
     {
         $this->id = $event->getId();
-        $this->email = $event->getEmail();
+        $this->email = Email::create($event->getEmail());
         $this->createDate = $event->getCreateDate();
     }
 

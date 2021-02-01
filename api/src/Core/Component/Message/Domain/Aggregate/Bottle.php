@@ -10,7 +10,7 @@ use App\Core\SharedKernel\Domain\Event\Message\BottleReceived;
 class Bottle extends Aggregate
 {
     private string $id;
-    private string $message;
+    private Message $message;
     private \DateTimeInterface $createDate;
     private ?\DateTimeInterface $receiveDate = null;
     private ?string $receiver = null;
@@ -24,7 +24,9 @@ class Bottle extends Aggregate
             throw new \RuntimeException('Bottle id cannot be null.');
         }
 
-        $bottle->apply(BottleCreated::create($id, $message, new \DateTimeImmutable()));
+        $message = Message::create($message);
+
+        $bottle->apply(BottleCreated::create($id, $message->getContent(), new \DateTimeImmutable()));
 
         return $bottle;
     }
@@ -43,7 +45,7 @@ class Bottle extends Aggregate
         return $this->id;
     }
 
-    public function getMessage(): string
+    public function getMessage(): Message
     {
         return $this->message;
     }
@@ -76,7 +78,7 @@ class Bottle extends Aggregate
     protected function applyBottleCreated(BottleCreated $event): void
     {
         $this->id = $event->getId();
-        $this->message = $event->getMessage();
+        $this->message = Message::create($event->getMessage());
         $this->createDate = $event->getCreateDate();
     }
 
