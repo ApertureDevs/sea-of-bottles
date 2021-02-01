@@ -2,7 +2,7 @@
 
 namespace App\Core\Component\Message\Port;
 
-use App\Core\Component\Message\Domain\Aggregate\Sailor;
+use App\Core\Component\Message\Domain\Model\Sailor;
 
 interface SailorStoreInterface
 {

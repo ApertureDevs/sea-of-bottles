@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Component\Message\Domain\Projection;
+namespace App\Core\Component\Message\Domain\Model;
 
 class Sea
 {

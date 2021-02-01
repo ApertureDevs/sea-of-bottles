@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\App\Core\Component\Message\Domain\Aggregate;
+namespace Tests\App\Core\Component\Message\Domain\Model;
 
 use App\Core\Component\Message\Domain\Exception\UndeletableSailorException;
 use App\Tests\Factory\Message\SailorAggregateFactory;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \App\Core\Component\Message\Domain\Aggregate\Sailor
+ * @covers \App\Core\Component\Message\Domain\Model\Sailor
  *
  * @internal
  */

@@ -2,7 +2,7 @@
 
 namespace App\Core\Component\Message\Application\CreateBottle;
 
-use App\Core\Component\Message\Domain\Aggregate\Bottle;
+use App\Core\Component\Message\Domain\Model\Bottle;
 use App\Core\Component\Message\Port\BottleStoreInterface;
 use App\Core\SharedKernel\Application\CommandHandlerInterface;
 use App\Core\SharedKernel\Port\EventDispatcherInterface;

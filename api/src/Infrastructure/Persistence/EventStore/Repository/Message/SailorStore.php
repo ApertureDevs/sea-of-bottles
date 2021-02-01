@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Persistence\EventStore\Repository\Message;
 
-use App\Core\Component\Message\Domain\Aggregate\Sailor;
+use App\Core\Component\Message\Domain\Model\Sailor;
 use App\Core\Component\Message\Port\SailorStoreInterface;
 use App\Core\SharedKernel\Domain\Event\Message\SailorCreated;
 use App\Infrastructure\Event\AggregateFactory;

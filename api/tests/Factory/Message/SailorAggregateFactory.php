@@ -2,7 +2,7 @@
 
 namespace App\Tests\Factory\Message;
 
-use App\Core\Component\Message\Domain\Aggregate\Sailor;
+use App\Core\Component\Message\Domain\Model\Sailor;
 
 class SailorAggregateFactory
 {

@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Persistence\EventStore\Repository\Message;
 
-use App\Core\Component\Message\Domain\Aggregate\Bottle;
+use App\Core\Component\Message\Domain\Model\Bottle;
 use App\Core\Component\Message\Port\BottleStoreInterface;
 use App\Infrastructure\Persistence\EventStore\Repository\AggregateRepository;
 

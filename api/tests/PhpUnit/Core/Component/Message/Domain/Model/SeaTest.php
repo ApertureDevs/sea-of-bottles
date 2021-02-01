@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\App\Core\Component\Message\Domain\Projection;
+namespace Tests\App\Core\Component\Message\Domain\Model;
 
-use App\Core\Component\Message\Domain\Projection\Sea;
+use App\Core\Component\Message\Domain\Model\Sea;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \App\Core\Component\Message\Domain\Projection\Sea
+ * @covers \App\Core\Component\Message\Domain\Model\Sea
  *
  * @internal
  */

@@ -2,7 +2,7 @@
 
 namespace App\Core\Component\Message\Application\CreateSailor;
 
-use App\Core\Component\Message\Domain\Aggregate\Sailor;
+use App\Core\Component\Message\Domain\Model\Sailor;
 use App\Core\SharedKernel\Application\CommandResponseInterface;
 
 class CreateSailorResponse implements CommandResponseInterface

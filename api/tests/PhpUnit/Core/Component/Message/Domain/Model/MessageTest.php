@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\App\Core\Component\Message\Domain\Aggregate;
+namespace Tests\App\Core\Component\Message\Domain\Model;
 
-use App\Core\Component\Message\Domain\Aggregate\Message;
 use App\Core\Component\Message\Domain\Exception\InvalidMessageException;
+use App\Core\Component\Message\Domain\Model\Message;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \App\Core\Component\Message\Domain\Aggregate\Bottle
+ * @covers \App\Core\Component\Message\Domain\Model\Bottle
  *
  * @internal
  */

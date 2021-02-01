@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Component\Message\Domain\Aggregate;
+namespace App\Core\Component\Message\Domain\Model;
 
 use App\Core\Component\Message\Domain\Exception\UnreceivableBottleException;
 use App\Core\SharedKernel\Domain\Event\Aggregate;

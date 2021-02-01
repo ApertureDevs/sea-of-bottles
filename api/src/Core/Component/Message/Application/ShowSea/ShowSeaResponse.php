@@ -2,7 +2,7 @@
 
 namespace App\Core\Component\Message\Application\ShowSea;
 
-use App\Core\Component\Message\Domain\Projection\Sea;
+use App\Core\Component\Message\Domain\Model\Sea;
 use App\Core\SharedKernel\Application\QueryResponseInterface;
 
 class ShowSeaResponse implements QueryResponseInterface

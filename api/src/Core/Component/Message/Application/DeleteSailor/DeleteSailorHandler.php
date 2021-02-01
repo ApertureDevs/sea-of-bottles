@@ -2,7 +2,6 @@
 
 namespace App\Core\Component\Message\Application\DeleteSailor;
 
-use App\Core\Component\Message\Domain\Aggregate\Sailor;
 use App\Core\Component\Message\Port\SailorStoreInterface;
 use App\Core\SharedKernel\Application\CommandHandlerInterface;
 use App\Core\SharedKernel\Domain\Exception\ResourceNotFoundException;
@@ -24,7 +23,7 @@ class DeleteSailorHandler implements CommandHandlerInterface
         $id = $this->sailorStore->findIdWithEmailAndNotDeleted($command->email);
 
         if (null === $id) {
-            throw ResourceNotFoundException::createResourceNotFoundWithPropertyException(Sailor::class, 'email', $command->email);
+            throw ResourceNotFoundException::createResourceNotFoundWithPropertyException('sailor', 'email', $command->email);
         }
 
         $sailor = $this->sailorStore->load($id);

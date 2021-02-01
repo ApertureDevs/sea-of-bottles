@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Representation\Projection;
 
-use App\Core\Component\Message\Domain\Projection\Sea;
+use App\Core\Component\Message\Domain\Model\Sea;
 use App\Core\Component\Message\Port\SeaProjectionInterface;
 use App\Infrastructure\Persistence\RelationalModel\Repository\BottleRepository;
 use App\Infrastructure\Persistence\RelationalModel\Repository\SailorRepository;

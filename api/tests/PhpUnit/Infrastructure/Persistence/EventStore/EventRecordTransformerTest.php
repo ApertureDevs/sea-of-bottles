@@ -2,7 +2,7 @@
 
 namespace Tests\App\Infrastructure\Persistence\EventStore;
 
-use App\Core\Component\Message\Domain\Aggregate\Bottle;
+use App\Core\Component\Message\Domain\Model\Bottle;
 use App\Core\SharedKernel\Domain\Event\Event;
 use App\Core\SharedKernel\Domain\Event\EventRecord;
 use App\Infrastructure\Persistence\EventStore\EventMap;

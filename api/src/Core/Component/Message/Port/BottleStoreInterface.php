@@ -2,7 +2,7 @@
 
 namespace App\Core\Component\Message\Port;
 
-use App\Core\Component\Message\Domain\Aggregate\Bottle;
+use App\Core\Component\Message\Domain\Model\Bottle;
 
 interface BottleStoreInterface
 {

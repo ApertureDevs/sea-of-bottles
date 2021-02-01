@@ -25,7 +25,7 @@ Feature:
         And the JSON node "title" should exist
         And the JSON node "title" should be equal to 'Resource Not Found'
         And the JSON node "description" should exist
-        And the JSON node "description" should be equal to 'Resource "App\Core\Component\Message\Domain\Aggregate\Sailor" with property "email" and value "unknownsailor@aperturedevs.com" not found.'
+        And the JSON node "description" should be equal to 'Resource "sailor" with property "email" and value "unknownsailor@aperturedevs.com" not found.'
         And the JSON node "status" should exist
         And the JSON node "status" should be equal to 404
 
@@ -41,6 +41,6 @@ Feature:
         And the JSON node "title" should exist
         And the JSON node "title" should be equal to 'Resource Not Found'
         And the JSON node "description" should exist
-        And the JSON node "description" should be equal to 'Resource "App\Core\Component\Message\Domain\Aggregate\Sailor" with property "email" and value "sailor2@aperturedevs.com" not found.'
+        And the JSON node "description" should be equal to 'Resource "sailor" with property "email" and value "sailor2@aperturedevs.com" not found.'
         And the JSON node "status" should exist
         And the JSON node "status" should be equal to 404

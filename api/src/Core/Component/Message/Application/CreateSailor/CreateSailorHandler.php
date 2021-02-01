@@ -2,8 +2,8 @@
 
 namespace App\Core\Component\Message\Application\CreateSailor;
 
-use App\Core\Component\Message\Domain\Aggregate\Sailor;
 use App\Core\Component\Message\Domain\Exception\UncreatableSailorException;
+use App\Core\Component\Message\Domain\Model\Sailor;
 use App\Core\Component\Message\Port\SailorStoreInterface;
 use App\Core\SharedKernel\Application\CommandHandlerInterface;
 use App\Core\SharedKernel\Port\EventDispatcherInterface;

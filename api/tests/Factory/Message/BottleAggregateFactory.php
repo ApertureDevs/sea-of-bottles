@@ -2,7 +2,7 @@
 
 namespace App\Tests\Factory\Message;
 
-use App\Core\Component\Message\Domain\Aggregate\Bottle;
+use App\Core\Component\Message\Domain\Model\Bottle;
 
 class BottleAggregateFactory
 {
