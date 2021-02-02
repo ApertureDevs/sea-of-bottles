@@ -2,14 +2,34 @@ paths:
   - src
   - vendor
 layers:
-  - name: Core/Message
+  - name: Presentation
     collectors:
       - type: directory
-        regex: src/Core/Component/Message/.*
-  - name: Core/SharedKernel
+        regex: src/Presentation/.*
+  - name: Core/Message/Application
     collectors:
       - type: directory
-        regex: src/Core/SharedKernel/.*
+        regex: src/Core/Component/Message/Application/.*
+  - name: Core/Message/Domain
+    collectors:
+      - type: directory
+        regex: src/Core/Component/Message/Domain/.*
+  - name: Core/Message/Port
+    collectors:
+      - type: directory
+        regex: src/Core/Component/Message/Port/.*
+  - name: Core/SharedKernel/Application
+    collectors:
+      - type: directory
+        regex: src/Core/SharedKernel/Application/.*
+  - name: Core/SharedKernel/Domain
+    collectors:
+      - type: directory
+        regex: src/Core/SharedKernel/Domain/.*
+  - name: Core/SharedKernel/Port
+    collectors:
+      - type: directory
+        regex: src/Core/SharedKernel/Port/.*
   - name: Infrastructure
     collectors:
       - type: directory
@@ -19,9 +39,45 @@ layers:
       - type: directory
         regex: vendor/.*
 ruleset:
+  Presentation:
+    - Vendor
+    - Core/Message/Application
+    - Core/Message/Domain
+    - Core/Message/Port
+    - Core/SharedKernel/Application
+    - Core/SharedKernel/Domain
+    - Core/SharedKernel/Port
+    - Infrastructure
+  Core/Message/Application:
+    - Core/Message/Domain
+    - Core/Message/Port
+    - Core/SharedKernel/Application
+    - Core/SharedKernel/Domain
+    - Core/SharedKernel/Port
+  Core/Message/Domain:
+    - Core/Message/Port
+    - Core/SharedKernel/Application
+    - Core/SharedKernel/Domain
+    - Core/SharedKernel/Port
+  Core/Message/Port:
+    - Core/Message/Application
+    - Core/Message/Domain
+    - Core/SharedKernel/Application
+    - Core/SharedKernel/Domain
+    - Core/SharedKernel/Port
+  Core/SharedKernel/Application:
+    - Core/SharedKernel/Domain
+    - Core/SharedKernel/Port
+  Core/SharedKernel/Domain:
+    - Core/SharedKernel/Port
+  Core/SharedKernel/Port:
+    - Core/SharedKernel/Application
+    - Core/SharedKernel/Domain
   Infrastructure:
     - Vendor
-    - Core/Message
-    - Core/SharedKernel
-  Core/Message:
-    - Core/SharedKernel
+    - Core/Message/Application
+    - Core/Message/Domain
+    - Core/Message/Port
+    - Core/SharedKernel/Application
+    - Core/SharedKernel/Domain
+    - Core/SharedKernel/Port
