@@ -1,17 +1,17 @@
 <?php
 
-namespace Tests\App\Core\SharedKernel\Domain\Model;
+namespace App\Tests\PhpUnit\Core\SharedKernel\Domain\Model;
 
 use App\Core\SharedKernel\Domain\Exception\InvalidEmailException;
 use App\Core\SharedKernel\Domain\Model\Email;
-use PHPUnit\Framework\TestCase;
+use App\Tests\TestCase\ValueObjectTestCase;
 
 /**
  * @covers \App\Core\SharedKernel\Domain\Model\Email
  *
  * @internal
  */
-class EmailTest extends TestCase
+class EmailTest extends ValueObjectTestCase
 {
     public function testItShouldCreateAnEmail(): void
     {
@@ -43,5 +43,12 @@ class EmailTest extends TestCase
         yield 'without . case' => ['test@aperturedevscom'];
         yield 'with starting . case' => ['.test@aperturedevscom'];
         yield 'with finishing . case' => ['test@aperturedevscom.'];
+    }
+
+    public function testItShouldTrimStartingAndEndingSpaces(): void
+    {
+        $email = Email::create('  test@aperturedevs.com ');
+
+        self::assertSame('test@aperturedevs.com', $email->getAddress());
     }
 }

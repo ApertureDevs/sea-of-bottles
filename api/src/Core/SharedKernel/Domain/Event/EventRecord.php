@@ -51,7 +51,7 @@ class EventRecord
         return new self($id, $aggregate->getId(), $playHead, $event, new \DateTimeImmutable());
     }
 
-    public static function fromEventStore(string $id, string $aggregateId, int $playHead, Event $event, \DateTimeImmutable $recordDate): self
+    public static function create(string $id, string $aggregateId, int $playHead, Event $event, \DateTimeImmutable $recordDate): self
     {
         return new self($id, $aggregateId, $playHead, $event, $recordDate);
     }

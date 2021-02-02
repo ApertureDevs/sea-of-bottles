@@ -2,21 +2,21 @@
 
 namespace App\Core\Component\Message\Application\ShowSea;
 
-use App\Core\Component\Message\Port\SeaProjectionInterface;
+use App\Core\Component\Message\Port\SeaProjectorInterface;
 use App\Core\SharedKernel\Application\QueryHandlerInterface;
 
 class ShowSeaHandler implements QueryHandlerInterface
 {
-    private SeaProjectionInterface $seaProjection;
+    private SeaProjectorInterface $seaProjector;
 
-    public function __construct(SeaProjectionInterface $seaProjection)
+    public function __construct(SeaProjectorInterface $seaProjector)
     {
-        $this->seaProjection = $seaProjection;
+        $this->seaProjector = $seaProjector;
     }
 
     public function __invoke(ShowSeaQuery $query): ShowSeaResponse
     {
-        $sea = $this->seaProjection->getSea();
+        $sea = $this->seaProjector->getSea();
 
         return ShowSeaResponse::createFromSea($sea);
     }

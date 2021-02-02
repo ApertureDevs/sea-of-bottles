@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\App\Infrastructure\Persistence\EventStore;
+namespace App\Tests\PhpUnit\Infrastructure\Persistence\EventStore;
 
 use App\Core\Component\Message\Domain\Model\Bottle;
 use App\Core\SharedKernel\Domain\Event\Event;
@@ -8,7 +8,7 @@ use App\Core\SharedKernel\Domain\Event\EventRecord;
 use App\Infrastructure\Persistence\EventStore\EventMap;
 use App\Infrastructure\Persistence\EventStore\EventRecordTransformer;
 use App\Infrastructure\Persistence\EventStore\StorableEventRecord;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  *
  * @internal
  */
-class EventRecordTransformerTest extends WebTestCase
+class EventRecordTransformerTest extends KernelTestCase
 {
     public function testItShouldConvertIntoStorableEventRecord(): void
     {

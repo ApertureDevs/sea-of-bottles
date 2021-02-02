@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\App\Infrastructure\Persistence\EventStore\Type;
+namespace App\Tests\PhpUnit\Infrastructure\Persistence\EventStore\Type;
 
 use App\Infrastructure\Persistence\EventStore\Type\SerializeType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;

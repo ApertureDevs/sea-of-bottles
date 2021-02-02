@@ -3,6 +3,7 @@
 namespace App\Core\Component\Message\Port;
 
 use App\Core\Component\Message\Domain\Model\Sailor;
+use App\Core\SharedKernel\Domain\Model\Email;
 
 interface SailorStoreInterface
 {
@@ -10,5 +11,5 @@ interface SailorStoreInterface
 
     public function load(string $id): ?Sailor;
 
-    public function findIdWithEmailAndNotDeleted(string $email): ?string;
+    public function findIdWithEmailAndNotDeleted(Email $email): ?string;
 }

@@ -1,17 +1,17 @@
 <?php
 
-namespace Tests\App\Core\Component\Message\Domain\Model;
+namespace App\Tests\PhpUnit\Core\Component\Message\Domain\Model;
 
 use App\Core\Component\Message\Domain\Exception\UndeletableSailorException;
 use App\Tests\Factory\Message\SailorAggregateFactory;
-use PHPUnit\Framework\TestCase;
+use App\Tests\TestCase\AggregateTestCase;
 
 /**
  * @covers \App\Core\Component\Message\Domain\Model\Sailor
  *
  * @internal
  */
-class SailorTest extends TestCase
+class SailorTest extends AggregateTestCase
 {
     public function testItShouldCreateASailor(): void
     {

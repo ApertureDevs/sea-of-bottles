@@ -1,17 +1,17 @@
 <?php
 
-namespace Tests\App\Core\Component\Message\Domain\Model;
+namespace App\Tests\PhpUnit\Core\Component\Message\Domain\Model;
 
 use App\Core\Component\Message\Domain\Exception\InvalidMessageException;
 use App\Core\Component\Message\Domain\Model\Message;
-use PHPUnit\Framework\TestCase;
+use App\Tests\TestCase\ValueObjectTestCase;
 
 /**
  * @covers \App\Core\Component\Message\Domain\Model\Bottle
  *
  * @internal
  */
-class MessageTest extends TestCase
+class MessageTest extends ValueObjectTestCase
 {
     public function testItShouldCreateAMessage(): void
     {
@@ -39,5 +39,12 @@ class MessageTest extends TestCase
     {
         yield 'empty message case' => [''];
         yield 'empty message with only spaces case' => ['   '];
+    }
+
+    public function testItShouldTrimStartingAndEndingSpaces(): void
+    {
+        $message = Message::create('  Hello!  ');
+
+        self::assertSame('Hello!', $message->getContent());
     }
 }

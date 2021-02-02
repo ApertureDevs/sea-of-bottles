@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Infrastructure\Representation\Projection;
+namespace App\Infrastructure\Representation\Projector;
 
 use App\Core\Component\Message\Domain\Model\Sea;
-use App\Core\Component\Message\Port\SeaProjectionInterface;
+use App\Core\Component\Message\Port\SeaProjectorInterface;
 use App\Infrastructure\Persistence\RelationalModel\Repository\BottleRepository;
 use App\Infrastructure\Persistence\RelationalModel\Repository\SailorRepository;
 
-class SeaProjection implements SeaProjectionInterface
+class SeaProjector implements SeaProjectorInterface, ProjectorInterface
 {
     private BottleRepository $bottleRepository;
     private SailorRepository $sailorRepository;

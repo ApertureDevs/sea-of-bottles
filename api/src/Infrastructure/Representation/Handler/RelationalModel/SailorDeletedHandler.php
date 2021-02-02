@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Representation\Projector\RelationalModel\Handler;
+namespace App\Infrastructure\Representation\Handler\RelationalModel;
 
 use App\Core\SharedKernel\Application\EventHandlerInterface;
 use App\Core\SharedKernel\Domain\Event\EventRecord;
@@ -18,18 +18,29 @@ class SailorDeletedHandler implements EventHandlerInterface
 
     public function __invoke(EventRecord $eventRecord): void
     {
-        $event = $eventRecord->getEvent();
-
-        if (!$event instanceof SailorDeleted) {
+        if (!$this->support($eventRecord)) {
             return;
         }
 
-        $sailor = $this->sailorRepository->getEntity($eventRecord->getAggregateId());
+        $event = $eventRecord->getEvent();
+
+        if (!$event instanceof SailorDeleted) {
+            throw new \RuntimeException('Unsupported event.');
+        }
+
+        $sailor = $this->sailorRepository->findById($eventRecord->getAggregateId());
 
         if (null === $sailor) {
             throw new \RuntimeException("Sailor with id \"{$eventRecord->getAggregateId()}\" doesn't exist.");
         }
 
         $this->sailorRepository->remove($sailor);
+    }
+
+    public function support(EventRecord $eventRecord): bool
+    {
+        $event = $eventRecord->getEvent();
+
+        return $event instanceof SailorDeleted;
     }
 }

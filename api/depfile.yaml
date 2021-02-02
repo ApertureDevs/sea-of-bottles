@@ -47,7 +47,6 @@ ruleset:
     - Core/SharedKernel/Application
     - Core/SharedKernel/Domain
     - Core/SharedKernel/Port
-    - Infrastructure
   Core/Message/Application:
     - Core/Message/Domain
     - Core/Message/Port

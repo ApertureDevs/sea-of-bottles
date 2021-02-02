@@ -1,16 +1,16 @@
 <?php
 
-namespace Tests\App\Core\Component\Message\Domain\Model;
+namespace App\Tests\PhpUnit\Core\Component\Message\Domain\Model;
 
 use App\Core\Component\Message\Domain\Model\Sea;
-use PHPUnit\Framework\TestCase;
+use App\Tests\TestCase\ProjectionTestCase;
 
 /**
  * @covers \App\Core\Component\Message\Domain\Model\Sea
  *
  * @internal
  */
-class SeaTest extends TestCase
+class SeaTest extends ProjectionTestCase
 {
     public function testItShouldCreateASea(): void
     {

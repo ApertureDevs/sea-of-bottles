@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\App\Infrastructure\Persistence\EventStore;
+namespace App\Tests\PhpUnit\Infrastructure\Persistence\EventStore;
 
 use App\Core\SharedKernel\Domain\Event\Message\BottleCreated;
 use App\Infrastructure\Persistence\EventStore\EventMap;

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Infrastructure\Representation\Projector\RelationalModel\Handler;
+namespace App\Infrastructure\Representation\Handler\RelationalModel;
 
 use App\Core\SharedKernel\Application\EventHandlerInterface;
 use App\Core\SharedKernel\Domain\Event\EventRecord;
 use App\Core\SharedKernel\Domain\Event\Message\BottleReceived;
 use App\Infrastructure\Persistence\RelationalModel\Repository\BottleRepository;
 use App\Infrastructure\Persistence\RelationalModel\Repository\SailorRepository;
-use App\Infrastructure\Representation\Projector\RelationalModel\Model\Bottle;
-use App\Infrastructure\Representation\Projector\RelationalModel\Model\Sailor;
+use App\Infrastructure\Representation\Model\RelationalModel\Bottle;
+use App\Infrastructure\Representation\Model\RelationalModel\Sailor;
 
 class BottleReceivedHandler implements EventHandlerInterface
 {
@@ -23,19 +23,23 @@ class BottleReceivedHandler implements EventHandlerInterface
 
     public function __invoke(EventRecord $eventRecord): void
     {
-        $event = $eventRecord->getEvent();
-
-        if (!$event instanceof BottleReceived) {
+        if (!$this->support($eventRecord)) {
             return;
         }
 
-        $bottle = $this->bottleRepository->getEntity($eventRecord->getAggregateId());
+        $event = $eventRecord->getEvent();
+
+        if (!$event instanceof BottleReceived) {
+            throw new \RuntimeException('Unsupported event.');
+        }
+
+        $bottle = $this->bottleRepository->findById($eventRecord->getAggregateId());
 
         if (!$bottle instanceof Bottle) {
             throw new \RuntimeException("Bottle with id \"{$eventRecord->getAggregateId()}\" doesn't exist.");
         }
 
-        $sailor = $this->sailorRepository->getEntity($event->getReceiverId());
+        $sailor = $this->sailorRepository->findById($event->getReceiverId());
 
         if (!$sailor instanceof Sailor) {
             throw new \RuntimeException("Sailor with id \"{$event->getReceiverId()}\" doesn't exist.");
@@ -44,5 +48,12 @@ class BottleReceivedHandler implements EventHandlerInterface
         $bottle->receive($sailor, $event->getReceiveDate());
 
         $this->bottleRepository->save($bottle);
+    }
+
+    public function support(EventRecord $eventRecord): bool
+    {
+        $event = $eventRecord->getEvent();
+
+        return $event instanceof BottleReceived;
     }
 }

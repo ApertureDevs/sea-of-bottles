@@ -22,7 +22,7 @@ App\Core\SharedKernel\Domain\Event\Message\BottleReceived:
 App\Core\SharedKernel\Domain\Event\EventRecord:
   bottle_1.record_1:
     __factory:
-      fromEventStore:
+      create:
         id: '4002edf1-d3f9-43f8-b553-c3c18d539656'
         aggregateId: 'da36c552-533e-4d28-8b4f-dcdf59191650'
         playHead: 0
@@ -30,7 +30,7 @@ App\Core\SharedKernel\Domain\Event\EventRecord:
         recordDate: "<(new \\DateTimeImmutable('2020-01-01'))>"
   bottle_2.record_1:
     __factory:
-      fromEventStore:
+      create:
         id: '739e6c27-bffb-468e-a9d8-5a8ec567b34f'
         aggregateId: 'd11a4336-7158-4f6d-b029-d7de2626f08d'
         playHead: 0
@@ -38,7 +38,7 @@ App\Core\SharedKernel\Domain\Event\EventRecord:
         recordDate: "<(new \\DateTimeImmutable('2020-01-02'))>"
   bottle_2.record_2:
     __factory:
-      fromEventStore:
+      create:
         id: '4749caf3-6ea8-4a34-89f9-0158e1638e4c'
         aggregateId: 'd11a4336-7158-4f6d-b029-d7de2626f08d'
         playHead: 1
@@ -68,7 +68,7 @@ App\Infrastructure\Persistence\EventStore\StorableEventRecord:
         eventType: 'bottle_created'
         context: 'message'
 
-App\Infrastructure\Representation\Projector\RelationalModel\Model\Bottle:
+App\Infrastructure\Representation\Model\RelationalModel\Bottle:
   bottle_1.projection.relational_model:
     __factory:
       create:

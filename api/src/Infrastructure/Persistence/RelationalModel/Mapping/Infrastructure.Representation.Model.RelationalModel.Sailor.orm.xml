@@ -4,7 +4,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="App\Infrastructure\Representation\Projector\RelationalModel\Model\Sailor">
+    <entity name="App\Infrastructure\Representation\Model\RelationalModel\Sailor">
         <id name="id" type="string" length="36">
             <generator strategy="NONE"/>
         </id>

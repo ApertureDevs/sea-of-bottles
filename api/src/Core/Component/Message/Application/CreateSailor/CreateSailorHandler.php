@@ -6,6 +6,7 @@ use App\Core\Component\Message\Domain\Exception\UncreatableSailorException;
 use App\Core\Component\Message\Domain\Model\Sailor;
 use App\Core\Component\Message\Port\SailorStoreInterface;
 use App\Core\SharedKernel\Application\CommandHandlerInterface;
+use App\Core\SharedKernel\Domain\Model\Email;
 use App\Core\SharedKernel\Port\EventDispatcherInterface;
 
 class CreateSailorHandler implements CommandHandlerInterface
@@ -21,10 +22,11 @@ class CreateSailorHandler implements CommandHandlerInterface
 
     public function __invoke(CreateSailorCommand $command): CreateSailorResponse
     {
-        $id = $this->sailorStore->findIdWithEmailAndNotDeleted($command->email);
+        $email = Email::create($command->email);
+        $id = $this->sailorStore->findIdWithEmailAndNotDeleted($email);
 
         if (null !== $id) {
-            throw UncreatableSailorException::createAlreadyCreatedException($command->email);
+            throw UncreatableSailorException::createAlreadyCreatedException($email);
         }
 
         $sailor = Sailor::create($command->email);

@@ -1,18 +1,18 @@
 <?php
 
-namespace Tests\App\Core\Component\Message\Domain\Model;
+namespace App\Tests\PhpUnit\Core\Component\Message\Domain\Model;
 
 use App\Core\Component\Message\Domain\Exception\UnreceivableBottleException;
 use App\Tests\Factory\Message\BottleAggregateFactory;
 use App\Tests\Factory\Message\SailorAggregateFactory;
-use PHPUnit\Framework\TestCase;
+use App\Tests\TestCase\AggregateTestCase;
 
 /**
  * @covers \App\Core\Component\Message\Domain\Model\Bottle
  *
  * @internal
  */
-class BottleTest extends TestCase
+class BottleTest extends AggregateTestCase
 {
     public function testItShouldCreateABottle(): void
     {

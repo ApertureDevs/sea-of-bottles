@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Persistence\RelationalModel\Repository;
 
-use App\Infrastructure\Representation\Projector\RelationalModel\Model\Bottle;
+use App\Infrastructure\Representation\Model\RelationalModel\Bottle;
 
 class BottleRepository extends Repository
 {

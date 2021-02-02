@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Persistence\RelationalModel\Repository;
 
-use App\Infrastructure\Representation\Projector\RelationalModel\Model\Sailor;
+use App\Infrastructure\Representation\Model\RelationalModel\Sailor;
 
 class SailorRepository extends Repository
 {

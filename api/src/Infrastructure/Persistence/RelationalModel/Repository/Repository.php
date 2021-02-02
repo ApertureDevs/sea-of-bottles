@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Persistence\RelationalModel\Repository;
 
 use App\Infrastructure\Persistence\RelationalModel\QueryNameGenerator;
-use App\Infrastructure\Representation\Projector\RelationalModel\Model\EntityInterface;
+use App\Infrastructure\Representation\Model\RelationalModel\EntityInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 abstract class Repository
@@ -30,7 +30,7 @@ abstract class Repository
         $this->entityManager->flush();
     }
 
-    public function getEntity(string $id): ?EntityInterface
+    public function findById(string $id): ?EntityInterface
     {
         $entity = $this->entityManager->find($this->getEntityClass(), $id);
 
@@ -43,20 +43,6 @@ abstract class Repository
         }
 
         return $entity;
-    }
-
-    /**
-     * @return EntityInterface[]
-     */
-    public function getEntities(): array
-    {
-        $rootAlias = $this->queryNameGenerator->generateAliasName('root');
-        $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder->select($rootAlias)
-            ->from($this->getEntityClass(), $rootAlias)
-        ;
-
-        return $queryBuilder->getQuery()->getResult();
     }
 
     /**

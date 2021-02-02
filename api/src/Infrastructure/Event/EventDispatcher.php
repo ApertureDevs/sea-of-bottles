@@ -4,19 +4,16 @@ namespace App\Infrastructure\Event;
 
 use App\Core\SharedKernel\Domain\Event\EventRecords;
 use App\Core\SharedKernel\Port\EventDispatcherInterface;
-use App\Infrastructure\Persistence\EventStore\EventStore;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class EventDispatcher implements EventDispatcherInterface
 {
-    private EventStore $eventStore;
     private MessageBusInterface $eventBus;
     private LoggerInterface $logger;
 
-    public function __construct(EventStore $eventStore, MessageBusInterface $eventBus, LoggerInterface $logger)
+    public function __construct(MessageBusInterface $eventBus, LoggerInterface $logger)
     {
-        $this->eventStore = $eventStore;
         $this->eventBus = $eventBus;
         $this->logger = $logger;
     }

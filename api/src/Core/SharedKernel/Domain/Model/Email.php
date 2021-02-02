@@ -11,6 +11,8 @@ class Email
 
     private function __construct(string $address)
     {
+        $address = trim($address, ' ');
+
         if (strlen($address) > self::EMAIL_LIMIT) {
             throw InvalidEmailException::createExceededContentLengthLimitException(self::EMAIL_LIMIT);
         }

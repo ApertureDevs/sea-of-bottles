@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Representation\Projector\RelationalModel\Model;
+namespace App\Infrastructure\Representation\Model\RelationalModel;
 
 class Bottle implements EntityInterface
 {

@@ -37,7 +37,7 @@ class EventRecordTransformer
             throw new \RuntimeException('Deserialize object should be an Event instance.');
         }
 
-        return EventRecord::fromEventStore(
+        return EventRecord::create(
             $storableEventRecord->getId(),
             $storableEventRecord->getAggregateId(),
             $storableEventRecord->getPlayHead(),

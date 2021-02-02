@@ -21,7 +21,7 @@ App\Core\SharedKernel\Domain\Event\Message\SailorDeleted:
 App\Core\SharedKernel\Domain\Event\EventRecord:
   sailor_1.record_1:
     __factory:
-      fromEventStore:
+      create:
         id: '5d3b50cc-f2c9-46b4-b739-31dd15005d6a'
         aggregateId: 'dadcd1ef-5654-4929-9a27-dd8dd46fa599'
         playHead: 0
@@ -29,7 +29,7 @@ App\Core\SharedKernel\Domain\Event\EventRecord:
         recordDate: "<(new \\DateTimeImmutable('2020-01-01'))>"
   sailor_2.record_1:
     __factory:
-      fromEventStore:
+      create:
         id: 'e4193794-24f1-44e1-a7ca-0af0cd74ded9'
         aggregateId: '8de28ea6-b168-41c3-97c0-a4935802ed45'
         playHead: 0
@@ -37,7 +37,7 @@ App\Core\SharedKernel\Domain\Event\EventRecord:
         recordDate: "<(new \\DateTimeImmutable('2020-01-02'))>"
   sailor_2.record_2:
     __factory:
-      fromEventStore:
+      create:
         id: '2e7dad5b-5212-4ac2-b2d6-bf080d5223eb'
         aggregateId: '8de28ea6-b168-41c3-97c0-a4935802ed45'
         playHead: 1
@@ -67,7 +67,7 @@ App\Infrastructure\Persistence\EventStore\StorableEventRecord:
         eventType: 'sailor_deleted'
         context: 'message'
 
-App\Infrastructure\Representation\Projector\RelationalModel\Model\Sailor:
+App\Infrastructure\Representation\Model\RelationalModel\Sailor:
   sailor_1.projection.relational_model:
     __factory:
       create:

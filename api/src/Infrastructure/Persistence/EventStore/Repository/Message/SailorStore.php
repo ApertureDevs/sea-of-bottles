@@ -5,6 +5,7 @@ namespace App\Infrastructure\Persistence\EventStore\Repository\Message;
 use App\Core\Component\Message\Domain\Model\Sailor;
 use App\Core\Component\Message\Port\SailorStoreInterface;
 use App\Core\SharedKernel\Domain\Event\Message\SailorCreated;
+use App\Core\SharedKernel\Domain\Model\Email;
 use App\Infrastructure\Event\AggregateFactory;
 use App\Infrastructure\Persistence\EventStore\EventMap;
 use App\Infrastructure\Persistence\EventStore\EventStore;
@@ -38,14 +39,14 @@ final class SailorStore extends AggregateRepository implements SailorStoreInterf
         return $sailor;
     }
 
-    public function findIdWithEmailAndNotDeleted(string $email): ?string
+    public function findIdWithEmailAndNotDeleted(Email $email): ?string
     {
         $createdEventType = $this->eventMap::getEventType(SailorCreated::class);
         $connection = $this->entityManager->getConnection();
         $sql = 'SELECT aggregate_id FROM events WHERE event ->> \'email\' = :emailValue AND event_type = :eventType';
         $statement = $connection->prepare($sql);
         $statement->execute([
-            'emailValue' => $email,
+            'emailValue' => $email->getAddress(),
             'eventType' => $createdEventType,
         ]);
         $ids = $statement->fetchFirstColumn();

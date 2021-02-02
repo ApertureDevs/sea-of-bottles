@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\App\Infrastructure\Persistence\RelationalModel\Filter;
+namespace App\Tests\PhpUnit\Infrastructure\Persistence\RelationalModel;
 
 use App\Infrastructure\Persistence\RelationalModel\QueryNameGenerator;
 use PHPUnit\Framework\TestCase;

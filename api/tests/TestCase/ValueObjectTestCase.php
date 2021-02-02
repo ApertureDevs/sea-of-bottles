@@ -1,0 +1,9 @@
+<?php
+
+namespace App\Tests\TestCase;
+
+use PHPUnit\Framework\TestCase;
+
+abstract class ValueObjectTestCase extends TestCase
+{
+}
