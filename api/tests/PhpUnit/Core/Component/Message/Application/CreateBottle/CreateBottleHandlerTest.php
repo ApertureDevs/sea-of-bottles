@@ -19,8 +19,7 @@ class CreateBottleHandlerTest extends CommandHandlerTestCase
     {
         /** @var CreateBottleHandler $handler */
         $handler = $this->getCommandHandler();
-        $command = new CreateBottleCommand();
-        $command->message = 'Hello!';
+        $command = CreateBottleCommand::create('Hello!');
 
         $response = $handler($command);
 
@@ -31,8 +30,7 @@ class CreateBottleHandlerTest extends CommandHandlerTestCase
     {
         /** @var CreateBottleHandler $handler */
         $handler = $this->getCommandHandler();
-        $command = new CreateBottleCommand();
-        $command->message = '';
+        $command = CreateBottleCommand::create('');
 
         self::expectException(InvalidMessageException::class);
 

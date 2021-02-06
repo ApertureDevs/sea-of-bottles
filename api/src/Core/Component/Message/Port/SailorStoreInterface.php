@@ -12,4 +12,9 @@ interface SailorStoreInterface
     public function load(string $id): ?Sailor;
 
     public function findIdWithEmailAndNotDeleted(Email $email): ?string;
+
+    /**
+     * @return array<string>
+     */
+    public function findIdsActive(): array;
 }

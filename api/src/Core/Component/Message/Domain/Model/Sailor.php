@@ -64,6 +64,11 @@ class Sailor extends Aggregate
         return null !== $this->deleteDate;
     }
 
+    public function isActive(): bool
+    {
+        return !$this->isDelete();
+    }
+
     protected function applySailorCreated(SailorCreated $event): void
     {
         $this->id = $event->getId();

@@ -69,4 +69,38 @@ final class SailorStore extends AggregateRepository implements SailorStoreInterf
 
         return null;
     }
+
+    /**
+     * @return array<string>
+     */
+    public function findIdsActive(): array
+    {
+        $createdEventType = $this->eventMap::getEventType(SailorCreated::class);
+        $connection = $this->entityManager->getConnection();
+        $sql = 'SELECT DISTINCT(aggregate_id) FROM events WHERE event_type = :eventType';
+        $statement = $connection->prepare($sql);
+        $statement->execute([
+            'eventType' => $createdEventType,
+        ]);
+        $ids = $statement->fetchFirstColumn();
+        $results = [];
+
+        foreach ($ids as $id) {
+            if (!is_string($id)) {
+                throw new \RuntimeException('Id should be a string.');
+            }
+
+            $sailor = $this->load($id);
+
+            if (null === $sailor) {
+                throw new \RuntimeException('Sailor should not be null.');
+            }
+
+            if ($sailor->isActive()) {
+                $results[] = $id;
+            }
+        }
+
+        return $results;
+    }
 }

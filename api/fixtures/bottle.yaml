@@ -65,7 +65,7 @@ App\Infrastructure\Persistence\EventStore\StorableEventRecord:
       createFromEventRecord:
         eventRecord: '@bottle_2.record_2'
         event: '{"receiver_id":"dadcd1ef-5654-4929-9a27-dd8dd46fa599","receive_date":"2020-01-03T00:00:00+00:00"}'
-        eventType: 'bottle_created'
+        eventType: 'bottle_received'
         context: 'message'
 
 App\Infrastructure\Representation\Model\RelationalModel\Bottle:

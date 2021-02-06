@@ -1,6 +1,7 @@
 parameters:
   container.dumper.inline_factories: true
   container.dumper.inline_class_loader: true
+  email.contact: 'seaofbottles@aperturedevs.com'
 
 services:
   _defaults:
@@ -9,6 +10,7 @@ services:
     bind:
       Doctrine\ORM\EntityManagerInterface $eventStoreEntityManager: '@doctrine.orm.event_store_entity_manager'
       Doctrine\ORM\EntityManagerInterface $relationalModelEntityManager: '@doctrine.orm.relational_model_entity_manager'
+      string $contactEmail: '%email.contact%'
 
   App\:
     resource: '../src/'

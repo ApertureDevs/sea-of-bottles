@@ -20,8 +20,7 @@ class DeleteSailorHandlerTest extends CommandHandlerTestCase
     {
         /** @var DeleteSailorHandler $handler */
         $handler = $this->getCommandHandler();
-        $command = new DeleteSailorCommand();
-        $command->email = 'sailor1@aperturedevs.com';
+        $command = DeleteSailorCommand::create('sailor1@aperturedevs.com');
 
         $response = $handler($command);
 
@@ -32,8 +31,7 @@ class DeleteSailorHandlerTest extends CommandHandlerTestCase
     {
         /** @var DeleteSailorHandler $handler */
         $handler = $this->getCommandHandler();
-        $command = new DeleteSailorCommand();
-        $command->email = 'sailor2@aperturedevs.com';
+        $command = DeleteSailorCommand::create('sailor2@aperturedevs.com');
 
         self::expectException(ResourceNotFoundException::class);
 
@@ -44,8 +42,7 @@ class DeleteSailorHandlerTest extends CommandHandlerTestCase
     {
         /** @var DeleteSailorHandler $handler */
         $handler = $this->getCommandHandler();
-        $command = new DeleteSailorCommand();
-        $command->email = 'unknownsailor@aperturedevs.com';
+        $command = DeleteSailorCommand::create('unknownsailor@aperturedevs.com');
 
         self::expectException(ResourceNotFoundException::class);
 
@@ -56,8 +53,7 @@ class DeleteSailorHandlerTest extends CommandHandlerTestCase
     {
         /** @var DeleteSailorHandler $handler */
         $handler = $this->getCommandHandler();
-        $command = new DeleteSailorCommand();
-        $command->email = 'invalid_email';
+        $command = DeleteSailorCommand::create('invalid_email');
 
         self::expectException(InvalidEmailException::class);
 

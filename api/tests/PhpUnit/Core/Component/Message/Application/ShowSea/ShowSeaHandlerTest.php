@@ -18,7 +18,7 @@ class ShowSeaHandlerTest extends QueryHandlerTestCase
     {
         /** @var ShowSeaHandler $handler */
         $handler = $this->getQueryHandler();
-        $query = new ShowSeaQuery();
+        $query = ShowSeaQuery::create();
 
         $response = $handler($query);
 

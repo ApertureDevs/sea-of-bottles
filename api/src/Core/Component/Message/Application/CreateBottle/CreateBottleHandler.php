@@ -21,8 +21,9 @@ class CreateBottleHandler implements CommandHandlerInterface
     public function __invoke(CreateBottleCommand $command): CreateBottleResponse
     {
         $bottle = Bottle::create($command->message);
+        $eventRecords = $bottle->getUncommittedEventRecords();
         $this->bottleStore->store($bottle);
-        $this->eventDispatcher->dispatch($bottle->getUncommittedEventRecords());
+        $this->eventDispatcher->dispatch($eventRecords);
 
         return CreateBottleResponse::createFromBottle($bottle);
     }

@@ -24,11 +24,12 @@ abstract class Aggregate
 
     public function getUncommittedEventRecords(): EventRecords
     {
-        $eventRecords = new EventRecords($this->uncommittedEventRecords);
+        return new EventRecords($this->uncommittedEventRecords);
+    }
 
+    public function markAsCommitted(): void
+    {
         $this->uncommittedEventRecords = [];
-
-        return $eventRecords;
     }
 
     public function initializeState(EventRecords $eventRecords): void

@@ -9,4 +9,9 @@ interface BottleStoreInterface
     public function store(Bottle $bottle): void;
 
     public function load(string $id): ?Bottle;
+
+    /**
+     * @return array<string>
+     */
+    public function findIdsNotReceived(): array;
 }

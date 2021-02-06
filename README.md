@@ -35,7 +35,7 @@ Run installation task
 
 You can edit this default docker-compose configuration by creating a custom `docker-compose.override.yaml` and configure port mapping as your need.
 
-For example, to use 80 port for api and 8080 port for frontend you can create a `docker-compose.override.yaml` as follow
+For example, to use 80 port for api and 8080 port for frontend you can create a `docker-compose.override.yaml` as follow :
 
 ```yaml
 #docker-compose.override.yaml
@@ -49,6 +49,10 @@ services:
     api-webserver:
         ports:
             - 80:8000
+
+    mailer:
+        ports:
+            - 4545:80
 ```
 
 ### Start dev stack
@@ -59,15 +63,17 @@ To start local environment
 > task serve
 ```
 
-After a few seconds, `frontend-webserver` and `api-webserver` services will be available through your web browser :
+After a few seconds, `frontend-webserver` `api-webserver` `mailer` services will be available through your web browser :
 
 - `API` through URL : local.api.seaofbottles.aperturedevs.com:*api-webserver-port*
 - `Frontend` through URL : local.seaofbottles.aperturedevs.com:*frontend-webserver-port*
+- `Mailer` through URL : local.mailer.seaofbottles.aperturedevs.com:*mailer-webserver-port*
 
 > Don't forget to replace *api-webserver-port* and *frontend-webserver-port* in URL with your previously configured ports. For example, if you use the previous `docker-compose.override.yaml` configuration :
 >
 > - `API` through URL : local.api.seaofbottles.aperturedevs.com:80
 > - `Frontend` through URL : local.seaofbottles.aperturedevs.com:8080
+> - `Mailer` through URL : local.mailer.seaofbottles.aperturedevs.com:4545
 
 ## Usage
 

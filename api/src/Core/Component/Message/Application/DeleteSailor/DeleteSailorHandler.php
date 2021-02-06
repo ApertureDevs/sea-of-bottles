@@ -35,8 +35,9 @@ class DeleteSailorHandler implements CommandHandlerInterface
         }
 
         $sailor->delete();
+        $eventRecords = $sailor->getUncommittedEventRecords();
         $this->sailorStore->store($sailor);
-        $this->eventDispatcher->dispatch($sailor->getUncommittedEventRecords());
+        $this->eventDispatcher->dispatch($eventRecords);
 
         return DeleteSailorResponse::createFromSailor($sailor);
     }

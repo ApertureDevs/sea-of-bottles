@@ -21,6 +21,7 @@ abstract class AggregateRepository
     {
         $eventRecords = $aggregate->getUncommittedEventRecords();
         $this->eventStore->append($eventRecords);
+        $aggregate->markAsCommitted();
     }
 
     /** @return Aggregate */

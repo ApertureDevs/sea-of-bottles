@@ -30,8 +30,9 @@ class CreateSailorHandler implements CommandHandlerInterface
         }
 
         $sailor = Sailor::create($command->email);
+        $eventRecords = $sailor->getUncommittedEventRecords();
         $this->sailorStore->store($sailor);
-        $this->eventDispatcher->dispatch($sailor->getUncommittedEventRecords());
+        $this->eventDispatcher->dispatch($eventRecords);
 
         return CreateSailorResponse::createFromSailor($sailor);
     }

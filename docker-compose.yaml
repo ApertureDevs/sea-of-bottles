@@ -43,6 +43,7 @@ services:
     depends_on:
       - api-database
       - api-message-broker
+      - mailer
     environment:
       CORS_ALLOW_ORIGIN: ^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$$
 
@@ -84,6 +85,11 @@ services:
     image: bash:5
     volumes:
       - ./:/app
+
+  mailer:
+    image: djfarrelly/maildev
+    restart: on-failure
+    command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
 
 volumes:
   api-database-data: ~
