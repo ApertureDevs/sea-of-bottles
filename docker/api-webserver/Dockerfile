@@ -4,8 +4,8 @@ RUN apt update \
     && wget https://get.symfony.com/cli/installer -O - | bash
 
 FROM php:7.4
-ARG XDEBUG_VERSION=2.9.8
-ENV XDEBUG_IDE_KEY='serverName=local.api.seaofbottles.aperturedevs.com'
+ARG XDEBUG_VERSION=3.0.2
+ENV XDEBUG_MODE='off'
 RUN apt update \
     && apt install -y libpq-dev \
     && rm -rf /var/lib/apt/lists/* \
@@ -20,12 +20,10 @@ RUN apt update \
     && rm -rf /var/lib/apt/lists/* \
     && pecl install amqp \
     && docker-php-ext-enable amqp
-RUN pecl install xdebug-${XDEBUG_VERSION}
+RUN pecl install xdebug-${XDEBUG_VERSION} \
+    && docker-php-ext-enable xdebug
 RUN docker-php-ext-install opcache
 COPY php.ini /usr/local/etc/php/
 COPY --from=symfony-installer /root/.symfony/bin/symfony /usr/local/bin/symfony
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
 EXPOSE 8000
-ENTRYPOINT ["/entrypoint.sh"]
 CMD ["symfony", "serve"]
