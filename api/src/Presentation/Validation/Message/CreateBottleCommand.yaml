@@ -1,0 +1,6 @@
+App\Core\Component\Message\Application\CreateBottle\CreateBottleCommand:
+  properties:
+    message:
+      - NotBlank: ~
+      - Length:
+          max: 5000

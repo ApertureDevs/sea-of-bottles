@@ -1,0 +1,5 @@
+App\Core\Component\Message\Application\DeleteSailor\DeleteSailorCommand:
+  properties:
+    email:
+      - NotBlank: ~
+      - Email: ~

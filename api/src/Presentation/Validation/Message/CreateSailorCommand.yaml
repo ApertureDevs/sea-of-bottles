@@ -1,0 +1,5 @@
+App\Core\Component\Message\Application\CreateSailor\CreateSailorCommand:
+  properties:
+    email:
+      - NotBlank: ~
+      - Email: ~

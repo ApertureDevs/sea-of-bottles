@@ -1,0 +1,5 @@
+framework:
+  validation:
+    email_validation_mode: html5
+    mapping:
+      path: '%kernel.project_dir%/src/Presentation/Validation'

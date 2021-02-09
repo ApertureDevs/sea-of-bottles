@@ -6,23 +6,32 @@ use App\Core\SharedKernel\Application\CommandInterface;
 use App\Core\SharedKernel\Application\CommandResponseInterface;
 use App\Presentation\Api\CommandGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class CommandController extends AbstractController
 {
     protected MessageBusInterface $commandBus;
     protected SerializerInterface $serializer;
     protected CommandGenerator $commandGenerator;
+    protected ValidatorInterface $validator;
 
-    public function __construct(MessageBusInterface $commandBus, SerializerInterface $serializer, CommandGenerator $commandGenerator)
-    {
+    public function __construct(
+        MessageBusInterface $commandBus,
+        SerializerInterface $serializer,
+        CommandGenerator $commandGenerator,
+        ValidatorInterface $validator
+    ) {
         $this->commandBus = $commandBus;
         $this->serializer = $serializer;
         $this->commandGenerator = $commandGenerator;
+        $this->validator = $validator;
     }
 
     public function __invoke(Request $request): JsonResponse
@@ -52,7 +61,26 @@ abstract class CommandController extends AbstractController
 
     protected function handle(Request $request): CommandResponseInterface
     {
-        return $this->dispatchCommand($this->commandGenerator->generate($request, $this->getCommandClass()));
+        $command = $this->commandGenerator->generate($request, $this->getCommandClass());
+        $this->validateCommand($command);
+
+        return $this->dispatchCommand($command);
+    }
+
+    protected function validateCommand(CommandInterface $command): void
+    {
+        $constraintViolationList = $this->validator->validate($command);
+
+        if ($constraintViolationList->count() > 0) {
+            $errorMessages = [];
+
+            /** @var ConstraintViolation $violation */
+            foreach ($constraintViolationList as $violation) {
+                $errorMessages[] = $violation->getPropertyPath().' : '.$violation->getMessage();
+            }
+
+            throw new BadRequestException(implode("\n", $errorMessages));
+        }
     }
 
     abstract protected function getCommandClass(): string;

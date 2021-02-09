@@ -23,7 +23,7 @@ Feature:
         Then the response status code should be 400
         And the header 'content-type' should be equal to 'application/json'
         And the JSON node "title" should exist
-        And the JSON node "title" should be equal to 'Invalid Command'
+        And the JSON node "title" should be equal to 'Domain Error'
         And the JSON node "description" should exist
         And the JSON node "description" should be equal to 'Sailor with email "sailor1@aperturedevs.com" already exists.'
         And the JSON node "status" should exist
@@ -39,8 +39,19 @@ Feature:
         Then the response status code should be 400
         And the header 'content-type' should be equal to 'application/json'
         And the JSON node "title" should exist
-        And the JSON node "title" should be equal to 'Invalid Command'
+        And the JSON node "title" should be equal to 'Invalid Request'
         And the JSON node "description" should exist
-        And the JSON node "description" should be equal to 'Email format invalid.'
+        And the JSON node "description" should be equal to 'email : This value is not a valid email address.'
+        And the JSON node "status" should exist
+        And the JSON node "status" should be equal to 400
+
+    Scenario: Create a Sailor without body
+        When I send a "POST" request to "/api/sailor"
+        Then the response status code should be 400
+        And the header 'content-type' should be equal to 'application/json'
+        And the JSON node "title" should exist
+        And the JSON node "title" should be equal to 'Invalid Request'
+        And the JSON node "description" should exist
+        And the JSON node "description" should be equal to 'email : This value should not be blank.'
         And the JSON node "status" should exist
         And the JSON node "status" should be equal to 400

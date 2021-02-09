@@ -4,6 +4,7 @@ namespace App\Infrastructure\Exception;
 
 use App\Core\SharedKernel\Domain\Exception\DomainException;
 use App\Core\SharedKernel\Domain\Exception\ResourceNotFoundException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class Error
 {
@@ -21,7 +22,11 @@ class Error
     public static function createFromThrowable(\Throwable $throwable): self
     {
         if ($throwable instanceof DomainException) {
-            return new self('Invalid Command', $throwable->getMessage(), 400);
+            return new self('Domain Error', $throwable->getMessage(), 400);
+        }
+
+        if ($throwable instanceof BadRequestHttpException) {
+            return new self('Invalid Request', $throwable->getMessage(), 400);
         }
 
         if ($throwable instanceof ResourceNotFoundException) {
