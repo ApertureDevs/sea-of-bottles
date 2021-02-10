@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mailer
+  labels:
+    project: sob
+    app: mailer
+    layer: infra
+spec:
+  revisionHistoryLimit: 2
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mailer
+  template:
+    metadata:
+      labels:
+        project: sob
+        app: mailer
+        layer: infra
+    spec:
+      containers:
+        - name: mailer
+          image: maildev/maildev
+          command: ["/bin/sh", "-c", "bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS"]
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: http
+            - containerPort: 25
+              name: smtp
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "1m"
+              memory: "128Mi"

@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-event-worker
+  labels:
+    project: sob
+    app: api-event-worker
+    layer: api
+spec:
+  revisionHistoryLimit: 2
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-event-worker
+  template:
+    metadata:
+      labels:
+        project: sob
+        app: api-event-worker
+        layer: api
+    spec:
+      containers:
+        - name: api-event-worker
+          image: eu.gcr.io/aperturedevs/sob-api-php:stable
+          imagePullPolicy: Always
+          command: ["/bin/sh", "-c", "./bin/console messenger:consume message_broker -vv"]
+          env:
+            - name: EVENT_STORE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: sob-secret
+                  key: api-event-store-url
+            - name: RELATIONAL_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: sob-secret
+                  key: api-relational-database-url
+            - name: MESSENGER_TRANSPORT_DSN
+              valueFrom:
+                secretKeyRef:
+                  name: sob-secret
+                  key: api-messenger-transport-dsn
+            - name: MAILER_DSN
+              valueFrom:
+                secretKeyRef:
+                  name: sob-secret
+                  key: mailer-dsn
+            - name: APP_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: sob-secret
+                  key: api-secret
+            - name: APP_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: api-configmap
+                  key: environment
+            - name: CORS_ALLOW_ORIGIN
+              valueFrom:
+                configMapKeyRef:
+                  name: api-configmap
+                  key: cors
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "256Mi"
+            requests:
+              cpu: "1m"
+              memory: "128Mi"
