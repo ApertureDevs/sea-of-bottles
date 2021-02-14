@@ -46,6 +46,11 @@ spec:
                     configMapKeyRef:
                       name: api-configmap
                       key: cors
+                - name: FRONTEND_URL
+                  valueFrom:
+                    configMapKeyRef:
+                      name: api-configmap
+                      key: frontend_url
               resources:
                 limits:
                   cpu: "100m"

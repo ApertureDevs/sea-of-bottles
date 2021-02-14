@@ -2,9 +2,11 @@
 
 namespace App\Infrastructure\Mailer;
 
-use App\Core\SharedKernel\Port\MailerInterface;
+use App\Core\Component\Message\Domain\Model\Bottle;
+use App\Core\Component\Message\Domain\Model\Sailor;
+use App\Core\Component\Message\Port\MailerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface as SymfonyMailerInterface;
-use Symfony\Component\Mime\Email;
 
 class Mailer implements MailerInterface
 {
@@ -17,13 +19,20 @@ class Mailer implements MailerInterface
         $this->contactEmail = $contactEmail;
     }
 
-    public function send(string $to, string $subject, string $content): void
+    public function sendBottleReceivedNotification(Sailor $receiver, Bottle $bottle): void
     {
-        $email = new Email();
+        $email = new TemplatedEmail();
         $email->from($this->contactEmail)
-            ->to($to)
-            ->subject($subject)
-            ->text($content)
+            ->to($receiver->getEmail()->getAddress())
+            ->subject('You have received a Bottle!')
+            ->htmlTemplate('emails/bottle-received.html.twig')
+            ->textTemplate('emails/bottle-received.txt.twig')
+            ->context(
+                [
+                    'subject' => 'You have received a Bottle from the Sea!',
+                    'message' => $bottle->getMessage()->getContent(),
+                ]
+            )
         ;
 
         $this->mailer->send($email);

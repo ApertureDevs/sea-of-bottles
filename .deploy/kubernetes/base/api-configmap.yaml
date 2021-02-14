@@ -6,6 +6,7 @@ metadata:
     project: sob
     layer: api
 data:
+  frontend_url: "https://seaofbottles.aperturedevs.com"
   environment: "prod"
   cors: "^https?://(localhost|127\\.0\\.0\\.1)(:[0-9]+)?$"
   nginx.conf: |

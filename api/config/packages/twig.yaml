@@ -1,2 +1,9 @@
 twig:
   default_path: '%kernel.project_dir%/src/Presentation/Templating/Template'
+  paths:
+    'public/assets/images': 'images'
+  globals:
+    social:
+      twitter_url: 'https://twitter.com/aperturedevs'
+      github_url: 'https://github.com/ApertureDevs'
+    frontend_url: '%frontend.url%'

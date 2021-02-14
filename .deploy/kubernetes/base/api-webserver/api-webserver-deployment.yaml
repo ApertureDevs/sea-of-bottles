@@ -59,6 +59,11 @@ spec:
                 configMapKeyRef:
                   name: api-configmap
                   key: cors
+            - name: FRONTEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: api-configmap
+                  key: frontend_url
           volumeMounts:
             - name: shared-files
               mountPath: /var/www/html

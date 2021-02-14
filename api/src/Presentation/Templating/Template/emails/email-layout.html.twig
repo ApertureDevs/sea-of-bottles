@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ subject }}</title>
+    {% block stylesheets %}
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+            body {
+                font-family: 'Open Sans', sans-serif;
+            }
+            .header {
+                background-color: #03578f;
+                width: 100%;
+                text-align: center;
+                padding: 1rem;
+                color: #fff;
+            }
+            .header__logo {
+                width: 12rem;
+                margin: auto;
+            }
+            .header__logo img {
+                width: 100%;
+                height: auto;
+            }
+            .header__title {
+                font-size: 3rem;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+            .main {
+                background-color: #fff;
+                width: 100%;
+                text-align: center;
+                padding: 2rem;
+                color: #000;
+            }
+            .main__subject {
+                color: #03578f;
+                margin: 0;
+            }
+            .footer {
+                background-color: #2e9ec4;
+                width: 100%;
+                text-align: center;
+                padding: 1rem;
+                color: white;
+                font-size: small;
+            }
+            .footer a {
+                font-size: small;
+                color: white;
+            }
+            .footer a:hover {
+                color: #03578f;
+            }
+            .footer__social {
+                display: flex;
+                justify-content: center;
+            }
+            .footer__social__item img {
+                width: 2rem;
+                height: auto;
+                margin-left: 1rem;
+                margin-right: 1rem;
+            }
+            .footer__project {
+                display: flex;
+                justify-content: space-between;
+                flex-direction: row;
+                flex-wrap: wrap;
+                width: 100%;
+            }
+            .footer__open-source, .footer__licence, .footer__author {
+                flex-grow: 1;
+                flex-basis: 0;
+            }
+            .footer__open-source {
+                text-align: left;
+            }
+            .footer__author {
+                text-align: right;
+            }
+        </style>
+    {% endblock %}
+</head>
+<body>
+    <div class="header">
+        {% block header %}
+            <div class="header__logo">
+                <img src="{{ email.image('@images/sob-logo.png') }}" alt="sob logo"/>
+            </div>
+            <span class="header__title">Sea of Bottles</span>
+        {% endblock %}
+    </div>
+    <div class="main">
+        {% block main %}
+            <h1 class="main__subject">{{ subject }}</h1>
+        {% endblock %}
+    </div>
+    <div class="footer">
+        {% block footer %}
+            <p class="footer__information">This message was sent by Sea of Bottles. You receiving it because you are an active Sailor.</p>
+            <p class="footer__unsubscribe">If you no longer want to receive any emails from us, you can unsubscribe <a href="{{ frontend_url }}/unsubscribe">here</a>.</p>
+            <div class="footer__social">
+                <div class="footer__social__item">
+                    <a href="{{ social.twitter_url }}"><img src="{{ email.image('@images/twitter-square-brands.svg') }}" alt="twitter logo"/></a>
+                </div>
+                <div class="footer__social__item">
+                    <a href="{{ social.github_url }}"><img src="{{ email.image('@images/github-square-brands.svg') }}" alt="github logo"/></a>
+                </div>
+            </div>
+            <hr class="footer__divider"/>
+            <div class="footer__project">
+                <div class="footer__open-source">
+                    <span>Sea of Bottles is an open source project</span>
+                </div>
+                <div class="footer__licence">
+                    <span>Licence MIT</span>
+                </div>
+                <div class="footer__author">
+                    <span>dev by ApertureDevs</span>
+                </div>
+            </div>
+        {% endblock %}
+    </div>
+</body>
+</html>

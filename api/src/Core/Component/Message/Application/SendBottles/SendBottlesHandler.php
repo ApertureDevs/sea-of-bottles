@@ -3,10 +3,10 @@
 namespace App\Core\Component\Message\Application\SendBottles;
 
 use App\Core\Component\Message\Port\BottleStoreInterface;
+use App\Core\Component\Message\Port\MailerInterface;
 use App\Core\Component\Message\Port\SailorStoreInterface;
 use App\Core\SharedKernel\Application\CommandHandlerInterface;
 use App\Core\SharedKernel\Port\EventDispatcherInterface;
-use App\Core\SharedKernel\Port\MailerInterface;
 
 class SendBottlesHandler implements CommandHandlerInterface
 {
@@ -51,7 +51,7 @@ class SendBottlesHandler implements CommandHandlerInterface
                     throw new \RuntimeException('Sailor found cannot be loaded.');
                 }
 
-                $this->mailer->send($sailor->getEmail()->getAddress(), 'You have received a Bottle!', $bottle->getMessage()->getContent());
+                $this->mailer->sendBottleReceivedNotification($sailor, $bottle);
                 $bottle->receive($sailor);
                 $eventRecords = $bottle->getUncommittedEventRecords();
                 $this->bottleStore->store($bottle);

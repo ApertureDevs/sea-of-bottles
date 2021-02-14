@@ -2,6 +2,7 @@ parameters:
   container.dumper.inline_factories: true
   container.dumper.inline_class_loader: true
   email.contact: 'seaofbottles@aperturedevs.com'
+  frontend.url: '%env(FRONTEND_URL)%'
 
 services:
   _defaults:
