@@ -9,9 +9,12 @@ resources:
   - api-event-store/api-event-store-deployment.yaml
   - api-event-store/api-event-store-pvc.yaml
   - api-event-store/api-event-store-service.yaml
+  - frontend-webserver/frontend-webserver-deployment.yaml
+  - frontend-webserver/frontend-webserver-http-service.yaml
   - message-broker/message-broker-deployment.yaml
   - message-broker/message-broker-amqp-service.yaml
   - message-broker/message-broker-http-service.yaml
   - api-configmap.yaml
+  - frontend-configmap.yaml
   - api-event-worker-deployment.yaml
   - api-message-send-cron.yaml

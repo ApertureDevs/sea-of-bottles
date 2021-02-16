@@ -22,6 +22,17 @@ services:
       - ./:/app
     working_dir: /app
 
+  shell-linter:
+    build:
+      context: docker/shell-linter
+    volumes:
+      - ./:/app
+
+  shell-runner:
+    image: bash:5
+    volumes:
+      - ./:/app
+
   api-webserver:
     build:
       context: docker/api-webserver
@@ -69,22 +80,27 @@ services:
       POSTGRES_USER: sob
       POSTGRES_PASSWORD: password
 
+  frontend-webserver:
+    image: node:lts
+    expose:
+      - 4200
+    command: npx ng serve --host 0.0.0.0 --disable-host-check --poll=5000
+    volumes:
+      - ./frontend:/app
+    working_dir: /app
+
+  frontend-cli:
+    build:
+      context: docker/frontend-cli
+    volumes:
+      - ./frontend:/app
+    working_dir: /app
+
   message-broker:
     image: rabbitmq:3-management
     environment:
       RABBITMQ_DEFAULT_USER: "sob"
       RABBITMQ_DEFAULT_PASS: "password"
-
-  shell-linter:
-    build:
-      context: docker/shell-linter
-    volumes:
-      - ./:/app
-
-  shell-runner:
-    image: bash:5
-    volumes:
-      - ./:/app
 
   mailer:
     image: maildev/maildev

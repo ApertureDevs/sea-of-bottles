@@ -1,0 +1,7 @@
+FROM nginx:1
+
+ARG DIST_DIR
+
+COPY $DIST_DIR /app
+
+WORKDIR /app

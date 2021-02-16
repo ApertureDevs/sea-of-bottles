@@ -20,10 +20,56 @@ jobs:
         run: |
           task global-markdown-linter-check --summary
           task global-markdown-linter-check
+      - name: Shell linter
+        run: |
+          task global-shell-linter-check --summary
+          task global-shell-linter-check
       - name: Commit linter
         run: |
           task global-commit-linter-check --summary
           task global-commit-linter-check
+
+  frontend-ci:
+    name: Frontend CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Add Task runner
+        run: |
+          curl -sL https://taskfile.dev/install.sh | sh && echo "./bin" >> $GITHUB_PATH
+      - name: NPM vulnerability check
+        run: |
+          task frontend-npm-security-check --summary
+          task frontend-npm-security-check
+      - name: Typescript linter
+        run: |
+          task frontend-ts-linter-check --summary
+          task frontend-ts-linter-check
+      - name: SASS linter
+        run: |
+          task frontend-sass-linter-check --summary
+          task frontend-sass-linter-check
+      - name: HTML linter
+        run: |
+          task frontend-html-linter-check --summary
+          task frontend-html-linter-check
+      - name: Karma Test
+        run: |
+          task frontend-karma --summary
+          task frontend-karma
+      - name: Protractor Test
+        run: |
+          task frontend-protractor --summary
+          task frontend-protractor
+      - name: Build Prod
+        run: |
+          task frontend-build --summary
+          BUILD_ENV=prod task frontend-build
+      - name: Build Dev
+        run: |
+          task frontend-build --summary
+          BUILD_ENV=dev task frontend-build
 
   api-ci:
     name: API CI

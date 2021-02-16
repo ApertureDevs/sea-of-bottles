@@ -32,10 +32,16 @@ jobs:
           task api-build --summary
           BUILD_ENV=dev task api-build
           docker build --file .deploy/docker/api-php/Dockerfile --build-arg DIST_DIR=api/dist/dev --tag eu.gcr.io/"$GKE_PROJECT"/sob-api-php:${{ github.sha }} .
+      - name: Build "frontend" Docker Image
+        run: |
+          task frontend-build --summary
+          BUILD_ENV=dev task frontend-build
+          docker build --file .deploy/docker/frontend-webserver/Dockerfile --build-arg DIST_DIR=frontend/dist/dev --tag eu.gcr.io/"$GKE_PROJECT"/sob-frontend-webserver:${{ github.sha }} .
       - name: Publish Docker Images
         run: |
           gcloud auth configure-docker
           docker push eu.gcr.io/$GKE_PROJECT/sob-api-php:${{ github.sha }}
+          docker push eu.gcr.io/$GKE_PROJECT/sob-frontend-webserver:${{ github.sha }}
       - name: Customize deployment manifest for dev stage
         id: manifest-customization
         uses: ./.github/actions/deploy-customization

@@ -9,6 +9,7 @@ tasks:
   install:
     desc: Install Sea of Bottle Project
     cmds:
+      - task: frontend-dependencies
       - task: api-dependencies
       - task: api-database-create
       - task: api-database-migration
@@ -24,6 +25,8 @@ tasks:
       - task: global-commit-linter-check
       - task: global-yaml-linter-check
       - task: global-markdown-linter-check
+      - task: global-shell-linter-check
+      - task: frontend-html-linter-check
       - task: api-phpstan-check
       - task: api-layers-check
       - task: test
@@ -33,7 +36,7 @@ tasks:
   serve:
     desc: Start a local development stack
     cmds:
-      - docker-compose up -d api-webserver
+      - docker-compose up -d api-webserver api-worker frontend-webserver
     deps:
       - frontend-dependencies
       - api-dependencies
@@ -46,12 +49,16 @@ tasks:
       - task: api-database-fixture-test
       - task: api-phpunit
       - task: api-behat
+      - task: frontend-karma
+      - task: frontend-protractor
 
   lint:
     desc: Lint sources
     cmds:
       - task: global-markdown-linter
       - task: api-php-linter
+      - task: frontend-sass-linter
+      - task: frontend-ts-linter
 
   ##########
   # GLOBAL #
@@ -65,12 +72,17 @@ tasks:
   global-markdown-linter:
     desc: Apply linter rules to markdown files
     cmds:
-      - docker-compose run --rm markdown-linter markdownlint '**/*.md' -c .markdownlint.yaml --ignore api/vendor --ignore api/dist --fix
+      - docker-compose run --rm markdown-linter markdownlint '**/*.md' -c .markdownlint.yaml --ignore api/vendor --ignore api/dist --ignore frontend/node_modules --ignore frontend/dist --fix
 
   global-markdown-linter-check:
     desc: Check linter rules to markdown files
     cmds:
-      - docker-compose run --rm markdown-linter markdownlint '**/*.md' -c .markdownlint.yaml --ignore api/vendor --ignore api/dist
+      - docker-compose run --rm markdown-linter markdownlint '**/*.md' -c .markdownlint.yaml --ignore api/vendor --ignore api/dist --ignore frontend/node_modules --ignore frontend/dist
+
+  global-shell-linter-check:
+    desc: Check linter rules to shell scripts
+    cmds:
+      - docker-compose run --rm shell-linter sh -c "shellcheck /app/scripts/*.sh"
 
   global-commit-linter-check:
     desc: Checks if commit messages meet the conventional commit format
@@ -266,3 +278,104 @@ tasks:
       - docker-compose run --rm --no-deps api-cli vendor/bin/behat --verbose --stop-on-failure --rerun
     deps:
       - api-dependencies
+
+  ############
+  # FRONTEND #
+  ############
+
+  frontend-build:
+    desc: |
+      Build frontend into dist folder
+      "BUILD_ENV=prod task frontend-build" to build in production mode (default)
+      "BUILD_ENV=dev task frontend-build" to build in development mode
+    cmds:
+      - docker-compose run --rm --no-deps frontend-cli npx ng build {{.BUILD_OPTIONS}}
+    deps:
+      - frontend-dependencies
+    vars:
+      BUILD_OPTIONS:
+        sh: |
+          if [ -z $BUILD_ENV ] || [ 'prod' = $BUILD_ENV ]
+          then
+            echo "--configuration=production"
+            exit 0
+          fi
+          if [ $BUILD_ENV = 'dev' ]
+          then
+            echo "--configuration=development"
+            exit 0
+          fi
+          exit 1
+
+  frontend-dependencies:
+    desc: Install frontend dependencies
+    cmds:
+      - docker-compose run --rm --no-deps frontend-cli npm ci
+    sources:
+      - frontend/package-lock.json
+    generates:
+      - frontend/node_modules/**/*
+    method: checksum
+
+  frontend-protractor:
+    desc: Execute frontend Protractor end to end test suites
+    cmds:
+      - docker-compose run --rm frontend-cli npx ng e2e
+    deps:
+      - frontend-dependencies
+
+  frontend-karma:
+    desc: Execute frontend Karma unit test suites
+    cmds:
+      - docker-compose run --rm --no-deps frontend-cli npx ng test --code-coverage --watch=false
+    deps:
+      - frontend-dependencies
+
+  frontend-npm-security-check:
+    desc: Execute frontend NPM security audit
+    cmds:
+      - docker-compose run --rm --no-deps frontend-cli npm audit --production
+    deps:
+      - frontend-dependencies
+
+  frontend-npm-security:
+    desc: Resolve frontend NPM security vulnerabilities
+    cmds:
+      - docker-compose run --rm --no-deps frontend-cli npm audit fix
+    deps:
+      - frontend-dependencies
+
+  frontend-sass-linter:
+    desc: Apply frontend linter rules to SASS sources
+    cmds:
+      - docker-compose run --rm --no-deps frontend-cli npx stylelint 'src/**/*.scss' --fix
+    deps:
+      - frontend-dependencies
+
+  frontend-sass-linter-check:
+    desc: Check frontend linter rules to SASS sources
+    cmds:
+      - docker-compose run --rm --no-deps frontend-cli npx stylelint 'src/**/*.scss'
+    deps:
+      - frontend-dependencies
+
+  frontend-ts-linter:
+    desc: Apply frontend linter rules to Typescript sources
+    cmds:
+      - docker-compose run --rm --no-deps frontend-cli npx eslint 'src/**/*.{ts,html}' --fix
+    deps:
+      - frontend-dependencies
+
+  frontend-ts-linter-check:
+    desc: Check frontend linter rules to Typescript sources
+    cmds:
+      - docker-compose run --rm --no-deps frontend-cli npx eslint 'src/**/*.{ts,html}'
+    deps:
+      - frontend-dependencies
+
+  frontend-html-linter-check:
+    desc: Check frontend linter rules to HTML sources
+    cmds:
+      - docker-compose run --rm --no-deps frontend-cli npx htmlhint 'src/**/*.html' -c .htmlhintrc
+    deps:
+      - frontend-dependencies

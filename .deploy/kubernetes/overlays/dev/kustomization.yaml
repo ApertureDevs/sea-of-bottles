@@ -13,3 +13,4 @@ resources:
   - mailer-http-service.yaml
 patchesStrategicMerge:
   - api-configmap.yaml
+  - frontend-configmap.yaml

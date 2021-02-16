@@ -4,6 +4,8 @@ ignore: |
   api/bin
   api/dist
   api/vendor
+  frontend/dist
+  frontend/node_modules
 
 rules:
   document-start: disable

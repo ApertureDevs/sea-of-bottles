@@ -5,6 +5,19 @@ on:
     - cron: '0 8 * * *'
 
 jobs:
+  frontend-audit:
+    name: Frontend Security Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Add Task runner
+        run: |
+          curl -sL https://taskfile.dev/install.sh | sh && echo "./bin" >> $GITHUB_PATH
+      - name: Check NPM modules
+        run: |
+          task frontend-npm-security-check --summary
+          task frontend-npm-security-check
   api-audit:
     name: API Security Check
     runs-on: ubuntu-latest
