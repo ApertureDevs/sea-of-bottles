@@ -1,6 +1,4 @@
 framework:
   messenger:
-    transports:
-      sync: 'sync://'
     routing:
-      'App\Core\SharedKernel\Domain\Event\Event': sync
+      App\Core\SharedKernel\Domain\Event\EventRecord: sync

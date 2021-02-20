@@ -2,11 +2,16 @@ framework:
   messenger:
     default_bus: command.bus
     failure_transport: failed
+    routing:
+      App\Core\SharedKernel\Application\CommandInterface: sync
+      App\Core\SharedKernel\Application\QueryInterface: sync
+      App\Core\SharedKernel\Domain\Event\EventRecord: message_broker
     buses:
       command.bus: ~
       query.bus: ~
       event.bus: ~
     transports:
+      sync: 'sync://'
       message_broker:
         dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
         retry_strategy:
