@@ -13,6 +13,7 @@
         "doctrine/migrations": "^2.3",
         "doctrine/orm": "^2.8",
         "nelmio/api-doc-bundle": "^4.1",
+        "nelmio/cors-bundle": "^2.1",
         "psr/log": "^1.1",
         "symfony/asset": "^5.2",
         "symfony/config": "^5.2",

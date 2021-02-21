@@ -25,5 +25,5 @@ RUN pecl install xdebug-${XDEBUG_VERSION} \
 RUN docker-php-ext-install opcache
 COPY php.ini /usr/local/etc/php/
 COPY --from=symfony-installer /root/.symfony/bin/symfony /usr/local/bin/symfony
-EXPOSE 8000
-CMD ["symfony", "serve"]
+EXPOSE 80
+CMD ["symfony", "serve", "--port=80"]

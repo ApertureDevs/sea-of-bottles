@@ -5,6 +5,7 @@ metadata:
 data:
   frontend_url: "https://dev.seaofbottles.aperturedevs.com"
   environment: "dev"
+  cors: ^https?://dev\.seaofbottles\.aperturedevs\.com$
   nginx.conf: |
     server {
         listen 80;

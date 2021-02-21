@@ -1,0 +1,13 @@
+@import 'variables';
+
+@mixin md-screen {
+  @media (min-width: $xs-screen-width) {
+    @content;
+  }
+}
+
+@mixin lg-screen {
+  @media (min-width: $md-screen-width) {
+    @content;
+  }
+}

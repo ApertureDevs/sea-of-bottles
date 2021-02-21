@@ -16,6 +16,7 @@
         "createDefaultProgram": true
       },
       "extends": [
+        "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/ng-cli-compat",
         "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
         "plugin:@angular-eslint/template/process-inline-templates"
@@ -72,6 +73,7 @@
           "error",
           2
         ],
+        "sort-vars": "error",
         "max-classes-per-file": [
           "error",
           1
@@ -79,7 +81,14 @@
         "max-len": "off",
         "no-empty": "error",
         "no-multiple-empty-lines": "error",
-        "no-shadow": "warn"
+        "no-shadow": "warn",
+        "no-multi-spaces": "error",
+        "no-debugger": "error",
+        "yoda": "error",
+        "object-curly-spacing": [
+          "error",
+          "never"
+        ]
       }
     },
     {

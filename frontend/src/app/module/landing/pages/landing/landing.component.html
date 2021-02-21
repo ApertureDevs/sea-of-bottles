@@ -1,0 +1,37 @@
+<div class="landing">
+    <div class="jumbotron">
+        <img alt="sea of bottles logo" class="jumbotron__image" src="assets/images/sob-logo.svg" />
+        <h1 class="jumbotron__main-title">Sea of Bottles</h1>
+        <p class="jumbotron__baseline">An open project to bring people together</p>
+        <p class="jumbotron__presentation">Sea of Bottles is an open source project. The main goal of this project is to bring people together by throwing message bottles into the sea.</p>
+    </div>
+
+    <div class="counter-section" *ngIf="sea">
+        <div class="counter">
+            <span class="counter__count">{{sea.bottles_remaining}}</span>
+            <span class="counter__label">remaining bottles</span>
+        </div>
+        <div class="counter">
+            <span class="counter__count">{{sea.bottles_recovered}}</span>
+            <span class="counter__label">recovered bottles</span>
+        </div>
+        <div class="counter">
+            <span class="counter__count">{{sea.sailors_total}}</span>
+            <span class="counter__label">active sailors</span>
+        </div>
+    </div>
+
+    <div class="presentation-section">
+        <mat-icon svgIcon="bottle" class="presentation-section__icon"></mat-icon>
+        <h2 class="presentation-section__title">Message Bottle</h2>
+        <p class="presentation-section__presentation">You can write a message and throw it into the sea. Maybe someone will receive it...</p>
+        <button mat-raised-button color="primary" routerLink="/bottle/create">Throw a Message Bottle</button>
+    </div>
+
+    <div class="presentation-section">
+        <mat-icon svgIcon="sailor" class="presentation-section__icon"></mat-icon>
+        <h2 class="presentation-section__title">Sailor</h2>
+        <p class="presentation-section__presentation">You can become a Sailor and receive messages from the sea.</p>
+        <button mat-raised-button color="primary" routerLink="/sailor/create">Become a Sailor</button>
+    </div>
+</div>

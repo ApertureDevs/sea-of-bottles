@@ -8,7 +8,7 @@ metadata:
 data:
   frontend_url: "https://seaofbottles.aperturedevs.com"
   environment: "prod"
-  cors: "^https?://(localhost|127\\.0\\.0\\.1)(:[0-9]+)?$"
+  cors: ^https?://seaofbottles\.aperturedevs\.com$
   nginx.conf: |
     server {
         listen 80;

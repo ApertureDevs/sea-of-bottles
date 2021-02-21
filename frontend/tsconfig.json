@@ -6,6 +6,7 @@
     "paths": {
       "@core/*": ["app/core/*"],
       "@model/*": ["app/data/model/*"],
+      "@data/*": ["app/data/*"],
       "@shared/*": ["app/shared/*"],
       "@env": ["environments/*"]
     },

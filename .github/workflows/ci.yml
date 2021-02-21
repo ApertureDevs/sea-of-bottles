@@ -66,6 +66,10 @@ jobs:
         run: |
           task frontend-build --summary
           BUILD_ENV=prod task frontend-build
+      - name: Build Preprod
+        run: |
+          task frontend-build --summary
+          BUILD_ENV=preprod task frontend-build
       - name: Build Dev
         run: |
           task frontend-build --summary

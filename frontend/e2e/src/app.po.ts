@@ -1,11 +1,13 @@
-import { browser, by, element } from 'protractor';
+import {browser, logging} from 'protractor';
 
 export class AppPage {
-  async navigateTo(): Promise<unknown> {
-    return browser.get(browser.baseUrl);
+  public async navigateTo(route: string): Promise<void> {
+    await browser.get(route);
   }
 
-  async getTitleText(): Promise<string> {
-    return element(by.css('app-root .content span')).getText();
+  public async getLogs(): Promise<logging.Entry[]> {
+    let logs = await browser.manage().logs().get(logging.Type.BROWSER);
+
+    return logs;
   }
 }

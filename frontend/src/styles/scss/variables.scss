@@ -1,0 +1,29 @@
+/****************
+ * COLORS THEME *
+ ****************/
+
+$theme-color-accent: #082754;
+$theme-color-main: #02578f;
+$theme-color-main-light: #2f9ec5;
+$theme-color-hover: #025389;
+$theme-color-active: #034f82;
+$theme-color-gray-dark: #9ab1cb;
+$theme-color-gray-light: #c6d3e1;
+$theme-color-dark: #24292e;
+
+/*********
+ * FONTS *
+ *********/
+
+$font-color: $theme-color-accent;
+$font-family: 'Open Sans', sans-serif;
+$link-hover-color: $theme-color-hover;
+$title-color: $theme-color-main-light;
+
+/*********
+ * OTHER *
+ *********/
+
+$min-width: 300px;
+$xs-screen-width: 540px;
+$md-screen-width: 960px;

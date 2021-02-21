@@ -286,8 +286,9 @@ tasks:
   frontend-build:
     desc: |
       Build frontend into dist folder
-      "BUILD_ENV=prod task frontend-build" to build in production mode (default)
-      "BUILD_ENV=dev task frontend-build" to build in development mode
+      "BUILD_ENV=prod task frontend-build" to build with production configuration
+      "BUILD_ENV=preprod task frontend-build" to build with preproduction configuration
+      "BUILD_ENV=dev task frontend-build" to build with development configuration
     cmds:
       - docker-compose run --rm --no-deps frontend-cli npx ng build {{.BUILD_OPTIONS}}
     deps:
@@ -295,12 +296,17 @@ tasks:
     vars:
       BUILD_OPTIONS:
         sh: |
-          if [ -z $BUILD_ENV ] || [ 'prod' = $BUILD_ENV ]
+          if [ 'prod' = $BUILD_ENV ]
           then
             echo "--configuration=production"
             exit 0
           fi
-          if [ $BUILD_ENV = 'dev' ]
+          if [ 'preprod' = $BUILD_ENV ]
+          then
+            echo "--configuration=preproduction"
+            exit 0
+          fi
+          if [ 'dev' = $BUILD_ENV ]
           then
             echo "--configuration=development"
             exit 0
@@ -327,7 +333,7 @@ tasks:
   frontend-karma:
     desc: Execute frontend Karma unit test suites
     cmds:
-      - docker-compose run --rm --no-deps frontend-cli npx ng test --code-coverage --watch=false
+      - docker-compose run --rm frontend-cli npx ng test --code-coverage --watch=false
     deps:
       - frontend-dependencies
 
