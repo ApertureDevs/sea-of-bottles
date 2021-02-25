@@ -60,6 +60,12 @@ tasks:
       - task: frontend-sass-linter
       - task: frontend-ts-linter
 
+  update:
+    desc: Update dependencies
+    cmds:
+      - task: api-dependencies-update
+      - task: frontend-dependencies-update
+
   ##########
   # GLOBAL #
   ##########
@@ -156,6 +162,11 @@ tasks:
     generates:
       - api/vendor/**/*
     method: checksum
+
+  api-dependencies-update:
+    desc: Update API dependencies
+    cmds:
+      - docker-compose run --rm --no-deps api-cli composer update
 
   api-database-create:
     desc: Create/Recreate API database
@@ -322,6 +333,11 @@ tasks:
     generates:
       - frontend/node_modules/**/*
     method: checksum
+
+  frontend-dependencies-update:
+    desc: Update frontend dependencies
+    cmds:
+      - docker-compose run --rm --no-deps frontend-cli npm update
 
   frontend-protractor:
     desc: Execute frontend Protractor end to end test suites
