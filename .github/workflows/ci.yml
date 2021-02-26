@@ -20,10 +20,6 @@ jobs:
         run: |
           task global-markdown-linter-check --summary
           task global-markdown-linter-check
-      - name: Shell linter
-        run: |
-          task global-shell-linter-check --summary
-          task global-shell-linter-check
       - name: Commit linter
         run: |
           task global-commit-linter-check --summary
@@ -38,6 +34,10 @@ jobs:
       - name: Add Task runner
         run: |
           curl -sL https://taskfile.dev/install.sh | sh && echo "./bin" >> $GITHUB_PATH
+      - name: Install
+        run: |
+          task install --summary
+          task install
       - name: NPM vulnerability check
         run: |
           task frontend-npm-security-check --summary

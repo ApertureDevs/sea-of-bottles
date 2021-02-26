@@ -22,23 +22,16 @@ services:
       - ./:/app
     working_dir: /app
 
-  shell-linter:
-    build:
-      context: docker/shell-linter
-    volumes:
-      - ./:/app
-
-  shell-runner:
-    image: bash:5
-    volumes:
-      - ./:/app
-
   api-webserver:
     build:
       context: docker/api-webserver
     volumes:
       - ./api:/app
     working_dir: /app
+    networks:
+      default:
+        aliases:
+          - local.api.seaofbottles.aperturedevs.com
     depends_on:
       - api-database
       - broker

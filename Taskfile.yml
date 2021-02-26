@@ -25,7 +25,6 @@ tasks:
       - task: global-commit-linter-check
       - task: global-yaml-linter-check
       - task: global-markdown-linter-check
-      - task: global-shell-linter-check
       - task: frontend-html-linter-check
       - task: api-phpstan-check
       - task: api-layers-check
@@ -84,11 +83,6 @@ tasks:
     desc: Check linter rules to markdown files
     cmds:
       - docker-compose run --rm markdown-linter markdownlint '**/*.md' -c .markdownlint.yaml --ignore api/vendor --ignore api/dist --ignore frontend/node_modules --ignore frontend/dist
-
-  global-shell-linter-check:
-    desc: Check linter rules to shell scripts
-    cmds:
-      - docker-compose run --rm shell-linter sh -c "shellcheck /app/scripts/*.sh"
 
   global-commit-linter-check:
     desc: Checks if commit messages meet the conventional commit format
@@ -171,7 +165,6 @@ tasks:
   api-database-create:
     desc: Create/Recreate API database
     cmds:
-      - docker-compose run --rm shell-runner /app/scripts/confirmation.sh "All data in database will be lost when executing this task. Are you sure?"
       - docker-compose run --rm api-cli dockerize -wait tcp://api-database:5432 bin/console doctrine:database:drop --force --if-exists --connection=event_store
       - docker-compose run --rm api-cli dockerize -wait tcp://api-database:5432 bin/console doctrine:database:create --connection=event_store
       - docker-compose run --rm api-cli dockerize -wait tcp://api-database:5432 bin/console doctrine:database:drop --force --if-exists --connection=relational_model
@@ -349,7 +342,7 @@ tasks:
   frontend-karma:
     desc: Execute frontend Karma unit test suites
     cmds:
-      - docker-compose run --rm frontend-cli npx ng test --code-coverage --watch=false
+      - docker-compose run --rm --no-deps frontend-cli npx ng test --code-coverage --watch=false
     deps:
       - frontend-dependencies
 
