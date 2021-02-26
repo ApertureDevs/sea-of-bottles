@@ -1,14 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: message-broker-amqp-service
+  name: broker-http-service
   labels:
     project: sob
-    app: message-broker-amqp-service
+    app: broker-http-service
     layer: infra
 spec:
   ports:
-    - port: 5672
+    - port: 80
+      targetPort: 15672
   selector:
-    app: message-broker
+    app: broker
   clusterIP: None

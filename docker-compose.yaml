@@ -41,7 +41,7 @@ services:
     working_dir: /app
     depends_on:
       - api-database
-      - message-broker
+      - broker
 
   api-cli:
     build:
@@ -51,7 +51,7 @@ services:
     working_dir: /app
     depends_on:
       - api-database
-      - message-broker
+      - broker
       - mailer
 
   api-worker:
@@ -62,7 +62,7 @@ services:
     working_dir: /app
     depends_on:
       - api-database
-      - message-broker
+      - broker
     restart: on-failure
     command: bin/console messenger:consume message_broker -vv
 
@@ -92,11 +92,14 @@ services:
     depends_on:
       - api-webserver
 
-  message-broker:
+  broker:
     image: rabbitmq:3-management
     environment:
       RABBITMQ_DEFAULT_USER: "sob"
       RABBITMQ_DEFAULT_PASS: "password"
+    hostname: broker
+    volumes:
+      - broker-data:/var/lib/rabbitmq
 
   mailer:
     image: maildev/maildev
@@ -105,3 +108,4 @@ services:
 
 volumes:
   api-database-data: ~
+  broker-data: ~

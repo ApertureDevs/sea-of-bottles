@@ -1,26 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: message-broker
+  name: broker
   labels:
     project: sob
-    app: message-broker
+    app: broker
     layer: infra
 spec:
   revisionHistoryLimit: 2
   replicas: 1
   selector:
     matchLabels:
-      app: message-broker
+      app: broker
   template:
     metadata:
       labels:
         project: sob
-        app: message-broker
+        app: broker
         layer: infra
     spec:
+      hostname: broker
       containers:
-        - name: message-broker
+        - name: broker
           image: rabbitmq:3-management
           imagePullPolicy: Always
           ports:
@@ -33,12 +34,16 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: sob-secret
-                  key: message-broker-user
+                  key: broker-user
             - name: RABBITMQ_DEFAULT_PASS
               valueFrom:
                 secretKeyRef:
                   name: sob-secret
-                  key: message-broker-password
+                  key: broker-password
+          volumeMounts:
+            - name: broker-storage
+              mountPath: /var/lib/rabbitmq
+              subPath: rabbitmq-data
           resources:
             limits:
               cpu: "100m"
@@ -46,3 +51,7 @@ spec:
             requests:
               cpu: "1m"
               memory: "256Mi"
+      volumes:
+        - name: broker-storage
+          persistentVolumeClaim:
+            claimName: broker-pvc
