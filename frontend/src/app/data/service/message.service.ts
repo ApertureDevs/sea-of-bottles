@@ -1,10 +1,12 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {Sea} from '@model/domain/message/projection/sea';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {CreateBottleCommand} from '@model/domain/message/command/create-bottle-command';
 import {CreateSailorCommand} from '@model/domain/message/command/create-sailor-command';
 import {DeleteSailorCommand} from '@model/domain/message/command/delete-sailor-command';
+import {CommandResponse} from '@model/shared/api-response';
+import {catchError} from 'rxjs/operators';
 import {environment} from '../../../environments/environment';
 
 @Injectable({
@@ -17,18 +19,27 @@ export class MessageService {
   }
 
   public getSea(): Observable<Sea> {
-    return this.httpClient.get<Sea>(`${environment.api.url}/api/sea`);
+    return this.httpClient.get<Sea>(`${environment.api.url}/api/sea`)
+      .pipe(
+        catchError(this.handleError),
+      );
   }
 
-  public createBottle(command: CreateBottleCommand): Observable<string> {
-    return this.httpClient.post<string>(`${environment.api.url}/api/bottle`, command);
+  public createBottle(command: CreateBottleCommand): Observable<CommandResponse> {
+    return this.httpClient.post<CommandResponse>(`${environment.api.url}/api/bottle`, command)
+      .pipe(
+        catchError(this.handleError),
+      );
   }
 
-  public createSailor(command: CreateSailorCommand): Observable<string> {
-    return this.httpClient.post<string>(`${environment.api.url}/api/sailor`, command);
+  public createSailor(command: CreateSailorCommand): Observable<CommandResponse> {
+    return this.httpClient.post<CommandResponse>(`${environment.api.url}/api/sailor`, command)
+      .pipe(
+        catchError(this.handleError),
+      );
   }
 
-  public deleteSailor(command: DeleteSailorCommand): Observable<string> {
+  public deleteSailor(command: DeleteSailorCommand): Observable<CommandResponse> {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -36,6 +47,15 @@ export class MessageService {
       body: command,
     };
 
-    return this.httpClient.delete<string>(`${environment.api.url}/api/sailor`, options);
+    return this.httpClient.delete<CommandResponse>(`${environment.api.url}/api/sailor`, options)
+      .pipe(
+        catchError(this.handleError),
+      );
+  }
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    console.error('Invalid API response', error.error);
+
+    return throwError(error.error);
   }
 }

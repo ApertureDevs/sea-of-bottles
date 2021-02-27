@@ -342,7 +342,14 @@ tasks:
   frontend-karma:
     desc: Execute frontend Karma unit test suites
     cmds:
-      - docker-compose run --rm --no-deps frontend-cli npx ng test --code-coverage --watch=false
+      - docker-compose run --rm frontend-cli npx ng test --code-coverage --watch=false
+    deps:
+      - frontend-dependencies
+
+  frontend-karma-watch:
+    desc: Execute frontend Karma unit test suites in watch mode
+    cmds:
+      - docker-compose run --rm frontend-cli npx ng test --code-coverage --watch=true
     deps:
       - frontend-dependencies
 
@@ -377,14 +384,14 @@ tasks:
   frontend-ts-linter:
     desc: Apply frontend linter rules to Typescript sources
     cmds:
-      - docker-compose run --rm --no-deps frontend-cli npx eslint 'src/**/*.{ts,html}' --fix
+      - docker-compose run --rm --no-deps frontend-cli npx eslint '{src/**/*.{ts,html},e2e/**/*.ts}' --fix
     deps:
       - frontend-dependencies
 
   frontend-ts-linter-check:
     desc: Check frontend linter rules to Typescript sources
     cmds:
-      - docker-compose run --rm --no-deps frontend-cli npx eslint 'src/**/*.{ts,html}'
+      - docker-compose run --rm --no-deps frontend-cli npx eslint '{src/**/*.{ts,html},e2e/**/*.ts}'
     deps:
       - frontend-dependencies
 

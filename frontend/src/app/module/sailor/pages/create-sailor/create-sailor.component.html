@@ -4,7 +4,7 @@
         <p class="description__content">You can become a Sailor to be able to receive Bottles from the Sea. All you need is an email to receive them!</p>
     </div>
 
-    <form class="form" [formGroup]="form" (ngSubmit)="commandSubmit()" *ngIf="!wasSubmitted">
+    <form class="form" [formGroup]="form" (ngSubmit)="commandSubmit()" *ngIf="!wasCreated">
         <mat-form-field appearance="fill" class="form-field form__email">
             <mat-label>Your email</mat-label>
             <input matInput id="email" formControlName="email"/>
@@ -15,7 +15,7 @@
         <button mat-raised-button color="primary" type="submit" [disabled]="!this.form.valid">Finish</button>
     </form>
 
-    <div class="success" *ngIf="wasSubmitted">
+    <div class="success" *ngIf="wasCreated">
         <mat-icon svgIcon="check" class="success__icon"></mat-icon>
         <span class="success__message">You're now a Sailor!</span>
         <div class="success__option">

@@ -26,4 +26,8 @@ describe('FooterComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should contains version', () => {
+    expect(component.version).toMatch(/\d+\.\d+\.\d+/);
+  });
 });
