@@ -12,7 +12,7 @@ export class CustomIconService {
   ) { }
   public init(): void {
     this.matIconRegistry.addSvgIcon('github', this.domSanitizer.bypassSecurityTrustResourceUrl('../../assets/images/github-square-brands.svg'));
-    this.matIconRegistry.addSvgIcon('twitter', this.domSanitizer.bypassSecurityTrustResourceUrl('../../assets/images/twitter-square-brands.svg'));
+    this.matIconRegistry.addSvgIcon('mastodon', this.domSanitizer.bypassSecurityTrustResourceUrl('../../assets/images/mastodon-brands.svg'));
     this.matIconRegistry.addSvgIcon('bottle', this.domSanitizer.bypassSecurityTrustResourceUrl('../../assets/images/bottle.svg'));
     this.matIconRegistry.addSvgIcon('sailor', this.domSanitizer.bypassSecurityTrustResourceUrl('../../assets/images/sailor.svg'));
     this.matIconRegistry.addSvgIcon('check', this.domSanitizer.bypassSecurityTrustResourceUrl('../../assets/images/check-circle.svg'));
