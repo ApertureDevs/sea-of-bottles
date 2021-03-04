@@ -38,11 +38,11 @@ exports.config = {
     }));
     jasmine.getEnv().addReporter({
       specDone: function(result) {
-        const screenshotsDirectory = 'var/screenshots';
-        if (!fs.existsSync(screenshotsDirectory)) {
-          fs.mkdirSync(screenshotsDirectory);
-        }
         if(result.failedExpectations.length > 0) {
+          const screenshotsDirectory = 'var/screenshots';
+          if (!fs.existsSync(screenshotsDirectory)) {
+            fs.mkdirSync(screenshotsDirectory, {recursive: true});
+          }
           browser.takeScreenshot().then(function (screenshot) {
             let filename = (new Date()).toISOString().replace(/z|t/gi, ' ').trim();
             filename += '.png';
