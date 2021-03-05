@@ -4,9 +4,32 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  padding: 0.5rem;
   color: #fff;
   background-color: $theme-color-main;
+
+  &__sea {
+    position: relative;
+    width: 100vw;
+    height: 60px;
+    overflow: hidden;
+    background-color: #fff;
+
+    &__wave {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 60px;
+      background: url('../../../assets/images/wave.svg') repeat-x;
+      animation: move_wave 10s ease-in-out infinite;
+
+      &:nth-child(1) {
+        height: 50px;
+        background: url('../../../assets/images/wave2.svg') repeat-x;
+        animation-delay: 1s;
+      }
+    }
+  }
 
   a {
     color: #fff;
@@ -20,6 +43,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+    padding: 0.5rem;
 
     &__item {
       padding-right: 0.5rem;
@@ -37,6 +61,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
+    padding: 0.5rem;
     font-size: 0.6rem;
   }
 
@@ -62,5 +87,19 @@
 
   &__divider {
     width: 50%;
+  }
+}
+
+@keyframes move_wave {
+  0% {
+    margin-left: 0;
+  }
+
+  50% {
+    margin-left: -20vw;
+  }
+
+  100% {
+    margin-left: 0;
   }
 }

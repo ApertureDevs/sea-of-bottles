@@ -4,6 +4,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {CoreModule} from '@core/core.module';
 import {HttpClientModule} from '@angular/common/http';
 import {ThemeModule} from '@core/theme/theme.module';
+import {SharedModule} from '@shared/shared.module';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HeaderModule} from './layout/header/header.module';
@@ -22,6 +23,7 @@ import {FooterModule} from './layout/footer/footer.module';
     HttpClientModule,
     BrowserAnimationsModule,
     ThemeModule,
+    SharedModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

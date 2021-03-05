@@ -8,15 +8,15 @@
 
     <div class="counter-section" *ngIf="sea">
         <div class="counter">
-            <span class="counter__count">{{sea.bottles_remaining}}</span>
+            <app-counter [count]="sea.bottles_remaining" class="counter__count"></app-counter>
             <span class="counter__label">remaining bottles</span>
         </div>
         <div class="counter">
-            <span class="counter__count">{{sea.bottles_recovered}}</span>
+            <app-counter [count]="sea.bottles_recovered" class="counter__count"></app-counter>
             <span class="counter__label">recovered bottles</span>
         </div>
         <div class="counter">
-            <span class="counter__count">{{sea.sailors_total}}</span>
+            <app-counter [count]="sea.sailors_total" class="counter__count"></app-counter>
             <span class="counter__label">active sailors</span>
         </div>
     </div>
