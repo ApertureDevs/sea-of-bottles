@@ -48,17 +48,23 @@ $icon-size: 2rem;
     align-items: center;
     width: 125px;
     height: $header-size;
-  }
 
-  &__menu-item {
-    width: $icon-size;
-    height: $icon-size;
-    margin: 1rem;
-    color: #fff;
-    font-size: $icon-size;
-    line-height: $icon-size;
-    text-align: center;
-    vertical-align: middle;
+    &__item {
+      &__icon {
+        width: $icon-size;
+        height: $icon-size;
+        margin: 1rem;
+        color: #fff;
+        font-size: $icon-size;
+        line-height: $icon-size;
+        text-align: center;
+        vertical-align: middle;
+      }
+
+      &--active &__icon {
+        color: $theme-color-main-light;
+      }
+    }
   }
 
   @include md-screen {
