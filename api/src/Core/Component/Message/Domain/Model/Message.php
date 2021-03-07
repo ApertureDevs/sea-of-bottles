@@ -6,7 +6,7 @@ use App\Core\Component\Message\Domain\Exception\InvalidMessageException;
 
 class Message
 {
-    private const CONTENT_LIMIT = 5000;
+    private const CONTENT_LIMIT = 500;
     private string $content;
 
     private function __construct(string $content)

@@ -26,6 +26,7 @@ class SailorCreatedHandlerTest extends EventHandlerTest
         $sailorProjection = $this->getSailorProjection($record->getAggregateId());
         self::assertTrue($handler->support($record));
         self::assertSame('9ec5aa9a-6b2d-4a92-a2b0-2a088955b477', $sailorProjection->getId());
+        self::assertSame('::1', $sailorProjection->getCreateIp());
         self::assertSame('newsailor@aperturedevs.com', $sailorProjection->getEmail());
         self::assertEquals(new \DateTimeImmutable('2020-01-01'), $sailorProjection->getCreateDate());
     }

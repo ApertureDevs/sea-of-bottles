@@ -11,6 +11,8 @@
 
         <field name="email" type="string" length="50" />
 
+        <field name="createIp" type="string" length="45" />
+
         <field name="createDate" type="datetime_immutable" />
     </entity>
 

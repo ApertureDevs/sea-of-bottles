@@ -6,16 +6,18 @@ use App\Core\Component\Message\Domain\Exception\UnreceivableBottleException;
 use App\Core\SharedKernel\Domain\Event\Aggregate;
 use App\Core\SharedKernel\Domain\Event\Message\BottleCreated;
 use App\Core\SharedKernel\Domain\Event\Message\BottleReceived;
+use App\Core\SharedKernel\Domain\Model\Ip;
 
 class Bottle extends Aggregate
 {
     private string $id;
     private Message $message;
+    private Ip $createIp;
     private \DateTimeInterface $createDate;
     private ?\DateTimeInterface $receiveDate = null;
     private ?string $receiver = null;
 
-    public static function create(string $message): Bottle
+    public static function create(string $message, string $createIp): Bottle
     {
         $bottle = new Bottle();
         $id = uuid_create(UUID_TYPE_RANDOM);
@@ -25,8 +27,9 @@ class Bottle extends Aggregate
         }
 
         $message = Message::create($message);
+        $createIp = Ip::create($createIp);
 
-        $bottle->apply(BottleCreated::create($id, $message->getContent(), new \DateTimeImmutable()));
+        $bottle->apply(BottleCreated::create($id, $message->getContent(), $createIp->getAddress(), new \DateTimeImmutable()));
 
         return $bottle;
     }
@@ -60,6 +63,11 @@ class Bottle extends Aggregate
         return null !== $this->receiveDate;
     }
 
+    public function getCreateIp(): Ip
+    {
+        return $this->createIp;
+    }
+
     public function getReceiveDate(): ?\DateTimeInterface
     {
         return $this->receiveDate;
@@ -79,6 +87,7 @@ class Bottle extends Aggregate
     {
         $this->id = $event->getId();
         $this->message = Message::create($event->getMessage());
+        $this->createIp = Ip::create($event->getCreateIp());
         $this->createDate = $event->getCreateDate();
     }
 

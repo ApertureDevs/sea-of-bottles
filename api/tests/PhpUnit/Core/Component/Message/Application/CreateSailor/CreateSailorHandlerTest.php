@@ -20,7 +20,7 @@ class CreateSailorHandlerTest extends CommandHandlerTestCase
     {
         /** @var CreateSailorHandler $handler */
         $handler = $this->getCommandHandler();
-        $command = CreateSailorCommand::create('newsailor@aperturedevs.com');
+        $command = CreateSailorCommand::create('newsailor@aperturedevs.com', '::1');
 
         $response = $handler($command);
 
@@ -31,7 +31,7 @@ class CreateSailorHandlerTest extends CommandHandlerTestCase
     {
         /** @var CreateSailorHandler $handler */
         $handler = $this->getCommandHandler();
-        $command = CreateSailorCommand::create('sailor1@aperturedevs.com');
+        $command = CreateSailorCommand::create('sailor1@aperturedevs.com', '::1');
 
         self::expectException(UncreatableSailorException::class);
 
@@ -42,7 +42,7 @@ class CreateSailorHandlerTest extends CommandHandlerTestCase
     {
         /** @var CreateSailorHandler $handler */
         $handler = $this->getCommandHandler();
-        $command = CreateSailorCommand::create('aperturedevs');
+        $command = CreateSailorCommand::create('aperturedevs', '::1');
 
         self::expectException(InvalidEmailException::class);
 

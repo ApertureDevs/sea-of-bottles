@@ -8,7 +8,7 @@ class BottleAggregateFactory
 {
     public static function createBottle(): Bottle
     {
-        return Bottle::create('This is a test message!');
+        return Bottle::create('This is a test message!', '::1');
     }
 
     public static function createReceivedBottle(): Bottle

@@ -8,18 +8,20 @@ class SailorCreated implements Event
 {
     private string $id;
     private string $email;
+    private string $createIp;
     private \DateTimeImmutable $createDate;
 
-    public function __construct(string $id, string $email, \DateTimeImmutable $createDate)
+    public function __construct(string $id, string $email, string $createIp, \DateTimeImmutable $createDate)
     {
         $this->id = $id;
         $this->email = $email;
+        $this->createIp = $createIp;
         $this->createDate = $createDate;
     }
 
-    public static function create(string $id, string $email, \DateTimeImmutable $createDate): self
+    public static function create(string $id, string $email, string $createIp, \DateTimeImmutable $createDate): self
     {
-        return new self($id, $email, $createDate);
+        return new self($id, $email, $createIp, $createDate);
     }
 
     public function getId(): string
@@ -30,6 +32,11 @@ class SailorCreated implements Event
     public function getEmail(): string
     {
         return $this->email;
+    }
+
+    public function getCreateIp(): string
+    {
+        return $this->createIp;
     }
 
     public function getCreateDate(): \DateTimeImmutable

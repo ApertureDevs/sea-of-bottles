@@ -9,7 +9,9 @@
             <generator strategy="NONE"/>
         </id>
 
-        <field name="message" type="string" length="5000" />
+        <field name="message" type="string" length="500" />
+
+        <field name="createIp" type="string" length="45" />
 
         <field name="createDate" type="datetime_immutable" />
 

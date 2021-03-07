@@ -3,3 +3,6 @@ App\Core\Component\Message\Application\DeleteSailor\DeleteSailorCommand:
     email:
       - NotBlank: ~
       - Email: ~
+    deleteIp:
+      - NotBlank: ~
+      - Ip: ~

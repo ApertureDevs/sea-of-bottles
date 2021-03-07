@@ -39,6 +39,7 @@ class SailorEventRecordFactory
         return SailorCreated::create(
             '9ec5aa9a-6b2d-4a92-a2b0-2a088955b477',
             'newsailor@aperturedevs.com',
+            '::1',
             new \DateTimeImmutable('2020-01-01')
         );
     }
@@ -46,6 +47,7 @@ class SailorEventRecordFactory
     private static function createSailorDeletedEvent(): SailorDeleted
     {
         return SailorDeleted::create(
+            '::1',
             new \DateTimeImmutable('2020-01-02')
         );
     }

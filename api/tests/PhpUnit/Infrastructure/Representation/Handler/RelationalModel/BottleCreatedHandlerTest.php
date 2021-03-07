@@ -26,6 +26,7 @@ class BottleCreatedHandlerTest extends EventHandlerTest
         $bottleProjection = $this->getBottleProjection($record->getAggregateId());
         self::assertTrue($handler->support($record));
         self::assertSame('dfee8af6-2fda-43e5-bfd7-7ecc38671dea', $bottleProjection->getId());
+        self::assertSame('::1', $bottleProjection->getCreateIp());
         self::assertSame('Test message!', $bottleProjection->getMessage());
         self::assertEquals(new \DateTimeImmutable('2020-01-01'), $bottleProjection->getCreateDate());
     }

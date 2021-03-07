@@ -19,7 +19,7 @@ class CreateBottleHandlerTest extends CommandHandlerTestCase
     {
         /** @var CreateBottleHandler $handler */
         $handler = $this->getCommandHandler();
-        $command = CreateBottleCommand::create('Hello!');
+        $command = CreateBottleCommand::create('Hello!', '127.0.0.1');
 
         $response = $handler($command);
 
@@ -30,7 +30,7 @@ class CreateBottleHandlerTest extends CommandHandlerTestCase
     {
         /** @var CreateBottleHandler $handler */
         $handler = $this->getCommandHandler();
-        $command = CreateBottleCommand::create('');
+        $command = CreateBottleCommand::create('', '127.0.0.1');
 
         self::expectException(InvalidMessageException::class);
 

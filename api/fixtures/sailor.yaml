@@ -4,12 +4,14 @@ App\Core\SharedKernel\Domain\Event\Message\SailorCreated:
       create:
         id: 'dadcd1ef-5654-4929-9a27-dd8dd46fa599'
         email: 'sailor1@aperturedevs.com'
+        createIp: "127.0.0.1"
         createDate: "<(new \\DateTimeImmutable('2020-01-01'))>"
   sailor_2.event.sailor_created:
     __factory:
       create:
         id: '8de28ea6-b168-41c3-97c0-a4935802ed45'
         email: 'sailor2@aperturedevs.com'
+        createIp: "::1"
         createDate: "<(new \\DateTimeImmutable('2020-01-02'))>"
 
 App\Core\SharedKernel\Domain\Event\Message\SailorDeleted:
@@ -17,6 +19,7 @@ App\Core\SharedKernel\Domain\Event\Message\SailorDeleted:
     __factory:
       create:
         deleteDate: "<(new \\DateTimeImmutable('2020-01-03'))>"
+        deleteIp: "::1"
 
 App\Core\SharedKernel\Domain\Event\EventRecord:
   sailor_1.record_1:
@@ -49,21 +52,21 @@ App\Infrastructure\Persistence\EventStore\StorableEventRecord:
     __factory:
       createFromEventRecord:
         eventRecord: '@sailor_1.record_1'
-        event: '{"id":"dadcd1ef-5654-4929-9a27-dd8dd46fa599","email":"sailor1@aperturedevs.com","create_date":"2020-01-01T00:00:00+00:00"}'
+        event: '{"id":"dadcd1ef-5654-4929-9a27-dd8dd46fa599","email":"sailor1@aperturedevs.com","create_ip":"127.0.0.1","create_date":"2020-01-01T00:00:00+00:00"}'
         eventType: 'sailor_created'
         context: 'message'
   sailor_2.storable_record_1:
     __factory:
       createFromEventRecord:
         eventRecord: '@sailor_2.record_1'
-        event: '{"id":"8de28ea6-b168-41c3-97c0-a4935802ed45","email":"sailor2@aperturedevs.com","create_date":"2020-01-02T00:00:00+00:00"}'
+        event: '{"id":"8de28ea6-b168-41c3-97c0-a4935802ed45","email":"sailor2@aperturedevs.com","create_ip":"::1","create_date":"2020-01-02T00:00:00+00:00"}'
         eventType: 'sailor_created'
         context: 'message'
   sailor_2.storable_record_2:
     __factory:
       createFromEventRecord:
         eventRecord: '@sailor_2.record_2'
-        event: '{"delete_date":"2020-01-03T00:00:00+00:00"}'
+        event: '{"delete_date":"2020-01-03T00:00:00+00:00","delete_ip":"::1"}'
         eventType: 'sailor_deleted'
         context: 'message'
 
@@ -73,4 +76,5 @@ App\Infrastructure\Representation\Model\RelationalModel\Sailor:
       create:
         id: 'dadcd1ef-5654-4929-9a27-dd8dd46fa599'
         email: 'sailor1@aperturedevs.com'
+        createIp: "127.0.0.1"
         createDate: "<(new \\DateTimeImmutable('2020-01-01'))>"

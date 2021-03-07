@@ -36,7 +36,7 @@ class EventRecordTransformerTest extends KernelTestCase
 
     public function testItShouldConvertIntoDomainEventRecord(): void
     {
-        $storableEventRecord = StorableEventRecord::createFromEventRecord($this->generateDomainEventRecord(), '{"id":"36341903-9a96-4094-9a15-a9e70031047d","message":"Hello World!","create_date":"2020-01-01"}', 'bottle_created', 'message');
+        $storableEventRecord = StorableEventRecord::createFromEventRecord($this->generateDomainEventRecord(), '{"id":"36341903-9a96-4094-9a15-a9e70031047d","message":"Hello World!","create_ip":"127.0.0.1","create_date":"2020-01-01"}', 'bottle_created', 'message');
         $transformer = $this->generateEventRecordTransformer();
 
         $eventRecord = $transformer->convertIntoDomainEventRecord($storableEventRecord);
@@ -60,7 +60,7 @@ class EventRecordTransformerTest extends KernelTestCase
 
     private function generateDomainEventRecord(): EventRecord
     {
-        $bottle = Bottle::create('Hello World!');
+        $bottle = Bottle::create('Hello World!', '::1');
         $eventRecords = $bottle->getUncommittedEventRecords();
 
         foreach ($eventRecords->getIterator() as $eventRecord) {

@@ -3,4 +3,7 @@ App\Core\Component\Message\Application\CreateBottle\CreateBottleCommand:
     message:
       - NotBlank: ~
       - Length:
-          max: 5000
+          max: 500
+    createIp:
+      - NotBlank: ~
+      - Ip: ~

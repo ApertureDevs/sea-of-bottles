@@ -29,7 +29,7 @@ class BottleCreatedHandler implements EventHandlerInterface
             throw new \RuntimeException('Unsupported event.');
         }
 
-        $bottle = Bottle::create($event->getId(), $event->getMessage(), $event->getCreateDate());
+        $bottle = Bottle::create($event->getId(), $event->getMessage(), $event->getCreateIp(), $event->getCreateDate());
         $this->bottleRepository->save($bottle);
     }
 

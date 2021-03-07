@@ -3,3 +3,6 @@ App\Core\Component\Message\Application\CreateSailor\CreateSailorCommand:
     email:
       - NotBlank: ~
       - Email: ~
+    createIp:
+      - NotBlank: ~
+      - Ip: ~

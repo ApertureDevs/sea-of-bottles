@@ -29,7 +29,7 @@ class CreateSailorHandler implements CommandHandlerInterface
             throw UncreatableSailorException::createAlreadyCreatedException($email);
         }
 
-        $sailor = Sailor::create($command->email);
+        $sailor = Sailor::create($command->email, $command->createIp);
         $eventRecords = $sailor->getUncommittedEventRecords();
         $this->sailorStore->store($sailor);
         $this->eventDispatcher->dispatch($eventRecords);

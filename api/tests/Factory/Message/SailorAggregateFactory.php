@@ -8,13 +8,13 @@ class SailorAggregateFactory
 {
     public static function createSailor(): Sailor
     {
-        return Sailor::create('test@aperturedevs.com');
+        return Sailor::create('test@aperturedevs.com', '::1');
     }
 
     public static function createDeletedSailor(): Sailor
     {
         $sailor = self::createSailor();
-        $sailor->delete();
+        $sailor->delete('::1');
 
         return $sailor;
     }

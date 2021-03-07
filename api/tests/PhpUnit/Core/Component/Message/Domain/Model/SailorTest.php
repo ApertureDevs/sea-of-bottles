@@ -18,6 +18,7 @@ class SailorTest extends AggregateTestCase
         $sailor = SailorAggregateFactory::createSailor();
 
         self::assertSame('test@aperturedevs.com', $sailor->getEmail()->getAddress());
+        self::assertSame('::1', $sailor->getCreateIp()->getAddress());
         self::assertInstanceOf(\DateTimeImmutable::class, $sailor->getCreateDate());
         self::assertIsString($sailor->getId());
         self::assertTrue($sailor->isActive());
@@ -30,6 +31,7 @@ class SailorTest extends AggregateTestCase
         self::assertInstanceOf(\DateTimeImmutable::class, $sailor->getDeleteDate());
         self::assertTrue($sailor->isDelete());
         self::assertFalse($sailor->isActive());
+        self::assertSame('::1', $sailor->getDeleteIp()->getAddress());
     }
 
     public function testItShouldThrowExceptionOnAlreadyDeletedASailor(): void
@@ -38,6 +40,6 @@ class SailorTest extends AggregateTestCase
 
         self::expectException(UndeletableSailorException::class);
 
-        $sailor->delete();
+        $sailor->delete('::1');
     }
 }

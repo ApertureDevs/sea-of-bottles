@@ -40,6 +40,7 @@ class BottleEventRecordFactory
         return BottleCreated::create(
             'dfee8af6-2fda-43e5-bfd7-7ecc38671dea',
             'Test message!',
+            '::1',
             new \DateTimeImmutable('2020-01-01')
         );
     }

@@ -19,6 +19,7 @@ class BottleTest extends AggregateTestCase
         $bottle = BottleAggregateFactory::createBottle();
 
         self::assertSame('This is a test message!', $bottle->getMessage()->getContent());
+        self::assertSame('::1', $bottle->getCreateIp()->getAddress());
         self::assertInstanceOf(\DateTimeImmutable::class, $bottle->getCreateDate());
         self::assertIsString($bottle->getId());
     }

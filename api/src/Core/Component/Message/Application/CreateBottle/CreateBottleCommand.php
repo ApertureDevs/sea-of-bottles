@@ -7,11 +7,13 @@ use App\Core\SharedKernel\Application\CommandInterface;
 class CreateBottleCommand implements CommandInterface
 {
     public string $message;
+    public string $createIp;
 
-    public static function create(string $message): self
+    public static function create(string $message, string $createIp): self
     {
         $command = new self();
         $command->message = $message;
+        $command->createIp = $createIp;
 
         return $command;
     }

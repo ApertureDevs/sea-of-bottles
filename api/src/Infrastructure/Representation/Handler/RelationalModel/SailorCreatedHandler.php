@@ -29,7 +29,7 @@ class SailorCreatedHandler implements EventHandlerInterface
             throw new \RuntimeException('Unsupported event.');
         }
 
-        $sailor = Sailor::create($event->getId(), $event->getEmail(), $event->getCreateDate());
+        $sailor = Sailor::create($event->getId(), $event->getEmail(), $event->getCreateIp(), $event->getCreateDate());
         $this->sailorRepository->save($sailor);
     }
 

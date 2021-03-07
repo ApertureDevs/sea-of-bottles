@@ -4,12 +4,14 @@ App\Core\SharedKernel\Domain\Event\Message\BottleCreated:
       create:
         id: 'da36c552-533e-4d28-8b4f-dcdf59191650'
         message: 'Hello world!'
+        createIp: "127.0.0.1"
         createDate: "<(new \\DateTimeImmutable('2020-01-01'))>"
   bottle_2.event.bottle_created:
     __factory:
       create:
         id: 'd11a4336-7158-4f6d-b029-d7de2626f08d'
         message: 'Hello there!'
+        createIp: "::1"
         createDate: "<(new \\DateTimeImmutable('2020-01-02'))>"
 
 App\Core\SharedKernel\Domain\Event\Message\BottleReceived:
@@ -50,14 +52,14 @@ App\Infrastructure\Persistence\EventStore\StorableEventRecord:
     __factory:
       createFromEventRecord:
         eventRecord: '@bottle_1.record_1'
-        event: '{"id":"da36c552-533e-4d28-8b4f-dcdf59191650","message":"Hello world!","create_date":"2020-01-01T00:00:00+00:00"}'
+        event: '{"id":"da36c552-533e-4d28-8b4f-dcdf59191650","message":"Hello world!","create_ip":"127.0.0.1","create_date":"2020-01-01T00:00:00+00:00"}'
         eventType: 'bottle_created'
         context: 'message'
   bottle_2.storable_record_1:
     __factory:
       createFromEventRecord:
         eventRecord: '@bottle_2.record_1'
-        event: '{"id":"d11a4336-7158-4f6d-b029-d7de2626f08d","message":"Hello there!","create_date":"2020-01-02T00:00:00+00:00"}'
+        event: '{"id":"d11a4336-7158-4f6d-b029-d7de2626f08d","message":"Hello there!","create_ip":"::1","create_date":"2020-01-02T00:00:00+00:00"}'
         eventType: 'bottle_created'
         context: 'message'
   bottle_2.storable_record_2:
@@ -74,12 +76,14 @@ App\Infrastructure\Representation\Model\RelationalModel\Bottle:
       create:
         id: 'da36c552-533e-4d28-8b4f-dcdf59191650'
         message: 'Hello World!'
+        createIp: '127.0.0.1'
         createDate: "<(new \\DateTimeImmutable('2020-01-01'))>"
   bottle_2.projection.relational_model:
     __factory:
       create:
         id: 'd11a4336-7158-4f6d-b029-d7de2626f08d'
         message: 'Hello there!'
+        createIp: '::1'
         createDate: "<(new \\DateTimeImmutable('2020-01-02'))>"
     __calls:
       - receive:

@@ -8,18 +8,20 @@ class BottleCreated implements Event
 {
     private string $id;
     private string $message;
+    private string $createIp;
     private \DateTimeImmutable $createDate;
 
-    public function __construct(string $id, string $message, \DateTimeImmutable $createDate)
+    public function __construct(string $id, string $message, string $createIp, \DateTimeImmutable $createDate)
     {
         $this->id = $id;
         $this->message = $message;
+        $this->createIp = $createIp;
         $this->createDate = $createDate;
     }
 
-    public static function create(string $id, string $message, \DateTimeImmutable $createDate): self
+    public static function create(string $id, string $message, string $createIp, \DateTimeImmutable $createDate): self
     {
-        return new self($id, $message, $createDate);
+        return new self($id, $message, $createIp, $createDate);
     }
 
     public function getId(): string
@@ -30,6 +32,11 @@ class BottleCreated implements Event
     public function getMessage(): string
     {
         return $this->message;
+    }
+
+    public function getCreateIp(): string
+    {
+        return $this->createIp;
     }
 
     public function getCreateDate(): \DateTimeImmutable

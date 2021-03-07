@@ -34,7 +34,7 @@ class DeleteSailorHandler implements CommandHandlerInterface
             throw new \RuntimeException('Sailor cannot be null. The previous query returned an invalid id.');
         }
 
-        $sailor->delete();
+        $sailor->delete($command->deleteIp);
         $eventRecords = $sailor->getUncommittedEventRecords();
         $this->sailorStore->store($sailor);
         $this->eventDispatcher->dispatch($eventRecords);

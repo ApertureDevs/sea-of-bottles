@@ -6,20 +6,22 @@ class Bottle implements EntityInterface
 {
     private string $id;
     private string $message;
+    private string $createIp;
     private \DateTimeImmutable $createDate;
     private ?\DateTimeImmutable $receiveDate;
     private ?Sailor $receiver;
 
-    private function __construct(string $id, string $message, \DateTimeImmutable $createDate)
+    private function __construct(string $id, string $message, string $createIp, \DateTimeImmutable $createDate)
     {
         $this->id = $id;
         $this->message = $message;
+        $this->createIp = $createIp;
         $this->createDate = $createDate;
     }
 
-    public static function create(string $id, string $message, \DateTimeImmutable $createDate): Bottle
+    public static function create(string $id, string $message, string $createIp, \DateTimeImmutable $createDate): Bottle
     {
-        return new self($id, $message, $createDate);
+        return new self($id, $message, $createIp, $createDate);
     }
 
     public function receive(Sailor $receiver, \DateTimeImmutable $receiveDate): void
@@ -36,6 +38,11 @@ class Bottle implements EntityInterface
     public function getMessage(): string
     {
         return $this->message;
+    }
+
+    public function getCreateIp(): string
+    {
+        return $this->createIp;
     }
 
     public function getCreateDate(): \DateTimeImmutable

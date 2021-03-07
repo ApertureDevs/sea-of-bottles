@@ -7,15 +7,18 @@ use App\Core\SharedKernel\Domain\Event\Aggregate;
 use App\Core\SharedKernel\Domain\Event\Message\SailorCreated;
 use App\Core\SharedKernel\Domain\Event\Message\SailorDeleted;
 use App\Core\SharedKernel\Domain\Model\Email;
+use App\Core\SharedKernel\Domain\Model\Ip;
 
 class Sailor extends Aggregate
 {
     private string $id;
     private Email $email;
+    private Ip $createIp;
     private \DateTimeInterface $createDate;
+    private ?Ip $deleteIp = null;
     private ?\DateTimeInterface $deleteDate = null;
 
-    public static function create(string $email): Sailor
+    public static function create(string $email, string $createIp): Sailor
     {
         $sailor = new Sailor();
         $id = uuid_create(UUID_TYPE_RANDOM);
@@ -25,18 +28,21 @@ class Sailor extends Aggregate
         }
 
         $email = Email::create($email);
-        $sailor->apply(SailorCreated::create($id, $email->getAddress(), new \DateTimeImmutable()));
+        $createIp = Ip::create($createIp);
+        $sailor->apply(SailorCreated::create($id, $email->getAddress(), $createIp->getAddress(), new \DateTimeImmutable()));
 
         return $sailor;
     }
 
-    public function delete(): void
+    public function delete(string $deleteIp): void
     {
         if ($this->isDelete()) {
             throw UndeletableSailorException::createAlreadyDeletedException($this->id);
         }
 
-        $this->apply(SailorDeleted::create(new \DateTimeImmutable()));
+        $deleteIp = Ip::create($deleteIp);
+
+        $this->apply(SailorDeleted::create($deleteIp->getAddress(), new \DateTimeImmutable()));
     }
 
     public function getId(): string
@@ -49,9 +55,19 @@ class Sailor extends Aggregate
         return $this->email;
     }
 
+    public function getCreateIp(): Ip
+    {
+        return $this->createIp;
+    }
+
     public function getCreateDate(): \DateTimeInterface
     {
         return $this->createDate;
+    }
+
+    public function getDeleteIp(): ?Ip
+    {
+        return $this->deleteIp;
     }
 
     public function getDeleteDate(): ?\DateTimeInterface
@@ -73,11 +89,13 @@ class Sailor extends Aggregate
     {
         $this->id = $event->getId();
         $this->email = Email::create($event->getEmail());
+        $this->createIp = Ip::create($event->getCreateIp());
         $this->createDate = $event->getCreateDate();
     }
 
     protected function applySailorDeleted(SailorDeleted $event): void
     {
+        $this->deleteIp = Ip::create($event->getDeleteIp());
         $this->deleteDate = $event->getDeleteDate();
     }
 }
