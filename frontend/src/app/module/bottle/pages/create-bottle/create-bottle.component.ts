@@ -2,7 +2,7 @@ import {Component, EventEmitter, Output} from '@angular/core';
 import {MessageService} from '@data/service/message.service';
 import {CreateBottleCommand} from '@model/domain/message/command/create-bottle-command';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import {AlertService} from '@core/alert/alert.service';
 
 @Component({
   templateUrl: './create-bottle.component.html',
@@ -16,7 +16,7 @@ export class CreateBottleComponent {
   public constructor(
     private messageService: MessageService,
     private formBuilder: FormBuilder,
-    private snackBar: MatSnackBar,
+    private alertService: AlertService,
   ) {
     this.form = this.formBuilder.group({
       message: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(500)]],
@@ -35,7 +35,7 @@ export class CreateBottleComponent {
 
     this.messageService.createBottle(command).subscribe(() => {
       this.wasCreated = true;
-      this.snackBar.open('Bottle sent successfully', '',{duration: 5000});
+      this.alertService.info('Bottle sent successfully');
       this.bottleCreated.emit();
     });
   }

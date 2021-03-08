@@ -3,6 +3,8 @@ import {CreateBottleCommand} from '@model/domain/message/command/create-bottle-c
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {CreateSailorCommand} from '@model/domain/message/command/create-sailor-command';
 import {DeleteSailorCommand} from '@model/domain/message/command/delete-sailor-command';
+import {ThemeModule} from '@core/theme/theme.module';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {MessageService} from './message.service';
 
 describe('MessageService', () => {
@@ -11,7 +13,11 @@ describe('MessageService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ HttpClientTestingModule ],
+      imports: [
+        HttpClientTestingModule,
+        NoopAnimationsModule,
+        ThemeModule,
+      ],
     });
     service = TestBed.inject(MessageService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -66,7 +72,7 @@ describe('MessageService', () => {
         expect(error.type).toBeDefined();
         expect(error.type).toEqual('Invalid Request');
         expect(error.description).toBeDefined();
-        expect(error.description).toEqual('message : This value is too long. It should have 5000 characters or less.');
+        expect(error.description).toEqual('message : This value is too long. It should have 500 characters or less.');
         expect(error.status).toBeDefined();
         expect(error.status).toEqual(400);
       },
@@ -75,7 +81,7 @@ describe('MessageService', () => {
     const request = httpMock.expectOne('http://local.api.seaofbottles.aperturedevs.com/api/bottle');
     expect(request.request.method).toEqual('POST');
     expect(request.request.body.message).toEqual('a'.repeat(501));
-    request.flush({type: 'Invalid Request', description: 'message : This value is too long. It should have 5000 characters or less.', status: 400}, {status: 400, statusText: 'ERROR'});
+    request.flush({type: 'Invalid Request', description: 'message : This value is too long. It should have 500 characters or less.', status: 400}, {status: 400, statusText: 'ERROR'});
     httpMock.verify();
   });
 

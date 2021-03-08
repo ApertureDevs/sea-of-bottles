@@ -7,6 +7,7 @@ import {CreateSailorCommand} from '@model/domain/message/command/create-sailor-c
 import {DeleteSailorCommand} from '@model/domain/message/command/delete-sailor-command';
 import {CommandResponse} from '@model/shared/api-response';
 import {catchError} from 'rxjs/operators';
+import {AlertService} from '@core/alert/alert.service';
 import {environment} from '../../../environments/environment';
 
 @Injectable({
@@ -15,13 +16,14 @@ import {environment} from '../../../environments/environment';
 export class MessageService {
   public constructor(
     private httpClient: HttpClient,
+    private alertService: AlertService,
   ) {
   }
 
   public getSea(): Observable<Sea> {
     return this.httpClient.get<Sea>(`${environment.api.url}/api/sea`)
       .pipe(
-        catchError(this.handleError),
+        catchError( this.handleError),
       );
   }
 
@@ -53,9 +55,15 @@ export class MessageService {
       );
   }
 
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    console.error('Invalid API response', error.error);
+  private handleError = (error: HttpErrorResponse): Observable<never> => {
+    let details = error.message;
+
+    if (error.error?.description !== null) {
+      details = error.error?.description;
+    }
+
+    this.alertService.error(details);
 
     return throwError(error.error);
-  }
+  };
 }

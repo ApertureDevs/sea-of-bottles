@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MessageService} from '@data/service/message.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {CreateSailorCommand} from '@model/domain/message/command/create-sailor-command';
+import {AlertService} from '@core/alert/alert.service';
 
 @Component({
   templateUrl: './create-sailor.component.html',
@@ -16,7 +16,7 @@ export class CreateSailorComponent {
   public constructor(
     private messageService: MessageService,
     private formBuilder: FormBuilder,
-    private snackBar: MatSnackBar,
+    private alertService: AlertService,
   ) {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -35,7 +35,7 @@ export class CreateSailorComponent {
 
     this.messageService.createSailor(command).subscribe(() => {
       this.wasCreated = true;
-      this.snackBar.open('Sailor added successfully', '',{duration: 5000});
+      this.alertService.info('Sailor added successfully');
       this.sailorCreated.emit();
     });
   }

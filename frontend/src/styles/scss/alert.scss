@@ -1,0 +1,13 @@
+@import "~styles/scss/variables";
+
+.alert {
+  &--info {
+    color: #ffff;
+    background-color: $theme-color-main-light;
+  }
+
+  &--error {
+    color: #fff;
+    background-color: $theme-color-error;
+  }
+}
