@@ -3,8 +3,8 @@ default:
         default:
             contexts:
                 - Behat\MinkExtension\Context\MinkContext
-                - Behatch\Context\RestContext
                 - Behatch\Context\JsonContext
+                - App\Tests\Behat\Context\ExtendedRestContext
             paths:
                 - '%paths.base%/tests/Behat/features'
     extensions:

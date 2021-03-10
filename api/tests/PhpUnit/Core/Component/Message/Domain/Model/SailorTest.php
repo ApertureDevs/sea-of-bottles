@@ -4,6 +4,7 @@ namespace App\Tests\PhpUnit\Core\Component\Message\Domain\Model;
 
 use App\Core\Component\Message\Domain\Exception\UndeletableSailorException;
 use App\Tests\Factory\Message\SailorAggregateFactory;
+use App\Tests\LockedClock;
 use App\Tests\TestCase\AggregateTestCase;
 
 /**
@@ -40,6 +41,6 @@ class SailorTest extends AggregateTestCase
 
         self::expectException(UndeletableSailorException::class);
 
-        $sailor->delete('::1');
+        $sailor->delete('::1', LockedClock::create(new \DateTimeImmutable('2021-01-01')));
     }
 }

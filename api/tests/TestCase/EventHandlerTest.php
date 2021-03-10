@@ -4,10 +4,11 @@ namespace App\Tests\TestCase;
 
 use App\Core\SharedKernel\Application\EventHandlerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class EventHandlerTest extends KernelTestCase
 {
+    use ContainerTrait;
+
     abstract public function testItShouldHandleEvent(): void;
 
     abstract public function testItShouldSkipUnsupportedEvent(): void;
@@ -23,14 +24,5 @@ abstract class EventHandlerTest extends KernelTestCase
         }
 
         return $handler;
-    }
-
-    protected function getContainer(): ContainerInterface
-    {
-        if (false === self::$booted) {
-            self::bootKernel();
-        }
-
-        return self::$kernel->getContainer()->get('test.service_container');
     }
 }

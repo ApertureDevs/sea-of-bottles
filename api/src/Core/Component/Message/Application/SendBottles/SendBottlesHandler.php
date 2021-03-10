@@ -6,6 +6,7 @@ use App\Core\Component\Message\Port\BottleStoreInterface;
 use App\Core\Component\Message\Port\MailerInterface;
 use App\Core\Component\Message\Port\SailorStoreInterface;
 use App\Core\SharedKernel\Application\CommandHandlerInterface;
+use App\Core\SharedKernel\Port\ClockInterface;
 use App\Core\SharedKernel\Port\EventDispatcherInterface;
 
 class SendBottlesHandler implements CommandHandlerInterface
@@ -14,17 +15,20 @@ class SendBottlesHandler implements CommandHandlerInterface
     private SailorStoreInterface $sailorStore;
     private EventDispatcherInterface $eventDispatcher;
     private MailerInterface $mailer;
+    private ClockInterface $clock;
 
     public function __construct(
         BottleStoreInterface $bottleStore,
         SailorStoreInterface $sailorStore,
         EventDispatcherInterface $eventDispatcher,
-        MailerInterface $mailer
+        MailerInterface $mailer,
+        ClockInterface $clock
     ) {
         $this->bottleStore = $bottleStore;
         $this->sailorStore = $sailorStore;
         $this->eventDispatcher = $eventDispatcher;
         $this->mailer = $mailer;
+        $this->clock = $clock;
     }
 
     public function __invoke(SendBottlesCommand $command): SendBottlesResponse
@@ -52,7 +56,7 @@ class SendBottlesHandler implements CommandHandlerInterface
                 }
 
                 $this->mailer->sendBottleReceivedNotification($sailor, $bottle);
-                $bottle->receive($sailor);
+                $bottle->receive($sailor, $this->clock);
                 $eventRecords = $bottle->getUncommittedEventRecords();
                 $this->bottleStore->store($bottle);
                 $this->eventDispatcher->dispatch($eventRecords);

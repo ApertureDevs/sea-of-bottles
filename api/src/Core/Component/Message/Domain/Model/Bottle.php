@@ -7,6 +7,7 @@ use App\Core\SharedKernel\Domain\Event\Aggregate;
 use App\Core\SharedKernel\Domain\Event\Message\BottleCreated;
 use App\Core\SharedKernel\Domain\Event\Message\BottleReceived;
 use App\Core\SharedKernel\Domain\Model\Ip;
+use App\Core\SharedKernel\Port\ClockInterface;
 
 class Bottle extends Aggregate
 {
@@ -17,7 +18,7 @@ class Bottle extends Aggregate
     private ?\DateTimeInterface $receiveDate = null;
     private ?string $receiver = null;
 
-    public static function create(string $message, string $createIp): Bottle
+    public static function create(string $message, string $createIp, ClockInterface $clock): Bottle
     {
         $bottle = new Bottle();
         $id = uuid_create(UUID_TYPE_RANDOM);
@@ -29,18 +30,18 @@ class Bottle extends Aggregate
         $message = Message::create($message);
         $createIp = Ip::create($createIp);
 
-        $bottle->apply(BottleCreated::create($id, $message->getContent(), $createIp->getAddress(), new \DateTimeImmutable()));
+        $bottle->apply(BottleCreated::create($id, $message->getContent(), $createIp->getAddress(), $clock->now()));
 
         return $bottle;
     }
 
-    public function receive(Sailor $receiver): void
+    public function receive(Sailor $receiver, ClockInterface $clock): void
     {
         if ($this->wasReceived()) {
             throw UnreceivableBottleException::createAlreadyReceivedException($this->id);
         }
 
-        $this->apply(BottleReceived::create($receiver->getId(), new \DateTimeImmutable()));
+        $this->apply(BottleReceived::create($receiver->getId(), $clock->now()));
     }
 
     public function getId(): string

@@ -8,6 +8,7 @@ use App\Core\SharedKernel\Domain\Event\Message\SailorCreated;
 use App\Core\SharedKernel\Domain\Event\Message\SailorDeleted;
 use App\Core\SharedKernel\Domain\Model\Email;
 use App\Core\SharedKernel\Domain\Model\Ip;
+use App\Core\SharedKernel\Port\ClockInterface;
 
 class Sailor extends Aggregate
 {
@@ -18,7 +19,7 @@ class Sailor extends Aggregate
     private ?Ip $deleteIp = null;
     private ?\DateTimeInterface $deleteDate = null;
 
-    public static function create(string $email, string $createIp): Sailor
+    public static function create(string $email, string $createIp, ClockInterface $clock): Sailor
     {
         $sailor = new Sailor();
         $id = uuid_create(UUID_TYPE_RANDOM);
@@ -29,12 +30,12 @@ class Sailor extends Aggregate
 
         $email = Email::create($email);
         $createIp = Ip::create($createIp);
-        $sailor->apply(SailorCreated::create($id, $email->getAddress(), $createIp->getAddress(), new \DateTimeImmutable()));
+        $sailor->apply(SailorCreated::create($id, $email->getAddress(), $createIp->getAddress(), $clock->now()));
 
         return $sailor;
     }
 
-    public function delete(string $deleteIp): void
+    public function delete(string $deleteIp, ClockInterface $clock): void
     {
         if ($this->isDelete()) {
             throw UndeletableSailorException::createAlreadyDeletedException($this->id);
@@ -42,7 +43,7 @@ class Sailor extends Aggregate
 
         $deleteIp = Ip::create($deleteIp);
 
-        $this->apply(SailorDeleted::create($deleteIp->getAddress(), new \DateTimeImmutable()));
+        $this->apply(SailorDeleted::create($deleteIp->getAddress(), $clock->now()));
     }
 
     public function getId(): string

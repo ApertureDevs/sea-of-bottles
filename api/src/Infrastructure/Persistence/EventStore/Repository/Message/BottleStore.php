@@ -5,6 +5,7 @@ namespace App\Infrastructure\Persistence\EventStore\Repository\Message;
 use App\Core\Component\Message\Domain\Model\Bottle;
 use App\Core\Component\Message\Port\BottleStoreInterface;
 use App\Core\SharedKernel\Domain\Event\Message\BottleCreated;
+use App\Core\SharedKernel\Domain\Model\Ip;
 use App\Infrastructure\Event\AggregateFactory;
 use App\Infrastructure\Persistence\EventStore\EventMap;
 use App\Infrastructure\Persistence\EventStore\EventStore;
@@ -70,5 +71,38 @@ final class BottleStore extends AggregateRepository implements BottleStoreInterf
         }
 
         return $results;
+    }
+
+    public function getCreatedBetweenDatesCount(Ip $createIp, \DateTimeImmutable $start, \DateTimeImmutable $end): int
+    {
+        $createdEventType = $this->eventMap::getEventType(BottleCreated::class);
+        $connection = $this->entityManager->getConnection();
+        $sql = 'SELECT DISTINCT(aggregate_id) FROM events WHERE event_type = :eventType AND event ->> \'create_ip\' = :createIp';
+        $statement = $connection->prepare($sql);
+        $statement->execute([
+            'eventType' => $createdEventType,
+            'createIp' => $createIp->getAddress(),
+        ]);
+
+        $ids = $statement->fetchFirstColumn();
+        $createdBottleCount = 0;
+
+        foreach ($ids as $id) {
+            if (!is_string($id)) {
+                throw new \RuntimeException('Id should be a string.');
+            }
+
+            $bottle = $this->load($id);
+
+            if (null === $bottle) {
+                throw new \RuntimeException('Bottle should not be null.');
+            }
+
+            if ($bottle->getCreateDate() >= $start && $bottle->getCreateDate() < $end) {
+                ++$createdBottleCount;
+            }
+        }
+
+        return $createdBottleCount;
     }
 }

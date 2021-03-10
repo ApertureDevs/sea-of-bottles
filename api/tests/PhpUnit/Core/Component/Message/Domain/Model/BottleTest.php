@@ -5,6 +5,7 @@ namespace App\Tests\PhpUnit\Core\Component\Message\Domain\Model;
 use App\Core\Component\Message\Domain\Exception\UnreceivableBottleException;
 use App\Tests\Factory\Message\BottleAggregateFactory;
 use App\Tests\Factory\Message\SailorAggregateFactory;
+use App\Tests\LockedClock;
 use App\Tests\TestCase\AggregateTestCase;
 
 /**
@@ -40,6 +41,6 @@ class BottleTest extends AggregateTestCase
 
         self::expectException(UnreceivableBottleException::class);
 
-        $bottle->receive($sailor);
+        $bottle->receive($sailor, LockedClock::create(new \DateTimeImmutable('2021-01-01')));
     }
 }

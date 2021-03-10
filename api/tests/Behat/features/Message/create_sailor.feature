@@ -55,3 +55,14 @@ Feature:
         And the JSON node "description" should be equal to 'email : This value should not be blank.'
         And the JSON node "status" should exist
         And the JSON node "status" should be equal to 400
+
+    Scenario: Create a Sailor out of quota limit
+        When I send create Sailor request 6 times
+        Then the response status code should be 400
+        And the header 'content-type' should be equal to 'application/json'
+        And the JSON node "title" should exist
+        And the JSON node "title" should be equal to 'Domain Error'
+        And the JSON node "description" should exist
+        And the JSON node "description" should be equal to 'Sailor creation limit reached, you must wait before create a new Sailor.'
+        And the JSON node "status" should exist
+        And the JSON node "status" should be equal to 400

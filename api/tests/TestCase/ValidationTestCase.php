@@ -4,11 +4,12 @@ namespace App\Tests\TestCase;
 
 use App\Core\SharedKernel\Application\CommandInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class ValidationTestCase extends KernelTestCase
 {
+    use ContainerTrait;
+
     abstract public function provideValidationCases(): iterable;
 
     /**
@@ -27,14 +28,5 @@ abstract class ValidationTestCase extends KernelTestCase
     protected function getValidator(): ValidatorInterface
     {
         return $this->getContainer()->get(ValidatorInterface::class);
-    }
-
-    protected function getContainer(): ContainerInterface
-    {
-        if (false === self::$booted) {
-            self::bootKernel();
-        }
-
-        return self::$kernel->getContainer()->get('test.service_container');
     }
 }

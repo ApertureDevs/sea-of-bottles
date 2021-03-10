@@ -3,8 +3,10 @@
 namespace App\Tests\PhpUnit\Infrastructure\Persistence\EventStore\Repository\Message;
 
 use App\Core\Component\Message\Domain\Model\Bottle;
+use App\Core\SharedKernel\Domain\Model\Ip;
 use App\Infrastructure\Persistence\EventStore\Repository\Message\BottleStore;
 use App\Tests\Factory\Message\BottleAggregateFactory;
+use App\Tests\LockedClock;
 use App\Tests\TestCase\StoreTestCase;
 
 /**
@@ -45,6 +47,20 @@ class BottleStoreTest extends StoreTestCase
         $ids = $store->findIdsNotReceived();
 
         self::assertSame(['da36c552-533e-4d28-8b4f-dcdf59191650'], $ids);
+    }
+
+    public function testItShouldCountCreatedBetweenDates(): void
+    {
+        /** @var BottleStore $store */
+        $store = $this->getStore();
+        $lockedCLock = LockedClock::create(new \DateTimeImmutable('2021-01-01'));
+        $this->lockClock($lockedCLock->now());
+
+        self::assertSame(0, $store->getCreatedBetweenDatesCount(Ip::create('::1'), $lockedCLock->today(), $lockedCLock->tomorrow()));
+        $store->store(BottleAggregateFactory::createBottle($lockedCLock));
+        self::assertSame(1, $store->getCreatedBetweenDatesCount(Ip::create('::1'), $lockedCLock->today(), $lockedCLock->tomorrow()));
+        $lockedCLock = LockedClock::create(new \DateTimeImmutable('2021-01-02'));
+        self::assertSame(0, $store->getCreatedBetweenDatesCount(Ip::create('::1'), $lockedCLock->today(), $lockedCLock->tomorrow()));
     }
 
     protected function getStoreClass(): string

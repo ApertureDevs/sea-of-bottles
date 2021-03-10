@@ -4,6 +4,7 @@ namespace App\Core\Component\Message\Port;
 
 use App\Core\Component\Message\Domain\Model\Sailor;
 use App\Core\SharedKernel\Domain\Model\Email;
+use App\Core\SharedKernel\Domain\Model\Ip;
 
 interface SailorStoreInterface
 {
@@ -17,4 +18,8 @@ interface SailorStoreInterface
      * @return array<string>
      */
     public function findIdsActive(): array;
+
+    public function getCreatedBetweenDatesCount(Ip $createIp, \DateTimeImmutable $start, \DateTimeImmutable $end): int;
+
+    public function getDeletedBetweenDatesCount(Ip $deleteIp, \DateTimeImmutable $start, \DateTimeImmutable $end): int;
 }

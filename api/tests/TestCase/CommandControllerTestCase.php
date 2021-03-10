@@ -4,10 +4,11 @@ namespace App\Tests\TestCase;
 
 use App\Presentation\Api\Controller\CommandController;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class CommandControllerTestCase extends KernelTestCase
 {
+    use ContainerTrait;
+
     abstract public function testItShouldHandleCommand(): void;
 
     abstract protected function getCommandControllerClass(): string;
@@ -23,14 +24,5 @@ abstract class CommandControllerTestCase extends KernelTestCase
         }
 
         return $controller;
-    }
-
-    protected function getContainer(): ContainerInterface
-    {
-        if (false === self::$booted) {
-            self::bootKernel();
-        }
-
-        return self::$kernel->getContainer()->get('test.service_container');
     }
 }

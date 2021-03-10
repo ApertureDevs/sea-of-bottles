@@ -8,6 +8,7 @@ use App\Core\SharedKernel\Domain\Event\EventRecord;
 use App\Infrastructure\Persistence\EventStore\EventMap;
 use App\Infrastructure\Persistence\EventStore\EventRecordTransformer;
 use App\Infrastructure\Persistence\EventStore\StorableEventRecord;
+use App\Tests\LockedClock;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -60,7 +61,7 @@ class EventRecordTransformerTest extends KernelTestCase
 
     private function generateDomainEventRecord(): EventRecord
     {
-        $bottle = Bottle::create('Hello World!', '::1');
+        $bottle = Bottle::create('Hello World!', '::1', LockedClock::create(new \DateTimeImmutable('2021-01-01')));
         $eventRecords = $bottle->getUncommittedEventRecords();
 
         foreach ($eventRecords->getIterator() as $eventRecord) {
