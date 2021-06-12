@@ -1,26 +1,26 @@
+@use '~@angular/material' as mat;
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@import '~@angular/material/theming';
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
-@include mat-core();
+@include mat.core();
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
 
-$sea-of-bottles-primary: mat-palette($mat-blue);
-$sea-of-bottles-accent: mat-palette($mat-green, a200, a100, a400);
+$sea-of-bottles-primary: mat.define-palette(mat.$blue-palette);
+$sea-of-bottles-accent: mat.define-palette(mat.$green-palette, a200, a100, a400);
 
 // The warn palette is optional (defaults to red).
-$sea-of-bottles-warn: mat-palette($mat-red);
+$sea-of-bottles-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$sea-of-bottles-theme: mat-light-theme($sea-of-bottles-primary, $sea-of-bottles-accent, $sea-of-bottles-warn);
+$sea-of-bottles-theme: mat.define-light-theme($sea-of-bottles-primary, $sea-of-bottles-accent, $sea-of-bottles-warn);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include angular-material-theme($sea-of-bottles-theme);
+@include mat.all-component-themes($sea-of-bottles-theme);

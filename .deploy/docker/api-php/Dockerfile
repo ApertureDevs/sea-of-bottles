@@ -1,4 +1,4 @@
-FROM php:7.4-fpm
+FROM php:8-fpm
 
 ARG DIST_DIR
 
@@ -16,7 +16,7 @@ RUN apt update \
 RUN apt update \
     && apt install -y librabbitmq-dev \
     && rm -rf /var/lib/apt/lists/* \
-    && pecl install amqp \
+    && pecl install amqp-1.11.0beta \
     && docker-php-ext-enable amqp
 
 RUN docker-php-ext-install opcache

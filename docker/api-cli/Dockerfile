@@ -11,13 +11,13 @@ RUN apt update \
     && tar -C /root -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
-FROM php:7.4 AS composer-installer
+FROM php:8 AS composer-installer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php \
     && php -r "unlink('composer-setup.php');"
 
-FROM php:7.4
-ARG XDEBUG_VERSION=3.0.2
+FROM php:8
+ARG XDEBUG_VERSION=3.0.4
 ENV XDEBUG_MODE='off'
 RUN apt update \
     && apt install -y git \
@@ -34,7 +34,7 @@ RUN apt update \
 RUN apt update \
     && apt install -y librabbitmq-dev \
     && rm -rf /var/lib/apt/lists/* \
-    && pecl install amqp \
+    && pecl install amqp-1.11.0beta \
     && docker-php-ext-enable amqp
 RUN apt update \
     && apt install -y unzip zlib1g-dev libzip-dev \

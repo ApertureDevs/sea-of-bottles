@@ -23,7 +23,7 @@ class Bottle extends Aggregate
         $bottle = new Bottle();
         $id = uuid_create(UUID_TYPE_RANDOM);
 
-        if (null === $id) {
+        if (!is_string($id)) {
             throw new \RuntimeException('Bottle id cannot be null.');
         }
 

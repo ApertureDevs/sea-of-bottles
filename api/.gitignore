@@ -15,10 +15,6 @@
 /.php_cs.cache
 ###< friendsofphp/php-cs-fixer ###
 
-###> sensiolabs-de/deptrac-shim ###
-/.deptrac.cache
-###< sensiolabs-de/deptrac-shim ###
-
 ###> symfony/phpunit-bridge ###
 .phpunit
 .phpunit.result.cache
@@ -28,3 +24,7 @@
 ###> friends-of-behat/symfony-extension ###
 /behat.yml
 ###< friends-of-behat/symfony-extension ###
+
+###> qossmic/deptrac-shim ###
+/.deptrac.cache
+###< qossmic/deptrac-shim ###

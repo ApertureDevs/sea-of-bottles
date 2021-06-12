@@ -3,8 +3,8 @@ RUN apt update \
     && apt install -y wget \
     && wget https://get.symfony.com/cli/installer -O - | bash
 
-FROM php:7.4
-ARG XDEBUG_VERSION=3.0.2
+FROM php:8
+ARG XDEBUG_VERSION=3.0.4
 ENV XDEBUG_MODE='off'
 RUN apt update \
     && apt install -y libpq-dev \
@@ -18,7 +18,7 @@ RUN apt update \
 RUN apt update \
     && apt install -y librabbitmq-dev \
     && rm -rf /var/lib/apt/lists/* \
-    && pecl install amqp \
+    && pecl install amqp-1.11.0beta \
     && docker-php-ext-enable amqp
 RUN pecl install xdebug-${XDEBUG_VERSION} \
     && docker-php-ext-enable xdebug

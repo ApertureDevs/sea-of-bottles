@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 trait ContainerTrait
 {
-    protected function getContainer(): ContainerInterface
+    protected static function getContainer(): ContainerInterface
     {
         if (false === self::$booted) {
             self::bootKernel();

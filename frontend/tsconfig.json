@@ -33,7 +33,8 @@
     "strictFunctionTypes": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

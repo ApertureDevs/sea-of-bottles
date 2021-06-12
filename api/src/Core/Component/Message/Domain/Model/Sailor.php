@@ -24,7 +24,7 @@ class Sailor extends Aggregate
         $sailor = new Sailor();
         $id = uuid_create(UUID_TYPE_RANDOM);
 
-        if (null === $id) {
+        if (!is_string($id)) {
             throw new \RuntimeException('Sailor id cannot be null.');
         }
 
