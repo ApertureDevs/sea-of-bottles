@@ -9,23 +9,25 @@
 
   &__sea {
     position: relative;
-    width: auto;
-    height: 3rem;
+    width: 100vw;
+    height: 60px;
     margin-top: -1px;
     overflow-x: hidden;
     background-color: #fff;
 
     &__wave {
       position: absolute;
-      bottom: -1px;
+      top: 35px;
       width: 200%;
-      height: 90%;
-      background: url('../../../assets/images/wave.svg') repeat-x;
-      animation: move_wave 10s ease-in-out infinite;
+      height: 30px;
+      background-image: url('../../../assets/images/wave.svg');
+      background-repeat: repeat-x;
+      background-size: contain;
+      animation: move_wave 20s ease-in-out infinite;
 
       &:nth-child(1) {
-        bottom: 10px;
-        background: url('../../../assets/images/wave2.svg') repeat-x;
+        top: 25px;
+        background-image: url('../../../assets/images/wave2.svg');
         animation-delay: 1s;
       }
     }
