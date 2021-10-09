@@ -17,7 +17,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php -r "unlink('composer-setup.php');"
 
 FROM php:8
-ARG XDEBUG_VERSION=3.0.4
+ARG XDEBUG_VERSION=3.1.0
 ENV XDEBUG_MODE='off'
 RUN apt update \
     && apt install -y git \

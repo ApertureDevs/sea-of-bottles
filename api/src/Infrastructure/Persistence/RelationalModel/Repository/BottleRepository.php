@@ -4,6 +4,9 @@ namespace App\Infrastructure\Persistence\RelationalModel\Repository;
 
 use App\Infrastructure\Representation\Model\RelationalModel\Bottle;
 
+/**
+ * @extends Repository<Bottle>
+ */
 class BottleRepository extends Repository
 {
     protected function getEntityClass(): string

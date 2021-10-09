@@ -232,14 +232,14 @@ tasks:
   api-php-linter:
     desc: Apply API linter rules to PHP sources
     cmds:
-      - docker-compose run --rm --no-deps api-cli vendor/bin/php-cs-fixer fix -v --show-progress=dots --diff-format=udiff
+      - docker-compose run --rm --no-deps api-cli vendor/bin/php-cs-fixer fix -v --show-progress=dots
     deps:
       - api-dependencies
 
   api-php-linter-check:
     desc: Check API linter rules to PHP sources
     cmds:
-      - docker-compose run --rm --no-deps api-cli vendor/bin/php-cs-fixer fix -v --show-progress=dots --diff-format=udiff --dry-run
+      - docker-compose run --rm --no-deps api-cli vendor/bin/php-cs-fixer fix -v --show-progress=dots --dry-run
     deps:
       - api-dependencies
 

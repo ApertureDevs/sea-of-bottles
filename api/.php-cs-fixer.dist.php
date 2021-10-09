@@ -10,8 +10,9 @@ $finder = PhpCsFixer\Finder::create()
     ])
 ;
 
-return PhpCsFixer\Config::create()
-    ->setRules([
+$config = new PhpCsFixer\Config();
+
+return $config->setRules([
         '@PhpCsFixer' => true,
         '@PHP70Migration' => true,
         '@PHP71Migration' => true,

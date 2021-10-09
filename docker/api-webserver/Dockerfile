@@ -4,7 +4,7 @@ RUN apt update \
     && wget https://get.symfony.com/cli/installer -O - | bash
 
 FROM php:8
-ARG XDEBUG_VERSION=3.0.4
+ARG XDEBUG_VERSION=3.1.0
 ENV XDEBUG_MODE='off'
 RUN apt update \
     && apt install -y libpq-dev \

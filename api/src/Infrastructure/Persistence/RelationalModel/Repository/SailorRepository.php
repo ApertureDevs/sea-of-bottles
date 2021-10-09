@@ -4,6 +4,9 @@ namespace App\Infrastructure\Persistence\RelationalModel\Repository;
 
 use App\Infrastructure\Representation\Model\RelationalModel\Sailor;
 
+/**
+ * @extends Repository<Sailor>
+ */
 class SailorRepository extends Repository
 {
     protected function getEntityClass(): string

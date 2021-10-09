@@ -6,6 +6,9 @@ use App\Infrastructure\Persistence\RelationalModel\QueryNameGenerator;
 use App\Infrastructure\Representation\Model\RelationalModel\EntityInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * @template T of EntityInterface
+ */
 abstract class Repository
 {
     protected EntityManagerInterface $entityManager;
@@ -18,18 +21,27 @@ abstract class Repository
         $this->queryNameGenerator = $queryNameGenerator;
     }
 
+    /**
+     * @param T $entity
+     */
     public function save(EntityInterface $entity): void
     {
         $this->entityManager->persist($entity);
         $this->entityManager->flush();
     }
 
+    /**
+     * @param T $entity
+     */
     public function remove(EntityInterface $entity): void
     {
         $this->entityManager->remove($entity);
         $this->entityManager->flush();
     }
 
+    /**
+     * @return T|null
+     */
     public function findById(string $id): ?EntityInterface
     {
         $entity = $this->entityManager->find($this->getEntityClass(), $id);
@@ -46,7 +58,7 @@ abstract class Repository
     }
 
     /**
-     * @return class-string<mixed>
+     * @return class-string<T>
      */
     abstract protected function getEntityClass(): string;
 }
