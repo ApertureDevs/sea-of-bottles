@@ -3,23 +3,23 @@ describe('Landing Page Tests', () => {
     cy.visit('/landing');
   });
 
-  it('It should contains title', () => {
+  it('should contains title', () => {
     cy.get('.jumbotron__main-title').contains('Sea of Bottles');
   });
 
-  it('It should contains header', () => {
+  it('should contains header', () => {
     cy.get('.header').should('exist');
   });
 
-  it('It should contains footer', () => {
+  it('should contains footer', () => {
     cy.get('.footer').should('exist');
   });
 
-  it('It should contains landing', () => {
+  it('should contains landing', () => {
     cy.get('.landing').should('exist');
   });
 
-  it('It should contains sea counters', () => {
+  it('should contains sea counters', () => {
     cy.get('.counter-section').should('exist');
   });
 });

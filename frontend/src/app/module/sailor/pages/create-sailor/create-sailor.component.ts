@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MessageService} from '@data/service/message.service';
 import {CreateSailorCommand} from '@model/domain/message/command/create-sailor-command';
 import {AlertService} from '@core/alert/alert.service';
+import {TranslationService} from '@core/translation/translation.service';
 
 @Component({
   templateUrl: './create-sailor.component.html',
@@ -17,6 +18,7 @@ export class CreateSailorComponent {
     private messageService: MessageService,
     private formBuilder: FormBuilder,
     private alertService: AlertService,
+    private translationService: TranslationService,
   ) {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -33,9 +35,10 @@ export class CreateSailorComponent {
       email: this.form.get('email')?.value,
     };
 
-    this.messageService.createSailor(command).subscribe(() => {
+    this.messageService.createSailor(command).subscribe(async () => {
       this.wasCreated = true;
-      this.alertService.info('Sailor added successfully');
+      const translatedMessage = await this.translationService.translateKey('alert.sailor-created').toPromise();
+      this.alertService.info(translatedMessage);
       this.sailorCreated.emit();
     });
   }

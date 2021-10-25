@@ -11,19 +11,19 @@ describe('Create Sailor Page Tests', () => {
     cy.visit('/sailor/create');
   });
 
-  it('It should contains title', () => {
+  it('should contains title', () => {
     cy.contains('Become a Sailor');
   });
 
-  it('It should contains header', () => {
+  it('should contains header', () => {
     cy.get('.header').should('exist');
   });
 
-  it('It should contains footer', () => {
+  it('should contains footer', () => {
     cy.get('.footer').should('exist');
   });
 
-  it('It should contains create-sailor component', () => {
+  it('should contains create-sailor component', () => {
     cy.get('.create-sailor').should('exist');
   });
 
@@ -40,19 +40,19 @@ describe('Delete Sailor Page Tests', () => {
     cy.visit('/sailor/delete');
   });
 
-  it('It should contains title', () => {
+  it('should contains title', () => {
     cy.contains('Unsubscribe');
   });
 
-  it('It should contains header', () => {
+  it('should contains header', () => {
     cy.get('.header').should('exist');
   });
 
-  it('It should contains footer', () => {
+  it('should contains footer', () => {
     cy.get('.footer').should('exist');
   });
 
-  it('It should contains delete-sailor component', () => {
+  it('should contains delete-sailor component', () => {
     cy.get('.delete-sailor').should('exist');
   });
 

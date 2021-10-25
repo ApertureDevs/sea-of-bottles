@@ -1,26 +1,26 @@
 <div class="create-sailor">
     <div class="description">
-        <h1 class="description__title">Become a Sailor</h1>
-        <p class="description__content">You can become a Sailor to be able to receive Bottles from the Sea. All you need is an email to receive them!</p>
+        <h1 class="description__title">{{ 'create-sailor.title' | translate }}</h1>
+        <p class="description__content">{{ 'create-sailor.description' | translate }}</p>
     </div>
 
     <form class="form" [formGroup]="form" (ngSubmit)="commandSubmit()" *ngIf="!wasCreated">
         <mat-form-field appearance="fill" class="form-field form__email">
-            <mat-label>Your email</mat-label>
+            <mat-label>{{ 'create-sailor.placeholder' | translate }}</mat-label>
             <input matInput id="email" formControlName="email"/>
             <mat-error *ngIf="form.controls.email.errors?.required">required</mat-error>
             <mat-error *ngIf="form.controls.email.errors?.email">invalid email</mat-error>
         </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="!this.form.valid">Finish</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!this.form.valid">{{ 'action.create-sailor' | translate }}</button>
     </form>
 
     <div class="success" *ngIf="wasCreated">
         <mat-icon svgIcon="check" class="success__icon"></mat-icon>
-        <span class="success__message">You're now a Sailor!</span>
+        <span class="success__message">{{ 'create-sailor.success.message' | translate }}</span>
         <div class="success__option">
-            <p>You may receive Bottles from the Sea. Do you want to throw one?</p>
-            <button mat-raised-button color="primary" routerLink="/bottle/create">Thrown a Bottle</button>
+            <p>{{ 'create-sailor.success.create-bottle-option-description' | translate }}</p>
+            <button mat-raised-button color="primary" routerLink="/bottle/create">{{ 'action.create-bottle' | translate }}</button>
         </div>
     </div>
 </div>

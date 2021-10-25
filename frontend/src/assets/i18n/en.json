@@ -1,0 +1,56 @@
+{
+  "landing": {
+    "baseline": "An open project to bring people together",
+    "presentation": "Sea of Bottles is an open source project. The main goal of this project is to bring people together by throwing message bottles into the sea.",
+    "remaining-bottles": "remaining bottles",
+    "recovered-bottles": "recovered bottles",
+    "active-sailors": "active sailors",
+    "presentation-bottle": {
+      "title": "Message Bottle",
+      "description": "You can write a message and throw it into the sea. Maybe someone will receive it..."
+    },
+    "presentation-sailor": {
+      "title": "Sailor",
+      "description": "You can become a Sailor and receive messages from the sea."
+    }
+  },
+  "create-bottle": {
+    "title": "Send a Bottle",
+    "description": "Add a message in a Bottle and throw it into the Sea!",
+    "placeholder": "Your message",
+    "success":{
+      "message": "Bottle throw into the Sea!",
+      "create-bottle-option-description": "You have throw the Bottle into the Sea! Maybe someone, someday will open it.",
+      "create-sailor-option-description": "Do you want to be able to be able to receive bottles from the Sea?"
+    }
+  },
+  "create-sailor": {
+    "title": "Become a Sailor",
+    "description": "You can become a Sailor to be able to receive Bottles from the Sea. All you need is an email to receive them!",
+    "placeholder": "Your email",
+    "success":{
+      "message": "You're now a Sailor!",
+      "create-bottle-option-description": "You may receive Bottles from the Sea. Do you want to throw one?"
+    }
+  },
+  "delete-sailor": {
+    "title": "Unsubscribe",
+    "description": "Do you want to receive no more message? You can leave the Sea!",
+    "placeholder": "Your email",
+    "success":{
+      "message": "You're no more a Sailor."
+    }
+  },
+  "action": {
+    "create-bottle": "Throw a Message Bottle",
+    "create-sailor": "Become a Sailor",
+    "send-message": "Send message",
+    "delete-sailor": "Unsubscribe"
+  },
+  "alert": {
+    "bottle-created": "Bottle sent successfully",
+    "sailor-created": "Sailor added successfully",
+    "sailor-deleted": "Sailor removed successfully",
+    "something-went-wrong": "Something when wrong"
+  }
+}

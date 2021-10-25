@@ -3,19 +3,19 @@ describe('Create Bottle Page Tests', () => {
     cy.visit('/bottle/create');
   });
 
-  it('It should contains title', () => {
+  it('should contains title', () => {
     cy.contains('Send a Bottle');
   });
 
-  it('It should contains header', () => {
+  it('should contains header', () => {
     cy.get('.header').should('exist');
   });
 
-  it('It should contains footer', () => {
+  it('should contains footer', () => {
     cy.get('.footer').should('exist');
   });
 
-  it('It should contains create-bottle component', () => {
+  it('should contains create-bottle component', () => {
     cy.get('.create-bottle').should('exist');
   });
 

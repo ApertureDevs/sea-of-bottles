@@ -1,0 +1,56 @@
+{
+  "landing": {
+    "baseline": "Un projet open source pour rapprocher les gens",
+    "presentation": "Sea of Bottles est un projet open source. Le but principal de ce projet est de rapprocher les gens en se basant sur le principe de la bouteille à la mer.",
+    "remaining-bottles": "bouteilles restantes",
+    "recovered-bottles": "bouteilles recupérées",
+    "active-sailors": "marins actifs",
+    "presentation-bottle": {
+      "title": "Bouteille",
+      "description": "Vous pouvez écrire un message et lance une bouteille à la mer. Peut-être que quelqu'un la recevra..."
+    },
+    "presentation-sailor": {
+      "title": "Marin",
+      "description": "Vous pouvez devenir marin et recevoir des bouteilles parcourant la mer."
+    }
+  },
+  "create-bottle": {
+    "title": "Envoyer une bouteille",
+    "description": "Ajouter un message dans une bouteille et la jeter à la mer!",
+    "placeholder": "Votre message",
+    "success":{
+      "message": "Bouteille jetée à la mer!",
+      "create-bottle-option-description": "Vous avez jeté une bouteille à la mer! Peut-être que quelqu'un l'ouvrira.",
+      "create-sailor-option-description": "Vous souhaitez recevoir des bouteilles parcourant la mer?"
+    }
+  },
+  "create-sailor": {
+    "title": "Devenir un marin",
+    "description": "Vous pouvez devenir un marin pour recevoir des bouteilles parcourant la mer. Un simple email vous permettra d'en recevoir!",
+    "placeholder": "Votre email",
+    "success":{
+      "message": "Vous êtes devenus marin!",
+      "create-bottle-option-description": "Vous pouvez désormais recevoir des bouteilles parcourant la mer. Vous voulez en jeter une?"
+    }
+  },
+  "delete-sailor": {
+    "title": "Désinscription",
+    "description": "Vous ne souhaitez plus recevoir de message? Vous pouvez quitter la mer!",
+    "placeholder": "Votre email",
+    "success":{
+      "message": "Vous n'êtes désormais plus marin."
+    }
+  },
+  "action": {
+    "create-bottle": "Jeter une bouteille",
+    "create-sailor": "Devenir marin",
+    "send-message": "Jeter la bouteille",
+    "delete-sailor": "Se désinscrire"
+  },
+  "alert": {
+    "bottle-created": "Bouteille jetée avec succès",
+    "sailor-created": "Marin créé avec succès",
+    "sailor-deleted": "Marin supprimé avec succès",
+    "something-went-wrong": "Une erreur est survenue"
+  }
+}

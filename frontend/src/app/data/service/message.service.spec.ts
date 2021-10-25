@@ -1,34 +1,49 @@
-import {TestBed} from '@angular/core/testing';
+import {fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {CreateBottleCommand} from '@model/domain/message/command/create-bottle-command';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {CreateSailorCommand} from '@model/domain/message/command/create-sailor-command';
 import {DeleteSailorCommand} from '@model/domain/message/command/delete-sailor-command';
 import {ThemeModule} from '@core/theme/theme.module';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {TranslationService} from '@core/translation/translation.service';
+import {AlertService} from '@core/alert/alert.service';
+import {of} from 'rxjs';
 import {MessageService} from './message.service';
 
 describe('MessageService', () => {
-  let service: MessageService;
+  let messageService: MessageService;
   let httpMock: HttpTestingController;
+  let alertServiceSpy: jasmine.SpyObj<AlertService>;
+  let translationServiceSpy: jasmine.SpyObj<TranslationService>;
 
   beforeEach(() => {
+    const spyAlertService = jasmine.createSpyObj('AlertService', ['error']);
+    const spyTranslationService = jasmine.createSpyObj('TranslationService', ['translateKey']);
+
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
         NoopAnimationsModule,
         ThemeModule,
       ],
+      providers: [
+        MessageService,
+        {provide: AlertService, useValue: spyAlertService},
+        {provide: TranslationService, useValue: spyTranslationService},
+      ],
     });
-    service = TestBed.inject(MessageService);
+    messageService = TestBed.inject(MessageService);
     httpMock = TestBed.inject(HttpTestingController);
+    alertServiceSpy = TestBed.inject(AlertService) as jasmine.SpyObj<AlertService>;
+    translationServiceSpy = TestBed.inject(TranslationService) as jasmine.SpyObj<TranslationService>;
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(messageService).toBeTruthy();
   });
 
   it('should return sea information', () => {
-    service.getSea().subscribe((result) => {
+    messageService.getSea().subscribe((result) => {
       expect(result).toBeDefined();
       expect(result.bottles_recovered).toEqual(100);
       expect(result.bottles_remaining).toEqual(150);
@@ -51,7 +66,7 @@ describe('MessageService', () => {
     const command: CreateBottleCommand = {
       message: 'This is a test message.',
     };
-    service.createBottle(command).subscribe((result) => {
+    messageService.createBottle(command).subscribe((result) => {
       expect(result.id).toBeDefined();
       expect(result.id).toEqual('88a177e1-d838-48f6-89c8-0ca54a2c4008');
     });
@@ -63,11 +78,12 @@ describe('MessageService', () => {
     httpMock.verify();
   });
 
-  it('should handle invalid bottle creation', () => {
+  it('should handle invalid bottle creation', fakeAsync(() => {
+    translationServiceSpy.translateKey.and.returnValue(of('translated-error'));
     const command: CreateBottleCommand = {
       message: 'a'.repeat(501),
     };
-    service.createBottle(command).subscribe({
+    messageService.createBottle(command).subscribe({
       error: (error) => {
         expect(error.type).toBeDefined();
         expect(error.type).toEqual('Invalid Request');
@@ -75,6 +91,8 @@ describe('MessageService', () => {
         expect(error.description).toEqual('message : This value is too long. It should have 500 characters or less.');
         expect(error.status).toBeDefined();
         expect(error.status).toEqual(400);
+        tick(100);
+        expect(alertServiceSpy.error.calls.count()).toBe(1);
       },
     });
 
@@ -83,13 +101,13 @@ describe('MessageService', () => {
     expect(request.request.body.message).toEqual('a'.repeat(501));
     request.flush({type: 'Invalid Request', description: 'message : This value is too long. It should have 500 characters or less.', status: 400}, {status: 400, statusText: 'ERROR'});
     httpMock.verify();
-  });
+  }));
 
   it('should create a sailor without error', () => {
     const command: CreateSailorCommand = {
       email: 'test@aperturedevs.com',
     };
-    service.createSailor(command).subscribe((result) => {
+    messageService.createSailor(command).subscribe((result) => {
       expect(result.id).toBeDefined();
       expect(result.id).toEqual('88a177e1-d838-48f6-89c8-0ca54a2c4008');
     });
@@ -105,7 +123,7 @@ describe('MessageService', () => {
     const command: DeleteSailorCommand = {
       email: 'test@aperturedevs.com',
     };
-    service.deleteSailor(command).subscribe((result) => {
+    messageService.deleteSailor(command).subscribe((result) => {
       expect(result.id).toBeDefined();
       expect(result.id).toEqual('88a177e1-d838-48f6-89c8-0ca54a2c4008');
     });

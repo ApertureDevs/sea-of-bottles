@@ -2,6 +2,7 @@ import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {ThemeModule} from '@core/theme/theme.module';
+import {SharedModule} from '@shared/shared.module';
 import {HeaderComponent} from './header.component';
 
 @NgModule({
@@ -12,6 +13,7 @@ import {HeaderComponent} from './header.component';
     CommonModule,
     ThemeModule,
     RouterModule,
+    SharedModule,
   ],
   exports: [
     HeaderComponent,

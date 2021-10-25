@@ -3,6 +3,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {ThemeModule} from '@core/theme/theme.module';
 import {SharedModule} from '@shared/shared.module';
+import {TranslateModule} from '@ngx-translate/core';
 import {LandingComponent} from './pages/landing/landing.component';
 
 const routes: Routes = [
@@ -19,6 +20,7 @@ const routes: Routes = [
     ThemeModule,
     RouterModule.forChild(routes),
     SharedModule,
+    TranslateModule,
   ],
 })
 export class LandingModule { }

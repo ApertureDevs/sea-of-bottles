@@ -8,6 +8,7 @@ import {DeleteSailorCommand} from '@model/domain/message/command/delete-sailor-c
 import {CommandResponse} from '@model/shared/api-response';
 import {catchError} from 'rxjs/operators';
 import {AlertService} from '@core/alert/alert.service';
+import {TranslationService} from '@core/translation/translation.service';
 import {environment} from '../../../environments/environment';
 
 @Injectable({
@@ -17,6 +18,7 @@ export class MessageService {
   public constructor(
     private httpClient: HttpClient,
     private alertService: AlertService,
+    private translationService: TranslationService,
   ) {
   }
 
@@ -56,13 +58,9 @@ export class MessageService {
   }
 
   private handleError = (error: HttpErrorResponse): Observable<never> => {
-    let details = error.message;
-
-    if (error.error?.description !== null) {
-      details = error.error?.description;
-    }
-
-    this.alertService.error(details);
+    this.translationService.translateKey('alert.something-went-wrong').toPromise().then((translatedValue) => {
+      this.alertService.error(translatedValue);
+    });
 
     return throwError(error.error);
   };

@@ -1,5 +1,5 @@
 import {DebugElement} from '@angular/core';
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {CounterComponent} from '@shared/counter/counter.component';
 
 describe('CounterComponent', () => {
@@ -7,14 +7,12 @@ describe('CounterComponent', () => {
   let fixture: ComponentFixture<CounterComponent>;
   let debugElement: DebugElement;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ CounterComponent ],
     })
       .compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(CounterComponent);
     component = fixture.componentInstance;
     debugElement = fixture.debugElement;

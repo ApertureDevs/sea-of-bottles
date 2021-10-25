@@ -1,9 +1,10 @@
 import {CUSTOM_ELEMENTS_SCHEMA, DebugElement} from '@angular/core';
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
 import {MessageService} from '@data/service/message.service';
 import {Observable, of} from 'rxjs';
 import {Sea} from '@model/domain/message/projection/sea';
+import {TranslateModule} from '@ngx-translate/core';
 import {LandingComponent} from './landing.component';
 
 describe('LandingComponent', () => {
@@ -12,22 +13,25 @@ describe('LandingComponent', () => {
   let debugElement: DebugElement;
   let messageServiceSpy: jasmine.SpyObj<MessageService>;
 
-  beforeEach(waitForAsync(() => {
-    const spy = jasmine.createSpyObj('MessageService', ['getSea']);
+  beforeEach(() => {
+    const spyMessageService = jasmine.createSpyObj('MessageService', ['getSea']);
 
     TestBed.configureTestingModule({
-      declarations: [ LandingComponent ],
+      declarations: [
+        LandingComponent,
+      ],
+      imports: [
+        TranslateModule.forRoot(),
+      ],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA,
       ],
       providers: [
-        {provide: MessageService, useValue: spy},
+        {provide: MessageService, useValue: spyMessageService},
       ],
     })
       .compileComponents();
-  }));
 
-  beforeEach(() => {
     messageServiceSpy = TestBed.inject(MessageService) as jasmine.SpyObj<MessageService>;
     fixture = TestBed.createComponent(LandingComponent);
     component = fixture.componentInstance;

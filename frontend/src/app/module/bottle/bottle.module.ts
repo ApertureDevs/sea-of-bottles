@@ -3,6 +3,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {ThemeModule} from '@core/theme/theme.module';
 import {ReactiveFormsModule} from '@angular/forms';
+import {TranslateModule} from '@ngx-translate/core';
 import {CreateBottleComponent} from './pages/create-bottle/create-bottle.component';
 
 const routes: Routes = [
@@ -19,6 +20,7 @@ const routes: Routes = [
     ThemeModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
+    TranslateModule,
   ],
 })
 export class BottleModule { }

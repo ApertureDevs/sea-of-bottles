@@ -3,6 +3,7 @@ import {MessageService} from '@data/service/message.service';
 import {CreateBottleCommand} from '@model/domain/message/command/create-bottle-command';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AlertService} from '@core/alert/alert.service';
+import {TranslationService} from '@core/translation/translation.service';
 
 @Component({
   templateUrl: './create-bottle.component.html',
@@ -17,6 +18,7 @@ export class CreateBottleComponent {
     private messageService: MessageService,
     private formBuilder: FormBuilder,
     private alertService: AlertService,
+    private translationService: TranslationService,
   ) {
     this.form = this.formBuilder.group({
       message: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(500)]],
@@ -33,9 +35,10 @@ export class CreateBottleComponent {
       message: this.form.get('message')?.value,
     };
 
-    this.messageService.createBottle(command).subscribe(() => {
+    this.messageService.createBottle(command).subscribe(async () => {
       this.wasCreated = true;
-      this.alertService.info('Bottle sent successfully');
+      const translatedMessage = await this.translationService.translateKey('alert.bottle-created').toPromise();
+      this.alertService.info(translatedMessage);
       this.bottleCreated.emit();
     });
   }

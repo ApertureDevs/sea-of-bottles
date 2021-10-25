@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MessageService} from '@data/service/message.service';
 import {DeleteSailorCommand} from '@model/domain/message/command/delete-sailor-command';
 import {AlertService} from '@core/alert/alert.service';
+import {TranslationService} from '@core/translation/translation.service';
 
 @Component({
   templateUrl: './delete-sailor.component.html',
@@ -17,6 +18,7 @@ export class DeleteSailorComponent {
     private messageService: MessageService,
     private formBuilder: FormBuilder,
     private alertService: AlertService,
+    private translationService: TranslationService,
   ) {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -33,9 +35,10 @@ export class DeleteSailorComponent {
       email: this.form.get('email')?.value,
     };
 
-    this.messageService.deleteSailor(command).subscribe(() => {
+    this.messageService.deleteSailor(command).subscribe(async () => {
       this.wasDeleted = true;
-      this.alertService.info('Sailor removed successfully');
+      const translatedMessage = await this.translationService.translateKey('alert.sailor-deleted').toPromise();
+      this.alertService.info(translatedMessage);
       this.sailorDeleted.emit();
     });
   }

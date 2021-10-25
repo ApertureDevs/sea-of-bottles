@@ -1,31 +1,31 @@
 <div class="create-bottle">
     <div class="description">
-        <h1 class="description__title">Send a Bottle</h1>
-        <p class="description__content">Add a message in a Bottle and throw it into the Sea!</p>
+        <h1 class="description__title">{{ 'create-bottle.title' | translate }}</h1>
+        <p class="description__content">{{ 'create-bottle.description' | translate }}</p>
     </div>
 
     <form class="form" [formGroup]="form" (ngSubmit)="commandSubmit()" *ngIf="!wasCreated">
         <mat-form-field appearance="fill" class="form-field form__message">
-            <mat-label>Your message</mat-label>
+            <mat-label>{{ 'create-bottle.placeholder' | translate }}</mat-label>
             <textarea matInput id="message" formControlName="message"></textarea>
             <mat-error *ngIf="form.controls.message.errors?.required">required</mat-error>
             <mat-error *ngIf="form.controls.message.errors?.minlength">more than {{form.controls.message.errors?.minlength.requiredLength}} characters</mat-error>
             <mat-error *ngIf="form.controls.message.errors?.maxlength">less than {{form.controls.message.errors?.maxlength.requiredLength}} characters</mat-error>
         </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="!this.form.valid">Finish</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!this.form.valid">{{ 'action.send-message' | translate }}</button>
     </form>
 
     <div class="success" *ngIf="wasCreated">
         <mat-icon svgIcon="check" class="success__icon"></mat-icon>
-        <span class="success__message">Bottle throw into the Sea!</span>
+        <span class="success__message">{{ 'create-bottle.success.message' | translate }}</span>
         <div class="success__option">
-            <p>You have throw the Bottle into the Sea! Maybe someone, someday will open it.</p>
-            <button mat-raised-button color="primary" (click)="reset()">Thrown another Bottle</button>
+            <p>{{ 'create-bottle.success.create-bottle-option-description' | translate }}</p>
+            <button mat-raised-button color="primary" (click)="reset()">{{ 'action.create-bottle' | translate }}</button>
         </div>
         <div class="success__option">
-            <p>Do you want to be able to be able to receive bottles from the Sea?</p>
-            <button mat-raised-button color="primary" routerLink="/sailor/create">Become a sailor</button>
+            <p>{{ 'create-bottle.success.create-sailor-option-description' | translate }}</p>
+            <button mat-raised-button color="primary" routerLink="/sailor/create">{{ 'action.create-sailor' | translate }}</button>
         </div>
     </div>
 </div>
