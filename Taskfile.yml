@@ -48,8 +48,8 @@ tasks:
       - task: api-database-fixture-test
       - task: api-phpunit
       - task: api-behat
-      - task: frontend-karma
-      - task: frontend-protractor
+      - task: frontend-unit
+      - task: frontend-e2e
 
   lint:
     desc: Lint sources
@@ -332,22 +332,22 @@ tasks:
     cmds:
       - docker-compose run --rm --no-deps frontend-cli npm update
 
-  frontend-protractor:
-    desc: Execute frontend Protractor end to end test suites
+  frontend-e2e:
+    desc: Execute frontend end to end test suites
     cmds:
-      - docker-compose run --rm frontend-cli npx ng e2e
+      - docker-compose run --rm frontend-cli bash -c "npx cypress install && npx ng e2e"
     deps:
       - frontend-dependencies
 
-  frontend-karma:
-    desc: Execute frontend Karma unit test suites
+  frontend-unit:
+    desc: Execute frontend unit test suites
     cmds:
       - docker-compose run --rm frontend-cli npx ng test --code-coverage --watch=false
     deps:
       - frontend-dependencies
 
-  frontend-karma-watch:
-    desc: Execute frontend Karma unit test suites in watch mode
+  frontend-unit-watch:
+    desc: Execute frontend unit test suites in watch mode
     cmds:
       - docker-compose run --rm frontend-cli npx ng test --code-coverage --watch=true
     deps:

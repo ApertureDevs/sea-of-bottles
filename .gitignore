@@ -1,5 +1,6 @@
 # Docker
 docker-compose.override.yaml
+!.github/assets/docker-compose.override.yaml
 
 # Task
 .task
