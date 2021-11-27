@@ -26,14 +26,4 @@ describe('CounterComponent', () => {
     expect(component.count).toBe(0);
     expect(debugElement.nativeElement.innerText).toBe('0');
   });
-
-  it('should be creatable with count', async () => {
-    component.count = 100;
-    expect(component).toBeTruthy();
-    expect(component.count).toBe(100);
-    expect(debugElement.nativeElement.innerText).toBe('0');
-    await component.animationFinished;
-    fixture.detectChanges();
-    expect(debugElement.nativeElement.innerText).toBe('100');
-  });
 });
