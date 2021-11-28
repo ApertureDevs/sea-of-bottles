@@ -29,7 +29,7 @@ class CreateBottleCommandValidationTest extends ValidationTestCase
         yield [
             CreateBottleCommand::create(str_repeat('a', 501), '127.0.0.0.1'),
             [
-                'message' => ['This value is too long. It should have 500 character or less.'],
+                'message' => ['This value is too long. It should have 500 characters or less.'],
                 'createIp' => ['This is not a valid IP address.'],
             ],
         ];
