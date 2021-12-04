@@ -9,7 +9,15 @@ import {TranslationService} from '@core/translation/translation.service';
   styleUrls: ['./translation.component.scss'],
 })
 export class TranslationComponent {
-  public constructor(private translationService: TranslationService) {}
+  public language: string;
+
+  public constructor(private translationService: TranslationService) {
+    this.translationService.languageChanged.subscribe((language) => {
+      this.language = language;
+    });
+
+    this.language = translationService.getCurrentLanguage();
+  }
 
   public changeLanguage(language: string): void {
     this.translationService.changeLanguage(language);

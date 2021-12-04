@@ -1,6 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {TranslationComponent} from '@shared/translation/translation.component';
 import {TranslationService} from '@core/translation/translation.service';
+import {EventEmitter} from '@angular/core';
 
 describe('TranslationComponent', () => {
   let translationServiceSpy: jasmine.SpyObj<TranslationService>;
@@ -8,7 +9,11 @@ describe('TranslationComponent', () => {
   let fixture: ComponentFixture<TranslationComponent>;
 
   beforeEach(() => {
-    const spyTranslationService = jasmine.createSpyObj('TranslationService', ['changeLanguage']);
+    const spyTranslationService = jasmine.createSpyObj(
+      'TranslationService',
+      ['changeLanguage', 'getCurrentLanguage'],
+      {languageChanged: new EventEmitter()},
+    );
 
     TestBed.configureTestingModule({
       declarations: [
@@ -31,7 +36,12 @@ describe('TranslationComponent', () => {
   });
 
   it('should change language', () => {
-    component.changeLanguage('FR');
-    expect(translationServiceSpy.changeLanguage.calls.count()).toEqual(1);
+    component.changeLanguage('fr');
+    expect(translationServiceSpy.changeLanguage).toHaveBeenCalledOnceWith('fr');
+  });
+
+  it('should change language', () => {
+    component.changeLanguage('fr');
+    expect(translationServiceSpy.changeLanguage).toHaveBeenCalledOnceWith('fr');
   });
 });

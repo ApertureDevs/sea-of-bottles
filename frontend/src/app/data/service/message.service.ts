@@ -58,7 +58,7 @@ export class MessageService {
   }
 
   private handleError = (error: HttpErrorResponse): Observable<never> => {
-    this.translationService.translateKey('alert.something-went-wrong').toPromise().then((translatedValue) => {
+    this.translationService.translateKey('alert.something-went-wrong').subscribe((translatedValue) => {
       this.alertService.error(translatedValue);
     });
 
