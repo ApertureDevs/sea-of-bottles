@@ -14,10 +14,10 @@ jobs:
       - name: Add Task runner
         run: |
           curl -sL https://taskfile.dev/install.sh | sh && echo "./bin" >> $GITHUB_PATH
-      - name: Check NPM modules
+      - name: Frontend Dependencies Audit
         run: |
-          task frontend-npm-security-check --summary
-          task frontend-npm-security-check
+          task frontend-dependencies-audit --summary
+          task frontend-dependencies-audit
   api-audit:
     name: API Security Check
     runs-on: ubuntu-latest
@@ -27,7 +27,7 @@ jobs:
       - name: Add Task runner
         run: |
           curl -sL https://taskfile.dev/install.sh | sh && echo "./bin" >> $GITHUB_PATH
-      - name: Check Composer vendors
+      - name: API Dependencies Security Check
         run: |
-          task api-composer-security-check --summary
-          task api-composer-security-check
+          task api-dependencies-security-check --summary
+          task api-dependencies-security-check

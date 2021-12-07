@@ -18,3 +18,4 @@ yarn-error.log
 testem.log
 /typings
 /var
+.cypress

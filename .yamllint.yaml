@@ -4,6 +4,7 @@ ignore: |
   api/bin
   api/dist
   api/vendor
+  frontend/.cypress
   frontend/dist
   frontend/node_modules
 

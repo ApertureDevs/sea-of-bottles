@@ -26,11 +26,11 @@ tasks:
       - task: global-yaml-linter-check
       - task: global-markdown-linter-check
       - task: frontend-html-linter-check
-      - task: api-phpstan-check
+      - task: api-static-analysis
       - task: api-layers-check
       - task: test
       - task: api-database-schema-check
-      - task: api-composer-check
+      - task: api-transitive-dependencies-check
 
   serve:
     desc: Start a local development stack
@@ -46,10 +46,10 @@ tasks:
       - task: api-database-create-test
       - task: api-database-migration-test
       - task: api-database-fixture-test
-      - task: api-phpunit
-      - task: api-behat
-      - task: frontend-unit
-      - task: frontend-e2e
+      - task: api-unit-test
+      - task: api-e2e-test
+      - task: frontend-unit-test
+      - task: frontend-e2e-test
 
   lint:
     desc: Lint sources
@@ -243,14 +243,14 @@ tasks:
     deps:
       - api-dependencies
 
-  api-phpstan-check:
+  api-static-analysis:
     desc: Check API PHP sources with phpstan
     cmds:
       - docker-compose run --rm --no-deps api-cli vendor/bin/phpstan analyse
     deps:
       - api-dependencies
 
-  api-composer-check:
+  api-transitive-dependencies-check:
     desc: Analyse API composer dependencies and verify that no unknown symbols are used in the sources of a package
     cmds:
       - docker-compose run --rm --no-deps api-cli vendor/bin/composer-require-checker check composer.json --config-file=.composer-require-checker.json
@@ -264,19 +264,19 @@ tasks:
     deps:
       - api-dependencies
 
-  api-composer-security-check:
+  api-dependencies-security-check:
     desc: Check API dependencies known security vulnerabilities
     cmds:
       - docker-compose run --rm --no-deps api-cli symfony security:check
 
-  api-phpunit:
+  api-unit-test:
     desc: Execute API PHPUnit unit test suites
     cmds:
       - docker-compose run --rm --no-deps api-cli bin/phpunit
     deps:
       - api-dependencies
 
-  api-behat:
+  api-e2e-test:
     desc: Execute API Behat test suites
     cmds:
       - docker-compose run --rm --no-deps api-cli vendor/bin/behat --verbose --stop-on-failure --rerun
@@ -332,35 +332,40 @@ tasks:
     cmds:
       - docker-compose run --rm --no-deps frontend-cli npm update
 
-  frontend-e2e:
+  frontend-cypress-binary:
+    desc: Install cypress binary
+    cmds:
+      - docker-compose run --rm --no-deps frontend-cli npx cypress install
+    sources:
+      - frontend/package-lock.json
+    generates:
+      - frontend/.cypress/**/*
+    deps:
+      - frontend-dependencies
+
+  frontend-e2e-test:
     desc: Execute frontend end to end test suites
     cmds:
-      - docker-compose run --rm frontend-cli bash -c "npx cypress install && npx ng e2e"
+      - docker-compose run --rm frontend-cli npx ng e2e
     deps:
       - frontend-dependencies
+      - frontend-cypress-binary
 
-  frontend-unit:
+  frontend-unit-test:
     desc: Execute frontend unit test suites
     cmds:
-      - docker-compose run --rm frontend-cli npx ng test --code-coverage --watch=false
+      - docker-compose run --rm --no-deps frontend-cli npx ng test --code-coverage --watch=false
     deps:
       - frontend-dependencies
 
-  frontend-unit-watch:
-    desc: Execute frontend unit test suites in watch mode
-    cmds:
-      - docker-compose run --rm frontend-cli npx ng test --code-coverage --watch=true
-    deps:
-      - frontend-dependencies
-
-  frontend-npm-security-check:
+  frontend-dependencies-audit:
     desc: Execute frontend NPM security audit
     cmds:
       - docker-compose run --rm --no-deps frontend-cli npm audit --production
     deps:
       - frontend-dependencies
 
-  frontend-npm-security:
+  frontend-dependencies-audit-fix:
     desc: Resolve frontend NPM security vulnerabilities
     cmds:
       - docker-compose run --rm --no-deps frontend-cli npm audit fix

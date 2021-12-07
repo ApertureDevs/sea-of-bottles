@@ -44,11 +44,13 @@ jobs:
           chmod -R 777 frontend/var
           mkdir frontend/dist
           chmod -R 777 frontend/dist
+          mkdir frontend/.cypress
+          chmod -R 777 frontend/.cypress
           task install
-      - name: Frontend NPM Vulnerability Check
+      - name: Frontend Dependencies Audit
         run: |
-          task frontend-npm-security-check --summary
-          task frontend-npm-security-check
+          task frontend-dependencies-audit --summary
+          task frontend-dependencies-audit
       - name: Frontend Typescript Linter
         run: |
           task frontend-ts-linter-check --summary
@@ -63,12 +65,12 @@ jobs:
           task frontend-html-linter-check
       - name: Frontend Unit Tests
         run: |
-          task frontend-unit --summary
-          task frontend-unit
+          task frontend-unit-test --summary
+          task frontend-unit-test
       - name: Frontend E2E tests
         run: |
-          task frontend-e2e --summary
-          task frontend-e2e
+          task frontend-e2e-test --summary
+          task frontend-e2e-test
       - name: Frontend Build Prod
         run: |
           task frontend-build --summary
@@ -91,10 +93,10 @@ jobs:
       - name: Add Task Runner
         run: |
           curl -sL https://taskfile.dev/install.sh | sh && echo "./bin" >> $GITHUB_PATH
-      - name: API Composer Vulnerability Check
+      - name: API Dependencies Security Check
         run: |
-          task api-composer-security-check --summary
-          task api-composer-security-check
+          task api-dependencies-security-check --summary
+          task api-dependencies-security-check
       - name: API Test Database
         run: |
           task api-database-create-test --summary
@@ -109,26 +111,26 @@ jobs:
         run: |
           task api-php-linter-check --summary
           task api-php-linter-check
-      - name: API PHPStan Analysis
+      - name: API Static Analysis
         run: |
-          task api-phpstan-check --summary
-          task api-phpstan-check
-      - name: API PHP Dependencies Check
+          task api-static-analysis --summary
+          task api-static-analysis
+      - name: API Transitive Dependencies Check
         run: |
-          task api-composer-check --summary
-          task api-composer-check
+          task api-transitive-dependencies-check --summary
+          task api-transitive-dependencies-check
       - name: API PHP Layers Dependencies Analysis
         run: |
           task api-layers-check --summary
           task api-layers-check
       - name: API Unit Tests
         run: |
-          task api-phpunit --summary
-          task api-phpunit
+          task api-unit-test --summary
+          task api-unit-test
       - name: API E2E Tests
         run: |
-          task api-behat --summary
-          task api-behat
+          task api-e2e-test --summary
+          task api-e2e-test
       - name: API Build Prod
         run: |
           task api-build --summary
