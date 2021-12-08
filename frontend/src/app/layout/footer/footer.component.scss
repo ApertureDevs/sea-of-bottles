@@ -20,14 +20,14 @@
       top: 35px;
       width: 200%;
       height: 30px;
-      background-image: url('../../../assets/images/wave.svg');
+      background-image: url("../../../assets/images/wave.svg");
       background-repeat: repeat-x;
       background-size: contain;
-      animation: move_wave 20s ease-in-out infinite;
+      animation: move-wave 20s ease-in-out infinite;
 
       &:nth-child(1) {
         top: 25px;
-        background-image: url('../../../assets/images/wave2.svg');
+        background-image: url("../../../assets/images/wave2.svg");
         animation-delay: 1s;
       }
     }
@@ -60,8 +60,7 @@
 
   &__small {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
     justify-content: space-between;
     padding: 0.5rem;
     font-size: 0.6rem;
@@ -92,7 +91,7 @@
   }
 }
 
-@keyframes move_wave {
+@keyframes move-wave {
   0% {
     margin-left: 0;
   }

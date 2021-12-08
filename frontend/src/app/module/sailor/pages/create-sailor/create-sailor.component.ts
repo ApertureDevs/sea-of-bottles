@@ -10,9 +10,9 @@ import {TranslationService} from '@core/translation/translation.service';
   styleUrls: ['./create-sailor.component.scss'],
 })
 export class CreateSailorComponent {
+  @Output() public sailorCreated = new EventEmitter<void>();
   public wasCreated = false;
   public form: FormGroup;
-  @Output() public sailorCreated = new EventEmitter<void>();
 
   public constructor(
     private messageService: MessageService,

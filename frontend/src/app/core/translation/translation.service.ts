@@ -7,9 +7,9 @@ import {StorageService} from '@data/service/storage.service';
   providedIn: 'root',
 })
 export class TranslationService {
+  public languageChanged = new EventEmitter<string>();
   private storageKey = 'language';
   private defaultLanguage = 'en';
-  public languageChanged = new EventEmitter<string>();
 
   public constructor(
     private translateService: TranslateService,

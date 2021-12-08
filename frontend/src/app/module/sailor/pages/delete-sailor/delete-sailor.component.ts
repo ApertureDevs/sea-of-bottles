@@ -10,9 +10,9 @@ import {TranslationService} from '@core/translation/translation.service';
   styleUrls: ['./delete-sailor.component.scss'],
 })
 export class DeleteSailorComponent {
+  @Output() public sailorDeleted = new EventEmitter<void>();
   public wasDeleted = false;
   public form: FormGroup;
-  @Output() public sailorDeleted = new EventEmitter<void>();
 
   public constructor(
     private messageService: MessageService,

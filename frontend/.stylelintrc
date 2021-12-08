@@ -5,7 +5,10 @@
     "stylelint-config-rational-order/plugin",
     "stylelint-no-unsupported-browser-features"
   ],
-  "extends": "stylelint-config-standard",
+  "extends": [
+      "stylelint-config-standard",
+      "stylelint-config-standard-scss"
+  ],
   "stylelint-config-prettier": true,
   "rules": {
     "at-rule-no-unknown": null,

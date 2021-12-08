@@ -10,9 +10,9 @@ import {TranslationService} from '@core/translation/translation.service';
   styleUrls: ['./create-bottle.component.scss'],
 })
 export class CreateBottleComponent {
+  @Output() public bottleCreated = new EventEmitter<void>();
   public wasCreated = false;
   public form: FormGroup;
-  @Output() public bottleCreated = new EventEmitter<void>();
 
   public constructor(
     private messageService: MessageService,

@@ -46,6 +46,8 @@ jobs:
           chmod -R 777 frontend/dist
           mkdir frontend/.cypress
           chmod -R 777 frontend/.cypress
+          mkdir frontend/.angular
+          chmod -R 777 frontend/.angular
           task install
       - name: Frontend Dependencies Audit
         run: |

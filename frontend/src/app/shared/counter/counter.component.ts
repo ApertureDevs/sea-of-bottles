@@ -15,11 +15,25 @@ import {
   templateUrl: './counter.component.html',
 })
 export class CounterComponent implements AfterViewInit, OnChanges {
+  @Output() public animationFinished = new EventEmitter<void>();
   @Input() public count = 0;
   @ViewChild('counter') private counter!: ElementRef;
-  @Output() public animationFinished = new EventEmitter<void>();
   private steps = 10;
   private duration = 2000;
+
+  public ngAfterViewInit() {
+    this.animate();
+  }
+
+  public ngOnChanges(changes: SimpleChanges) {
+    if (typeof this.counter === 'undefined') {
+      return;
+    }
+
+    if (changes.digit) {
+      this.animate();
+    }
+  }
 
   private animate() {
     const stepCount = Math.abs(this.duration / this.steps);
@@ -41,19 +55,5 @@ export class CounterComponent implements AfterViewInit, OnChanges {
     };
 
     step();
-  }
-
-  public ngAfterViewInit() {
-    this.animate();
-  }
-
-  public ngOnChanges(changes: SimpleChanges) {
-    if (typeof this.counter === 'undefined') {
-      return;
-    }
-
-    if (changes.digit) {
-      this.animate();
-    }
   }
 }
