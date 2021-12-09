@@ -3,19 +3,6 @@ RUN apt update \
     && apt install -y wget \
     && wget https://get.symfony.com/cli/installer -O - | bash
 
-FROM ubuntu:20.04 AS dockerize-installer
-ENV DOCKERIZE_VERSION v0.6.1
-RUN apt update \
-    && apt install -y wget \
-    && wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-    && tar -C /root -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-    && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
-
-FROM php:8.0 AS composer-installer
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php composer-setup.php \
-    && php -r "unlink('composer-setup.php');"
-
 FROM php:8.0
 ARG XDEBUG_VERSION=3.1.0
 ENV XDEBUG_MODE='off'
@@ -45,5 +32,4 @@ RUN pecl install xdebug-${XDEBUG_VERSION} \
 RUN docker-php-ext-install opcache
 COPY php.ini /usr/local/etc/php/
 COPY --from=symfony-installer /root/.symfony/bin/symfony /usr/local/bin/symfony
-COPY --from=composer-installer /composer.phar /usr/local/bin/composer
-COPY --from=dockerize-installer /root/dockerize /usr/local/bin/dockerize
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
