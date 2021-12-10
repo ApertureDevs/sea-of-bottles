@@ -3,5 +3,5 @@ services:
     autowire: true
     autoconfigure: true
 
-  App\Tests\LockableClock:
+  App\Tests\PhpUnit\Framework\TestDecorator\LockableClock:
     decorates: App\Core\SharedKernel\Port\ClockInterface

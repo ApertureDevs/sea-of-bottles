@@ -129,6 +129,10 @@ services:
       timeout: 5s
       retries: 20
 
+networks:
+  default:
+    external: false
+
 volumes:
   api-database-data: ~
   broker-data: ~

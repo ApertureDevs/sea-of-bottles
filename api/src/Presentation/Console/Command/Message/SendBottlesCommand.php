@@ -36,7 +36,7 @@ class SendBottlesCommand extends Command
         $this->setDescription('Send randomly sent bottles to random sailors.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $sea = $this->seaProjector->getSea();
 

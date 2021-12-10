@@ -272,7 +272,7 @@ tasks:
   api-unit-test:
     desc: Execute API PHPUnit unit test suites
     cmds:
-      - docker-compose run --rm --no-deps api-cli bin/phpunit
+      - docker-compose run --rm --no-deps api-cli vendor/bin/phpunit
     deps:
       - api-dependencies
 
