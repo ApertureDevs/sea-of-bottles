@@ -1,4 +1,4 @@
-FROM ubuntu:20.04 AS symfony-installer
+FROM php:8.0 AS symfony-installer
 RUN apt update \
     && apt install -y wget \
     && wget https://get.symfony.com/cli/installer -O - | bash

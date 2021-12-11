@@ -16,7 +16,6 @@ tasks:
       - task: api-database-fixture
       - task: api-database-create-test
       - task: api-database-migration-test
-      - task: api-database-fixture-test
 
   check:
     desc: Check and fix sources
@@ -45,9 +44,8 @@ tasks:
     cmds:
       - task: api-database-create-test
       - task: api-database-migration-test
-      - task: api-database-fixture-test
       - task: api-unit-test
-      - task: api-e2e-test
+      - task: api-integration-test
       - task: frontend-unit-test
       - task: frontend-e2e-test
 
@@ -214,14 +212,6 @@ tasks:
     deps:
       - api-dependencies
 
-  api-database-fixture-test:
-    desc: Generate API database fixtures for test suites
-    cmds:
-      - docker-compose run --rm api-cli bin/console hautelook:fixtures:load --manager=event_store --append --no-interaction --env=test
-      - docker-compose run --rm api-cli bin/console hautelook:fixtures:load --manager=relational_model --append --no-interaction --env=test
-    deps:
-      - api-dependencies
-
   api-database-schema-check:
     desc: Check if there is a difference between API database and ORM data mapping
     cmds:
@@ -270,16 +260,16 @@ tasks:
       - docker-compose run --rm --no-deps api-cli symfony security:check
 
   api-unit-test:
-    desc: Execute API PHPUnit unit test suites
+    desc: Execute API unit test suites
     cmds:
-      - docker-compose run --rm --no-deps api-cli vendor/bin/phpunit
+      - docker-compose run --rm --no-deps api-cli vendor/bin/phpunit --group unit
     deps:
       - api-dependencies
 
-  api-e2e-test:
-    desc: Execute API Behat test suites
+  api-integration-test:
+    desc: Execute API integration test suites
     cmds:
-      - docker-compose run --rm --no-deps api-cli vendor/bin/behat --verbose --stop-on-failure --rerun
+      - docker-compose run --rm --no-deps api-cli vendor/bin/phpunit --group integration
     deps:
       - api-dependencies
 

@@ -87,13 +87,7 @@
         }
     },
     "require-dev": {
-        "behat/behat": "^3.8",
-        "behatch/contexts": "^3.3",
         "dama/doctrine-test-bundle": "^6.5",
-        "friends-of-behat/mink": "^1.8",
-        "friends-of-behat/mink-browserkit-driver": "^1.4",
-        "friends-of-behat/mink-extension": "^2.4",
-        "friends-of-behat/symfony-extension": "^2.1",
         "friendsofphp/php-cs-fixer": "^3.2",
         "hautelook/alice-bundle": "^2.8",
         "maglnet/composer-require-checker": "^3.3",
