@@ -51,7 +51,13 @@ abstract class QueryController extends AbstractController
             throw new \RuntimeException(sprintf('Query bus return any handled stamp. Is "%s" handler missing?', $this->getQueryClass()));
         }
 
-        return $stamp->getResult();
+        $result = $stamp->getResult();
+
+        if (!$result instanceof QueryResponseInterface) {
+            throw new \RuntimeException('Invalid stamp result.');
+        }
+
+        return $result;
     }
 
     protected function handle(Request $request): QueryResponseInterface

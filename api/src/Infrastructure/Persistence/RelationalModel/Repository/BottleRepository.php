@@ -22,7 +22,13 @@ class BottleRepository extends Repository
             ->where('bottle.receiveDate IS NULL')
         ;
 
-        return (int) $queryBuilder->getQuery()->getSingleResult()['bottle_count'];
+        $result = $queryBuilder->getQuery()->getSingleResult();
+
+        if (!is_array($result)) {
+            throw new \RuntimeException('Result should be an array.');
+        }
+
+        return (int) $result['bottle_count'];
     }
 
     public function getDeliveredBottlesCount(): int
@@ -33,6 +39,12 @@ class BottleRepository extends Repository
             ->where('bottle.receiveDate IS NOT NULL')
         ;
 
-        return (int) $queryBuilder->getQuery()->getSingleResult()['bottle_count'];
+        $result = $queryBuilder->getQuery()->getSingleResult();
+
+        if (!is_array($result)) {
+            throw new \RuntimeException('Result should be an array.');
+        }
+
+        return (int) $result['bottle_count'];
     }
 }

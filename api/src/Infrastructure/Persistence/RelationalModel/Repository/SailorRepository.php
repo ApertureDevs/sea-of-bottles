@@ -21,6 +21,12 @@ class SailorRepository extends Repository
             ->from(Sailor::class, 'sailor')
         ;
 
-        return (int) $queryBuilder->getQuery()->getSingleResult()['sailor_count'];
+        $result = $queryBuilder->getQuery()->getSingleResult();
+
+        if (!is_array($result)) {
+            throw new \RuntimeException('Result should be an array.');
+        }
+
+        return (int) $result['sailor_count'];
     }
 }

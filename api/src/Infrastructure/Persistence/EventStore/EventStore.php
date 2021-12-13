@@ -9,13 +9,11 @@ class EventStore
 {
     private EntityManagerInterface $entityManager;
     private EventRecordTransformer $eventRecordTransformer;
-    private EventMap $eventMap;
 
-    public function __construct(EntityManagerInterface $eventStoreEntityManager, EventRecordTransformer $eventRecordTransformer, EventMap $eventMap)
+    public function __construct(EntityManagerInterface $eventStoreEntityManager, EventRecordTransformer $eventRecordTransformer)
     {
         $this->entityManager = $eventStoreEntityManager;
         $this->eventRecordTransformer = $eventRecordTransformer;
-        $this->eventMap = $eventMap;
     }
 
     public function append(EventRecords $eventRecords): void
