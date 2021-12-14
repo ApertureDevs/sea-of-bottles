@@ -1,4 +1,6 @@
-name: Relational Model Migrations
-migrations_namespace: RelationalModelMigrations
-table_name: migration_versions
-migrations_directory: src/Infrastructure/Persistence/RelationalModel/Migration
+connection: 'relational_model'
+em: 'relational_model'
+migrations_paths:
+  'RelationalModelMigrations': src/Infrastructure/Persistence/RelationalModel/Migration
+table_storage:
+  table_name: migration_versions

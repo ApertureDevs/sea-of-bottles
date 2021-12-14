@@ -48,10 +48,8 @@ final class BottleStore extends AggregateRepository implements BottleStoreInterf
         $connection = $this->entityManager->getConnection();
         $sql = 'SELECT DISTINCT(aggregate_id) FROM events WHERE event_type = :eventType';
         $statement = $connection->prepare($sql);
-        $statement->execute([
-            'eventType' => $createdEventType,
-        ]);
-        $ids = $statement->fetchFirstColumn();
+        $statement->bindValue('eventType', $createdEventType);
+        $ids = $statement->executeQuery()->fetchFirstColumn();
         $results = [];
 
         foreach ($ids as $id) {
@@ -79,12 +77,10 @@ final class BottleStore extends AggregateRepository implements BottleStoreInterf
         $connection = $this->entityManager->getConnection();
         $sql = 'SELECT DISTINCT(aggregate_id) FROM events WHERE event_type = :eventType AND event ->> \'create_ip\' = :createIp';
         $statement = $connection->prepare($sql);
-        $statement->execute([
-            'eventType' => $createdEventType,
-            'createIp' => $createIp->getAddress(),
-        ]);
+        $statement->bindValue('eventType', $createdEventType);
+        $statement->bindValue('createIp', $createIp->getAddress());
 
-        $ids = $statement->fetchFirstColumn();
+        $ids = $statement->executeQuery()->fetchFirstColumn();
         $createdBottleCount = 0;
 
         foreach ($ids as $id) {

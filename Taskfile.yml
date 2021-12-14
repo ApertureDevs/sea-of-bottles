@@ -11,11 +11,16 @@ tasks:
     cmds:
       - task: frontend-dependencies
       - task: api-dependencies
-      - task: api-database-create
-      - task: api-database-migration
-      - task: api-database-fixture
-      - task: api-database-create-test
-      - task: api-database-migration-test
+      - task: api-event-store-create
+      - task: api-event-store-migration
+      - task: api-event-store-fixture
+      - task: api-event-store-create-test
+      - task: api-event-store-migration-test
+      - task: api-relational-database-create
+      - task: api-relational-database-migration
+      - task: api-relational-database-fixture
+      - task: api-relational-database-create-test
+      - task: api-relational-database-migration-test
 
   check:
     desc: Check and fix sources
@@ -28,7 +33,7 @@ tasks:
       - task: api-static-analysis
       - task: api-layers-check
       - task: test
-      - task: api-database-schema-check
+      - task: api-relational-database-schema-check
       - task: api-transitive-dependencies-check
 
   serve:
@@ -42,8 +47,10 @@ tasks:
   test:
     desc: Launch tests suites
     cmds:
-      - task: api-database-create-test
-      - task: api-database-migration-test
+      - task: api-event-store-create-test
+      - task: api-event-store-migration-test
+      - task: api-relational-database-create-test
+      - task: api-relational-database-migration-test
       - task: api-unit-test
       - task: api-integration-test
       - task: frontend-unit-test
@@ -160,59 +167,95 @@ tasks:
     cmds:
       - docker-compose run --rm --no-deps api-cli composer update
 
-  api-database-create:
-    desc: Create/Recreate API database
+  api-event-store-create:
+    desc: Create/Recreate API eventstore
     cmds:
       - docker-compose run --rm api-cli bin/console doctrine:database:drop --force --if-exists --connection=event_store
       - docker-compose run --rm api-cli bin/console doctrine:database:create --connection=event_store
+    deps:
+      - api-dependencies
+
+  api-relational-database-create:
+    desc: Create/Recreate API database
+    cmds:
       - docker-compose run --rm api-cli bin/console doctrine:database:drop --force --if-exists --connection=relational_model
       - docker-compose run --rm api-cli bin/console doctrine:database:create --connection=relational_model
     deps:
       - api-dependencies
 
-  api-database-create-test:
-    desc: Create/Recreate API database for test suites
+  api-event-store-create-test:
+    desc: Create/Recreate API eventstore for test suites
     cmds:
       - docker-compose run --rm api-cli bin/console doctrine:database:drop --force --if-exists --connection=event_store --env=test
       - docker-compose run --rm api-cli bin/console doctrine:database:create --connection=event_store --env=test
+    deps:
+      - api-dependencies
+
+  api-relational-database-create-test:
+    desc: Create/Recreate API database for test suites
+    cmds:
       - docker-compose run --rm api-cli bin/console doctrine:database:drop --force --if-exists --connection=relational_model --env=test
       - docker-compose run --rm api-cli bin/console doctrine:database:create --connection=relational_model --env=test
     deps:
       - api-dependencies
 
-  api-database-migration:
+  api-event-store-migration:
+    desc: Execute API eventstore migrations
+    cmds:
+      - docker-compose run --rm api-cli bin/console doctrine:migration:migrate --configuration=src/Infrastructure/Persistence/EventStore/Migration/doctrine_migrations.yaml --no-interaction
+    deps:
+      - api-dependencies
+
+  api-relational-database-migration:
     desc: Execute API database migrations
     cmds:
-      - docker-compose run --rm api-cli bin/console doctrine:migration:migrate --configuration=src/Infrastructure/Persistence/EventStore/Migration/doctrine_migrations.yaml --db event_store --no-interaction
-      - docker-compose run --rm api-cli bin/console doctrine:migration:migrate --configuration=src/Infrastructure/Persistence/RelationalModel/Migration/doctrine_migrations.yaml --db relational_model --no-interaction
+      - docker-compose run --rm api-cli bin/console doctrine:migration:migrate --configuration=src/Infrastructure/Persistence/RelationalModel/Migration/doctrine_migrations.yaml --no-interaction
     deps:
       - api-dependencies
 
-  api-database-migration-test:
+  api-event-store-migration-test:
+    desc: Execute API eventstore migrations for test suites
+    cmds:
+      - docker-compose run --rm api-cli bin/console doctrine:migration:migrate --configuration=src/Infrastructure/Persistence/EventStore/Migration/doctrine_migrations.yaml --no-interaction --env=test
+    deps:
+      - api-dependencies
+
+  api-relational-database-migration-test:
     desc: Execute API database migrations for test suites
     cmds:
-      - docker-compose run --rm api-cli bin/console doctrine:migration:migrate --configuration=src/Infrastructure/Persistence/EventStore/Migration/doctrine_migrations.yaml --db event_store --no-interaction --env=test
-      - docker-compose run --rm api-cli bin/console doctrine:migration:migrate --configuration=src/Infrastructure/Persistence/RelationalModel/Migration/doctrine_migrations.yaml --db relational_model --no-interaction --env=test
+      - docker-compose run --rm api-cli bin/console doctrine:migration:migrate --configuration=src/Infrastructure/Persistence/RelationalModel/Migration/doctrine_migrations.yaml --no-interaction --env=test
     deps:
       - api-dependencies
 
-  api-database-migration-diff:
+  api-event-store-migration-diff:
+    desc: Generate API eventstore migrations
+    cmds:
+      - docker-compose run --rm api-cli bin/console doctrine:migration:diff --configuration=src/Infrastructure/Persistence/EventStore/Migration/doctrine_migrations.yaml --no-interaction
+    deps:
+      - api-dependencies
+
+  api-relational-database-migration-diff:
     desc: Generate API database migrations
     cmds:
-      - docker-compose run --rm api-cli bin/console doctrine:migration:diff --configuration=src/Infrastructure/Persistence/EventStore/Migration/doctrine_migrations.yaml --em event_store --no-interaction
-      - docker-compose run --rm api-cli bin/console doctrine:migration:diff --configuration=src/Infrastructure/Persistence/RelationalModel/Migration/doctrine_migrations.yaml --em relational_model --no-interaction
+      - docker-compose run --rm api-cli bin/console doctrine:migration:diff --configuration=src/Infrastructure/Persistence/RelationalModel/Migration/doctrine_migrations.yaml --no-interaction
     deps:
       - api-dependencies
 
-  api-database-fixture:
-    desc: Generate API database fixtures
+  api-event-store-fixture:
+    desc: Generate API eventstore fixtures
     cmds:
       - docker-compose run --rm api-cli bin/console hautelook:fixtures:load --manager=event_store --append --no-interaction
+    deps:
+      - api-dependencies
+
+  api-relational-database-fixture:
+    desc: Generate API database fixtures
+    cmds:
       - docker-compose run --rm api-cli bin/console hautelook:fixtures:load --manager=relational_model --append --no-interaction
     deps:
       - api-dependencies
 
-  api-database-schema-check:
+  api-relational-database-schema-check:
     desc: Check if there is a difference between API database and ORM data mapping
     cmds:
       - docker-compose run --rm api-cli bin/console doctrine:schema:validate --env=test

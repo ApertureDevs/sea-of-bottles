@@ -47,11 +47,10 @@ final class SailorStore extends AggregateRepository implements SailorStoreInterf
         $connection = $this->entityManager->getConnection();
         $sql = 'SELECT aggregate_id FROM events WHERE event ->> \'email\' = :emailValue AND event_type = :eventType';
         $statement = $connection->prepare($sql);
-        $statement->execute([
-            'emailValue' => $email->getAddress(),
-            'eventType' => $createdEventType,
-        ]);
-        $ids = $statement->fetchFirstColumn();
+        $statement->bindValue('emailValue', $email->getAddress());
+        $statement->bindValue('eventType', $createdEventType);
+
+        $ids = $statement->executeQuery()->fetchFirstColumn();
 
         foreach ($ids as $id) {
             if (!is_string($id)) {
@@ -81,10 +80,9 @@ final class SailorStore extends AggregateRepository implements SailorStoreInterf
         $connection = $this->entityManager->getConnection();
         $sql = 'SELECT DISTINCT(aggregate_id) FROM events WHERE event_type = :eventType';
         $statement = $connection->prepare($sql);
-        $statement->execute([
-            'eventType' => $createdEventType,
-        ]);
-        $ids = $statement->fetchFirstColumn();
+        $statement->bindValue('eventType', $createdEventType);
+
+        $ids = $statement->executeQuery()->fetchFirstColumn();
         $results = [];
 
         foreach ($ids as $id) {
@@ -112,12 +110,10 @@ final class SailorStore extends AggregateRepository implements SailorStoreInterf
         $connection = $this->entityManager->getConnection();
         $sql = 'SELECT DISTINCT(aggregate_id) FROM events WHERE event_type = :eventType AND event ->> \'create_ip\' = :createIp';
         $statement = $connection->prepare($sql);
-        $statement->execute([
-            'eventType' => $createdEventType,
-            'createIp' => $createIp->getAddress(),
-        ]);
+        $statement->bindValue('eventType', $createdEventType);
+        $statement->bindValue('createIp', $createIp->getAddress());
 
-        $ids = $statement->fetchFirstColumn();
+        $ids = $statement->executeQuery()->fetchFirstColumn();
         $createdSailorCount = 0;
 
         foreach ($ids as $id) {
@@ -145,12 +141,10 @@ final class SailorStore extends AggregateRepository implements SailorStoreInterf
         $connection = $this->entityManager->getConnection();
         $sql = 'SELECT DISTINCT(aggregate_id) FROM events WHERE event_type = :eventType AND event ->> \'delete_ip\' = :deleteIp';
         $statement = $connection->prepare($sql);
-        $statement->execute([
-            'eventType' => $deletedEventType,
-            'deleteIp' => $deleteIp->getAddress(),
-        ]);
+        $statement->bindValue('eventType', $deletedEventType);
+        $statement->bindValue('deleteIp', $deleteIp->getAddress());
 
-        $ids = $statement->fetchFirstColumn();
+        $ids = $statement->executeQuery()->fetchFirstColumn();
         $deletedSailorCount = 0;
 
         foreach ($ids as $id) {

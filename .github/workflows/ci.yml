@@ -101,12 +101,16 @@ jobs:
           task api-dependencies-security-check
       - name: API Test Database
         run: |
-          task api-database-create-test --summary
-          task api-database-create-test
-          task api-database-migration-test --summary
-          task api-database-migration-test
-          task api-database-schema-check --summary
-          task api-database-schema-check
+          task api-event-store-create-test --summary
+          task api-event-store-create-test
+          task api-event-store-migration-test --summary
+          task api-event-store-migration-test
+          task api-relational-database-create-test --summary
+          task api-relational-database-create-test
+          task api-relational-database-migration-test --summary
+          task api-relational-database-migration-test
+          task api-relational-database-schema-check --summary
+          task api-relational-database-schema-check
       - name: API PHP Linter
         run: |
           task api-php-linter-check --summary

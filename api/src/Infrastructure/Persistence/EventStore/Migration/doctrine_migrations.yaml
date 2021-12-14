@@ -1,4 +1,6 @@
-name: Event Store Migrations
-migrations_namespace: EventStoreMigrations
-table_name: migration_versions
-migrations_directory: src/Infrastructure/Persistence/EventStore/Migration
+connection: 'event_store'
+em: 'event_store'
+migrations_paths:
+  'EventStoreMigrations': src/Infrastructure/Persistence/EventStore/Migration
+table_storage:
+  table_name: migration_versions

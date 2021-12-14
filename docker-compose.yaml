@@ -33,7 +33,9 @@ services:
         aliases:
           - local.api.seaofbottles.aperturedevs.com
     depends_on:
-      api-database:
+      api-relational-database:
+        condition: service_healthy
+      api-event-store:
         condition: service_healthy
       broker:
         condition: service_healthy
@@ -47,7 +49,9 @@ services:
       - ./api:/app:delegated
     working_dir: /app
     depends_on:
-      api-database:
+      api-relational-database:
+        condition: service_healthy
+      api-event-store:
         condition: service_healthy
       broker:
         condition: service_healthy
@@ -61,7 +65,9 @@ services:
       - ./api:/app:delegated
     working_dir: /app
     depends_on:
-      api-database:
+      api-relational-database:
+        condition: service_healthy
+      api-event-store:
         condition: service_healthy
       broker:
         condition: service_healthy
@@ -70,10 +76,23 @@ services:
     restart: on-failure
     command: bin/console messenger:consume message_broker -vv
 
-  api-database:
+  api-event-store:
     image: postgres:13
     volumes:
-      - api-database-data:/var/lib/postgresql/data
+      - api-event-store-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: sob
+      POSTGRES_PASSWORD: password
+    healthcheck:
+      test: pg_isready -U sob
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  api-relational-database:
+    image: postgres:13
+    volumes:
+      - api-relational-database-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: sob
       POSTGRES_PASSWORD: password
@@ -134,5 +153,6 @@ networks:
     external: false
 
 volumes:
-  api-database-data: ~
+  api-relational-database-data: ~
+  api-event-store-data: ~
   broker-data: ~
