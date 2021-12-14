@@ -39,7 +39,7 @@ For example, to use 80 port for api and 8080 port for frontend you can create a 
 
 ```yaml
 #docker-compose.override.yaml
-version: '3.7'
+version: '3.8'
 
 services:
     frontend-webserver:
