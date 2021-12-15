@@ -75,16 +75,16 @@ jobs:
           task frontend-e2e-test
       - name: Frontend Build Prod
         run: |
-          task frontend-build --summary
-          BUILD_ENV=prod task frontend-build
+          task frontend-build-prod --summary
+          task frontend-build-prod
       - name: Frontend Build Preprod
         run: |
-          task frontend-build --summary
-          BUILD_ENV=preprod task frontend-build
+          task frontend-build-preprod --summary
+          task frontend-build-preprod
       - name: Frontend Build Dev
         run: |
-          task frontend-build --summary
-          BUILD_ENV=dev task frontend-build
+          task frontend-build-dev --summary
+          task frontend-build-dev
 
   api-ci:
     name: API CI
@@ -137,9 +137,9 @@ jobs:
           task api-integration-test
       - name: API Build Prod
         run: |
-          task api-build --summary
-          BUILD_ENV=prod task api-build
+          task api-build-prod --summary
+          task api-build-prod
       - name: API Build Dev
         run: |
-          task api-build --summary
-          BUILD_ENV=dev task api-build
+          task api-build-dev --summary
+          task api-build-dev

@@ -70,6 +70,12 @@ tasks:
       - task: api-dependencies-update
       - task: frontend-dependencies-update
 
+  publish-docker-image-dev:
+    desc: Build and Publish Docker images for dev stage
+    cmds:
+      - task: api-publish-docker-image-dev
+      - task: frontend-publish-docker-image-dev
+
   ##########
   # GLOBAL #
   ##########
@@ -97,60 +103,6 @@ tasks:
   #######
   # API #
   #######
-
-  api-build:
-    desc: |
-      Build api into dist folder
-      "BUILD_ENV=prod task api-build" to build in production mode (default)
-      "BUILD_ENV=dev task api-build" to build in development mode
-    cmds:
-      - docker-compose run --rm --no-deps api-cli mkdir -p {{.BUILD_DIR}}
-      - docker-compose run --rm --no-deps api-cli rm -rf {{.BUILD_DIR}}/*
-      - docker-compose run --rm --no-deps api-cli cp -r bin config public fixtures src .env composer.json composer.lock symfony.lock {{.BUILD_DIR}}
-      - docker-compose run --rm --no-deps -e APP_ENV={{.APP_ENV}} api-cli composer install {{.BUILD_OPTIONS}} --working-dir {{.BUILD_DIR}}
-      - docker-compose run --rm --no-deps -e APP_ENV={{.APP_ENV}} api-cli {{.BUILD_DIR}}/bin/console cache:warmup
-    deps:
-      - api-dependencies
-    vars:
-      BUILD_OPTIONS:
-        sh: |
-          if [ -z $BUILD_ENV ] || [ 'prod' = $BUILD_ENV ]
-          then
-            echo "--prefer-dist --no-suggest --no-dev --optimize-autoloader --classmap-authoritative"
-            exit 0
-          fi
-          if [ $BUILD_ENV = 'dev' ]
-          then
-            echo "--prefer-dist --no-suggest"
-            exit 0
-          fi
-          exit 1
-      BUILD_DIR:
-        sh: |
-          if [ -z $BUILD_ENV ] || [ 'prod' = $BUILD_ENV ]
-          then
-            echo "dist/prod"
-            exit 0
-          fi
-          if [ $BUILD_ENV = 'dev' ]
-          then
-            echo "dist/dev"
-            exit 0
-          fi
-          exit 1
-      APP_ENV:
-        sh: |
-          if [ -z $BUILD_ENV ] || [ 'prod' = $BUILD_ENV ]
-          then
-            echo "prod"
-            exit 0
-          fi
-          if [ $BUILD_ENV = 'dev' ]
-          then
-            echo "dev"
-            exit 0
-          fi
-          exit 1
 
   api-dependencies:
     desc: Install API dependencies
@@ -316,39 +268,43 @@ tasks:
     deps:
       - api-dependencies
 
+  api-build-dev:
+    desc: |
+      Build API into dist folder in dev mode
+    cmds:
+      - docker-compose run --rm --no-deps api-cli mkdir -p dist/dev
+      - docker-compose run --rm --no-deps api-cli rm -rf dist/dev/*
+      - docker-compose run --rm --no-deps api-cli cp -r bin config public fixtures src .env composer.json composer.lock symfony.lock dist/dev
+      - docker-compose run --rm --no-deps -e APP_ENV=dev api-cli composer install --prefer-dist --no-suggest --working-dir dist/dev
+      - docker-compose run --rm --no-deps -e APP_ENV=dev api-cli dist/dev/bin/console cache:warmup
+    deps:
+      - api-dependencies
+    generates:
+      - api/dist/dev/**/*
+
+  api-build-prod:
+    desc: |
+      Build API into dist folder in prod mode
+    cmds:
+      - docker-compose run --rm --no-deps api-cli mkdir -p dist/prod
+      - docker-compose run --rm --no-deps api-cli rm -rf dist/prod/*
+      - docker-compose run --rm --no-deps api-cli cp -r bin config public fixtures src .env composer.json composer.lock symfony.lock dist/prod
+      - docker-compose run --rm --no-deps -e APP_ENV=prod api-cli composer install --prefer-dist --no-suggest --no-dev --optimize-autoloader --classmap-authoritative --working-dir dist/prod
+      - docker-compose run --rm --no-deps -e APP_ENV=prod api-cli dist/prod/bin/console cache:warmup
+    deps:
+      - api-dependencies
+    generates:
+      - api/dist/prod/**/*
+
+  api-publish-docker-image-dev:
+    desc: Build and pusblish API Docker dev image
+    cmds:
+      - task: api-build-dev
+      - docker buildx build --platform linux/arm64/v8,linux/amd64 --file docker/infra/api-php/Dockerfile --build-arg DIST_DIR=api/dist/dev --tag eu.gcr.io/aperturedevs/sob-api-php:dev --push .
+
   ############
   # FRONTEND #
   ############
-
-  frontend-build:
-    desc: |
-      Build frontend into dist folder
-      "BUILD_ENV=prod task frontend-build" to build with production configuration
-      "BUILD_ENV=preprod task frontend-build" to build with preproduction configuration
-      "BUILD_ENV=dev task frontend-build" to build with development configuration
-    cmds:
-      - docker-compose run --rm --no-deps frontend-cli npx ng build {{.BUILD_OPTIONS}}
-    deps:
-      - frontend-dependencies
-    vars:
-      BUILD_OPTIONS:
-        sh: |
-          if [ 'prod' = $BUILD_ENV ]
-          then
-            echo "--configuration=production"
-            exit 0
-          fi
-          if [ 'preprod' = $BUILD_ENV ]
-          then
-            echo "--configuration=preproduction"
-            exit 0
-          fi
-          if [ 'dev' = $BUILD_ENV ]
-          then
-            echo "--configuration=development"
-            exit 0
-          fi
-          exit 1
 
   frontend-dependencies:
     desc: Install frontend dependencies
@@ -439,3 +395,39 @@ tasks:
       - docker-compose run --rm --no-deps frontend-cli npx htmlhint 'src/**/*.html' -c .htmlhintrc
     deps:
       - frontend-dependencies
+
+  frontend-build-dev:
+    desc: |
+      Build frontend into dist folder in dev mode
+    cmds:
+      - docker-compose run --rm --no-deps frontend-cli npx ng build --configuration=development
+    deps:
+      - frontend-dependencies
+    generates:
+      - frontend/dist/dev/**/*
+
+  frontend-build-preprod:
+    desc: |
+      Build frontend into dist folder in preprod mode
+    cmds:
+      - docker-compose run --rm --no-deps frontend-cli npx ng build --configuration=preproduction
+    deps:
+      - frontend-dependencies
+    generates:
+      - frontend/dist/preprod/**/*
+
+  frontend-build-prod:
+    desc: |
+      Build frontend into dist folder in prod mode
+    cmds:
+      - docker-compose run --rm --no-deps frontend-cli npx ng build --configuration=production
+    deps:
+      - frontend-dependencies
+    generates:
+      - frontend/dist/prod/**/*
+
+  frontend-publish-docker-image-dev:
+    desc: Build and publish frontend Docker dev image
+    cmds:
+      - task: frontend-build-dev
+      - docker buildx build --platform linux/arm64/v8,linux/amd64 --file docker/infra/frontend-webserver/Dockerfile --build-arg DIST_DIR=frontend/dist/dev --tag eu.gcr.io/aperturedevs/sob-frontend-webserver:dev --push .

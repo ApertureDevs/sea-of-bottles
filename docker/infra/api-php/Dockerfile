@@ -23,8 +23,4 @@ RUN docker-php-ext-install opcache
 
 COPY $DIST_DIR /app
 
-COPY .deploy/docker/api-php/pod-start.sh /pod-start.sh
-
-RUN chmod +x /pod-start.sh
-
 WORKDIR /app

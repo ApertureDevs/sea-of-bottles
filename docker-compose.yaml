@@ -3,28 +3,28 @@ version: '3.8'
 services:
   markdown-linter:
     build:
-      context: docker/markdown-linter
+      context: docker/local/markdown-linter
     volumes:
       - ./:/app:delegated
     working_dir: /app
 
   yaml-linter:
     build:
-      context: docker/yaml-linter
+      context: docker/local/yaml-linter
     volumes:
       - ./:/app:delegated
     working_dir: /app
 
   commit-linter:
     build:
-      context: docker/commit-linter
+      context: docker/local/commit-linter
     volumes:
       - ./:/app:delegated
     working_dir: /app
 
   api-webserver:
     build:
-      context: docker/api-webserver
+      context: docker/local/api-webserver
     volumes:
       - ./api:/app:delegated
     working_dir: /app
@@ -44,7 +44,7 @@ services:
 
   api-cli:
     build:
-      context: docker/api-cli
+      context: docker/local/api-cli
     volumes:
       - ./api:/app:delegated
     working_dir: /app
@@ -60,7 +60,7 @@ services:
 
   api-worker:
     build:
-      context: docker/api-cli
+      context: docker/local/api-cli
     volumes:
       - ./api:/app:delegated
     working_dir: /app
@@ -115,7 +115,7 @@ services:
 
   frontend-cli:
     build:
-      context: docker/frontend-cli
+      context: docker/local/frontend-cli
     volumes:
       - ./frontend:/app:delegated
     working_dir: /app
