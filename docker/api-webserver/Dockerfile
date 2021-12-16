@@ -4,8 +4,6 @@ RUN apt update \
     && wget https://get.symfony.com/cli/installer -O - | bash
 
 FROM php:8.0
-ARG XDEBUG_VERSION=3.1.0
-ENV XDEBUG_MODE='off'
 RUN apt update \
     && apt install -y libpq-dev \
     && rm -rf /var/lib/apt/lists/* \
@@ -20,7 +18,7 @@ RUN apt update \
     && rm -rf /var/lib/apt/lists/* \
     && pecl install amqp \
     && docker-php-ext-enable amqp
-RUN pecl install xdebug-${XDEBUG_VERSION} \
+RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
 RUN docker-php-ext-install opcache
 COPY php.ini /usr/local/etc/php/
