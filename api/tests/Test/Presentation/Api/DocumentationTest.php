@@ -29,7 +29,7 @@ class DocumentationTest extends ApiTestCase
         self::assertResponseIsSuccessful();
         self::assertResponseHeaderSame('content-type', 'application/json');
         $encodedJson = json_decode($this->client->getResponse()->getContent());
-        self::assertSame('3.0.0', $encodedJson->openapi);
+        self::assertSame('3.1.0', $encodedJson->openapi);
         self::assertSame('1.0.0', $encodedJson->info->version);
     }
 }
