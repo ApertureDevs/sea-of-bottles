@@ -70,12 +70,6 @@ tasks:
       - task: api-dependencies-update
       - task: frontend-dependencies-update
 
-  publish-docker-image-dev:
-    desc: Build and Publish Docker images for dev stage
-    cmds:
-      - task: api-publish-docker-image-dev
-      - task: frontend-publish-docker-image-dev
-
   ##########
   # GLOBAL #
   ##########
@@ -268,39 +262,29 @@ tasks:
     deps:
       - api-dependencies
 
-  api-build-dev:
-    desc: |
-      Build API into dist folder in dev mode
-    cmds:
-      - docker-compose run --rm --no-deps api-cli mkdir -p dist/dev
-      - docker-compose run --rm --no-deps api-cli rm -rf dist/dev/*
-      - docker-compose run --rm --no-deps api-cli cp -r bin config public fixtures src .env composer.json composer.lock symfony.lock dist/dev
-      - docker-compose run --rm --no-deps -e APP_ENV=dev api-cli composer install --prefer-dist --no-suggest --working-dir dist/dev
-      - docker-compose run --rm --no-deps -e APP_ENV=dev api-cli dist/dev/bin/console cache:warmup
-    deps:
-      - api-dependencies
-    generates:
-      - api/dist/dev/**/*
-
-  api-build-prod:
-    desc: |
-      Build API into dist folder in prod mode
-    cmds:
-      - docker-compose run --rm --no-deps api-cli mkdir -p dist/prod
-      - docker-compose run --rm --no-deps api-cli rm -rf dist/prod/*
-      - docker-compose run --rm --no-deps api-cli cp -r bin config public fixtures src .env composer.json composer.lock symfony.lock dist/prod
-      - docker-compose run --rm --no-deps -e APP_ENV=prod api-cli composer install --prefer-dist --no-suggest --no-dev --optimize-autoloader --classmap-authoritative --working-dir dist/prod
-      - docker-compose run --rm --no-deps -e APP_ENV=prod api-cli dist/prod/bin/console cache:warmup
-    deps:
-      - api-dependencies
-    generates:
-      - api/dist/prod/**/*
-
   api-publish-docker-image-dev:
     desc: Build and pusblish API Docker dev image
     cmds:
-      - task: api-build-dev
-      - docker buildx build --platform linux/arm64/v8,linux/amd64 --file docker/infra/api-php/Dockerfile --build-arg DIST_DIR=api/dist/dev --tag eu.gcr.io/aperturedevs/sob-api-php:dev --push .
+      - docker buildx build --platform linux/arm64/v8,linux/amd64 --file docker/infra/api-php/Dockerfile --build-arg COMMIT_HASH={{ .COMMIT_HASH }} --build-arg APP_ENV=dev --tag eu.gcr.io/aperturedevs/sob-api-php:dev --push .
+    vars:
+      COMMIT_HASH:
+        sh: git rev-parse origin/develop
+
+  api-publish-docker-image-preprod:
+    desc: Build and pusblish API Docker preprod image
+    cmds:
+      - docker buildx build --platform linux/arm64/v8,linux/amd64 --file docker/infra/api-php/Dockerfile --build-arg COMMIT_HASH={{ .COMMIT_HASH }} --build-arg APP_ENV=prod --tag eu.gcr.io/aperturedevs/sob-api-php:preprod --push .
+    vars:
+      COMMIT_HASH:
+        sh: git rev-parse origin/develop
+
+  api-publish-docker-image-prod:
+    desc: Build and pusblish API Docker prod image
+    cmds:
+      - docker buildx build --platform linux/arm64/v8,linux/amd64 --file docker/infra/api-php/Dockerfile --build-arg COMMIT_HASH={{ .COMMIT_HASH }} --build-arg APP_ENV=prod --tag eu.gcr.io/aperturedevs/sob-api-php:prod --push .
+    vars:
+      COMMIT_HASH:
+        sh: git rev-parse origin/main
 
   ############
   # FRONTEND #
@@ -396,38 +380,26 @@ tasks:
     deps:
       - frontend-dependencies
 
-  frontend-build-dev:
-    desc: |
-      Build frontend into dist folder in dev mode
-    cmds:
-      - docker-compose run --rm --no-deps frontend-cli npx ng build --configuration=development
-    deps:
-      - frontend-dependencies
-    generates:
-      - frontend/dist/dev/**/*
-
-  frontend-build-preprod:
-    desc: |
-      Build frontend into dist folder in preprod mode
-    cmds:
-      - docker-compose run --rm --no-deps frontend-cli npx ng build --configuration=preproduction
-    deps:
-      - frontend-dependencies
-    generates:
-      - frontend/dist/preprod/**/*
-
-  frontend-build-prod:
-    desc: |
-      Build frontend into dist folder in prod mode
-    cmds:
-      - docker-compose run --rm --no-deps frontend-cli npx ng build --configuration=production
-    deps:
-      - frontend-dependencies
-    generates:
-      - frontend/dist/prod/**/*
-
   frontend-publish-docker-image-dev:
     desc: Build and publish frontend Docker dev image
     cmds:
-      - task: frontend-build-dev
-      - docker buildx build --platform linux/arm64/v8,linux/amd64 --file docker/infra/frontend-webserver/Dockerfile --build-arg DIST_DIR=frontend/dist/dev --tag eu.gcr.io/aperturedevs/sob-frontend-webserver:dev --push .
+      - docker buildx build --platform linux/arm64/v8,linux/amd64 --file docker/infra/frontend-webserver/Dockerfile --build-arg COMMIT_HASH={{ .COMMIT_HASH }} --build-arg APP_ENV=dev --tag eu.gcr.io/aperturedevs/sob-frontend-webserver:dev --push .
+    vars:
+      COMMIT_HASH:
+        sh: git rev-parse origin/develop
+
+  frontend-publish-docker-image-preprod:
+    desc: Build and publish frontend Docker preprod image
+    cmds:
+      - docker buildx build --platform linux/arm64/v8,linux/amd64 --file docker/infra/frontend-webserver/Dockerfile --build-arg COMMIT_HASH={{ .COMMIT_HASH }} --build-arg APP_ENV=preprod --tag eu.gcr.io/aperturedevs/sob-frontend-webserver:preprod --push .
+    vars:
+      COMMIT_HASH:
+        sh: git rev-parse origin/develop
+
+  frontend-publish-docker-image-prod:
+    desc: Build and publish frontend Docker prod image
+    cmds:
+      - docker buildx build --platform linux/arm64/v8,linux/amd64 --file docker/infra/frontend-webserver/Dockerfile --build-arg COMMIT_HASH={{ .COMMIT_HASH }} --build-arg APP_ENV=prod --tag eu.gcr.io/aperturedevs/sob-frontend-webserver:prod --push .
+    vars:
+      COMMIT_HASH:
+        sh: git rev-parse origin/main

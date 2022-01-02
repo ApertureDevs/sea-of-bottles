@@ -38,8 +38,8 @@
             "namedChunks": true
           },
           "configurations": {
-            "production": {
-              "outputPath": "dist/prod",
+            "prod": {
+              "outputPath": "dist",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -66,8 +66,8 @@
                 }
               ]
             },
-            "preproduction": {
-              "outputPath": "dist/preprod",
+            "preprod": {
+              "outputPath": "dist",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -94,8 +94,8 @@
                 }
               ]
             },
-            "development": {
-              "outputPath": "dist/dev",
+            "dev": {
+              "outputPath": "dist",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",

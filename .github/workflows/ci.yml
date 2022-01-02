@@ -75,16 +75,14 @@ jobs:
           task frontend-e2e-test
       - name: Frontend Build Prod
         run: |
-          task frontend-build-prod --summary
-          task frontend-build-prod
+          docker buildx create --use
+          docker buildx build --platform linux/amd64 --file docker/infra/frontend-webserver/Dockerfile --build-arg COMMIT_HASH=${{ github.sha }} --build-arg APP_ENV=prod .
       - name: Frontend Build Preprod
         run: |
-          task frontend-build-preprod --summary
-          task frontend-build-preprod
+          docker buildx build --platform linux/amd64 --file docker/infra/frontend-webserver/Dockerfile --build-arg COMMIT_HASH=${{ github.sha }} --build-arg APP_ENV=preprod .
       - name: Frontend Build Dev
         run: |
-          task frontend-build-dev --summary
-          task frontend-build-dev
+          docker buildx build --platform linux/amd64 --file docker/infra/frontend-webserver/Dockerfile --build-arg COMMIT_HASH=${{ github.sha }} --build-arg APP_ENV=dev .
 
   api-ci:
     name: API CI
@@ -137,9 +135,8 @@ jobs:
           task api-integration-test
       - name: API Build Prod
         run: |
-          task api-build-prod --summary
-          task api-build-prod
+          docker buildx create --use
+          docker buildx build --platform linux/amd64 --file docker/infra/api-php/Dockerfile --build-arg COMMIT_HASH=${{ github.sha }} --build-arg APP_ENV=prod .
       - name: API Build Dev
         run: |
-          task api-build-dev --summary
-          task api-build-dev
+          docker buildx build --platform linux/amd64 --file docker/infra/api-php/Dockerfile --build-arg COMMIT_HASH=${{ github.sha }} --build-arg APP_ENV=dev .
