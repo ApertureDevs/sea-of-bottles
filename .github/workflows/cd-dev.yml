@@ -1,0 +1,37 @@
+name: Continuous Deployment Dev Stage
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  setup-build-publish-deploy:
+    name: Build and Publish Docker Images
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: GCP Authentication
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_CREDENTIALS }}
+      - name: Setup gcloud SDK
+        uses: 'google-github-actions/setup-gcloud@v0'
+      - name: Add Task runner
+        run: |
+          curl -sL https://taskfile.dev/install.sh | sh && echo "./bin" >> $GITHUB_PATH
+      - name: Build "api" Docker Image
+        run: |
+          docker buildx create --use
+          task api-build-docker-image-dev --summary
+          task api-build-docker-image-dev
+      - name: Build "frontend" Docker Image
+        run: |
+          task frontend-build-docker-image-dev --summary
+          task frontend-build-docker-image-dev
+      - name: Publish Docker Images
+        run: |
+          gcloud auth configure-docker
+          task api-publish-docker-image-dev
+          task frontend-publish-docker-image-dev

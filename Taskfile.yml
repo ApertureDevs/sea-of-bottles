@@ -262,30 +262,6 @@ tasks:
     deps:
       - api-dependencies
 
-  api-publish-docker-image-dev:
-    desc: Build and pusblish API Docker dev image
-    cmds:
-      - docker buildx build --platform linux/arm64/v8,linux/amd64 --file docker/infra/api-php/Dockerfile --build-arg COMMIT_HASH={{ .COMMIT_HASH }} --build-arg APP_ENV=dev --tag eu.gcr.io/aperturedevs/sob-api-php:dev --push .
-    vars:
-      COMMIT_HASH:
-        sh: git rev-parse origin/develop
-
-  api-publish-docker-image-preprod:
-    desc: Build and pusblish API Docker preprod image
-    cmds:
-      - docker buildx build --platform linux/arm64/v8,linux/amd64 --file docker/infra/api-php/Dockerfile --build-arg COMMIT_HASH={{ .COMMIT_HASH }} --build-arg APP_ENV=prod --tag eu.gcr.io/aperturedevs/sob-api-php:preprod --push .
-    vars:
-      COMMIT_HASH:
-        sh: git rev-parse origin/develop
-
-  api-publish-docker-image-prod:
-    desc: Build and pusblish API Docker prod image
-    cmds:
-      - docker buildx build --platform linux/arm64/v8,linux/amd64 --file docker/infra/api-php/Dockerfile --build-arg COMMIT_HASH={{ .COMMIT_HASH }} --build-arg APP_ENV=prod --tag eu.gcr.io/aperturedevs/sob-api-php:prod --push .
-    vars:
-      COMMIT_HASH:
-        sh: git rev-parse origin/main
-
   ############
   # FRONTEND #
   ############
@@ -380,26 +356,84 @@ tasks:
     deps:
       - frontend-dependencies
 
-  frontend-publish-docker-image-dev:
-    desc: Build and publish frontend Docker dev image
+  ##############
+  # DEPLOYMENT #
+  ##############
+
+  frontend-build-docker-image-dev:
+    desc: Build frontend Docker dev image
     cmds:
-      - docker buildx build --platform linux/arm64/v8,linux/amd64 --file docker/infra/frontend-webserver/Dockerfile --build-arg COMMIT_HASH={{ .COMMIT_HASH }} --build-arg APP_ENV=dev --tag eu.gcr.io/aperturedevs/sob-frontend-webserver:dev --push .
+      - docker buildx build --platform linux/amd64 --file docker/infra/frontend-webserver/Dockerfile --build-arg COMMIT_HASH={{ .COMMIT_HASH }} --build-arg APP_ENV=dev --tag eu.gcr.io/aperturedevs/sob-frontend-webserver:dev --output=type=docker .
+    vars:
+      COMMIT_HASH:
+        sh: git rev-parse origin/develop
+
+  frontend-publish-docker-image-dev:
+    desc: Publish frontend Docker dev image
+    cmds:
+      - docker push eu.gcr.io/aperturedevs/sob-frontend-webserver:dev
+
+  frontend-build-docker-image-preprod:
+    desc: Build frontend Docker preprod image
+    cmds:
+      - docker buildx build --platform linux/amd64 --file docker/infra/frontend-webserver/Dockerfile --build-arg COMMIT_HASH={{ .COMMIT_HASH }} --build-arg APP_ENV=preprod --tag eu.gcr.io/aperturedevs/sob-frontend-webserver:preprod --output=type=docker .
     vars:
       COMMIT_HASH:
         sh: git rev-parse origin/develop
 
   frontend-publish-docker-image-preprod:
-    desc: Build and publish frontend Docker preprod image
+    desc: Publish frontend Docker preprod image
     cmds:
-      - docker buildx build --platform linux/arm64/v8,linux/amd64 --file docker/infra/frontend-webserver/Dockerfile --build-arg COMMIT_HASH={{ .COMMIT_HASH }} --build-arg APP_ENV=preprod --tag eu.gcr.io/aperturedevs/sob-frontend-webserver:preprod --push .
+      - docker push eu.gcr.io/aperturedevs/sob-frontend-webserver:preprod
+
+  frontend-build-docker-image-prod:
+    desc: Build frontend Docker prod image
+    cmds:
+      - docker buildx build --platform linux/amd64 --file docker/infra/frontend-webserver/Dockerfile --build-arg COMMIT_HASH={{ .COMMIT_HASH }} --build-arg APP_ENV=prod --tag eu.gcr.io/aperturedevs/sob-frontend-webserver:prod --output=type=docker .
+    vars:
+      COMMIT_HASH:
+        sh: git rev-parse origin/main
+
+  frontend-publish-docker-image-prod:
+    desc: Publish frontend Docker prod image
+    cmds:
+      - docker push eu.gcr.io/aperturedevs/sob-frontend-webserver:prod
+
+  api-build-docker-image-dev:
+    desc: Build API Docker dev image
+    cmds:
+      - docker buildx build --platform linux/amd64 --file docker/infra/api-php/Dockerfile --build-arg COMMIT_HASH={{ .COMMIT_HASH }} --build-arg APP_ENV=dev --tag eu.gcr.io/aperturedevs/sob-api-php:dev --output=type=docker .
     vars:
       COMMIT_HASH:
         sh: git rev-parse origin/develop
 
-  frontend-publish-docker-image-prod:
-    desc: Build and publish frontend Docker prod image
+  api-publish-docker-image-dev:
+    desc: Publish API Docker dev image
     cmds:
-      - docker buildx build --platform linux/arm64/v8,linux/amd64 --file docker/infra/frontend-webserver/Dockerfile --build-arg COMMIT_HASH={{ .COMMIT_HASH }} --build-arg APP_ENV=prod --tag eu.gcr.io/aperturedevs/sob-frontend-webserver:prod --push .
+      - docker push eu.gcr.io/aperturedevs/sob-api-php:dev
+
+  api-build-docker-image-preprod:
+    desc: Build API Docker preprod image
+    cmds:
+      - docker buildx build --platform linux/amd64 --file docker/infra/api-php/Dockerfile --build-arg COMMIT_HASH={{ .COMMIT_HASH }} --build-arg APP_ENV=prod --tag eu.gcr.io/aperturedevs/sob-api-php:preprod --output=type=docker .
+    vars:
+      COMMIT_HASH:
+        sh: git rev-parse origin/develop
+
+  api-publish-docker-image-preprod:
+    desc: Publish API Docker preprod image
+    cmds:
+      - docker push eu.gcr.io/aperturedevs/sob-api-php:preprod
+
+  api-build-docker-image-prod:
+    desc: Build API Docker prod image
+    cmds:
+      - docker buildx build --platform linux/amd64 --file docker/infra/api-php/Dockerfile --build-arg COMMIT_HASH={{ .COMMIT_HASH }} --build-arg APP_ENV=prod --tag eu.gcr.io/aperturedevs/sob-api-php:prod --output=type=docker .
     vars:
       COMMIT_HASH:
         sh: git rev-parse origin/main
+
+  api-publish-docker-image-prod:
+    desc: Publish API Docker prod image
+    cmds:
+      - docker push eu.gcr.io/aperturedevs/sob-api-php:prod
