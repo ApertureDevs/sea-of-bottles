@@ -1,5 +1,6 @@
 nelmio_api_doc:
   documentation:
+    openapi: 3.0.0
     info:
       title: Sea of Bottles
       description: An open project to bring people together
