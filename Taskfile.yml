@@ -82,12 +82,12 @@ tasks:
   global-markdown-linter:
     desc: Apply linter rules to markdown files
     cmds:
-      - docker-compose run --rm markdown-linter markdownlint '**/*.md' -c .markdownlint.yaml --ignore api/vendor --ignore api/dist --ignore frontend/node_modules --ignore frontend/dist --fix
+      - docker-compose run --rm markdown-linter markdownlint '**/*.md' -c .markdownlint.yaml --ignore api/vendor --ignore frontend/node_modules --ignore frontend/dist --fix
 
   global-markdown-linter-check:
     desc: Check linter rules to markdown files
     cmds:
-      - docker-compose run --rm markdown-linter markdownlint '**/*.md' -c .markdownlint.yaml --ignore api/vendor --ignore api/dist --ignore frontend/node_modules --ignore frontend/dist
+      - docker-compose run --rm markdown-linter markdownlint '**/*.md' -c .markdownlint.yaml --ignore api/vendor --ignore frontend/node_modules --ignore frontend/dist
 
   global-commit-linter-check:
     desc: Checks if commit messages meet the conventional commit format

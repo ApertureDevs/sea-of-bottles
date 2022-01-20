@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
   api: {
-    url: 'http://local.api.seaofbottles.aperturedevs.com',
+    url: 'https://local.api.seaofbottles.aperturedevs.com',
   },
 };
