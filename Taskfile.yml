@@ -176,14 +176,14 @@ tasks:
   api-event-store-migration-diff:
     desc: Generate API eventstore migrations
     cmds:
-      - docker-compose run --rm api-cli bin/console doctrine:migration:diff --configuration=src/Infrastructure/Persistence/EventStore/Migration/doctrine_migrations.yaml --no-interaction
+      - docker-compose run --rm api-cli bin/console doctrine:migration:diff --configuration=src/Infrastructure/Persistence/EventStore/Migration/doctrine_migrations.yaml --em=event_store --no-interaction
     deps:
       - api-dependencies
 
   api-relational-database-migration-diff:
     desc: Generate API database migrations
     cmds:
-      - docker-compose run --rm api-cli bin/console doctrine:migration:diff --configuration=src/Infrastructure/Persistence/RelationalModel/Migration/doctrine_migrations.yaml --no-interaction
+      - docker-compose run --rm api-cli bin/console doctrine:migration:diff --configuration=src/Infrastructure/Persistence/RelationalModel/Migration/doctrine_migrations.yaml --em=relational_model --no-interaction
     deps:
       - api-dependencies
 
@@ -204,7 +204,7 @@ tasks:
   api-relational-database-schema-check:
     desc: Check if there is a difference between API database and ORM data mapping
     cmds:
-      - docker-compose run --rm api-cli bin/console doctrine:schema:validate --env=test
+      - docker-compose run --rm api-cli bin/console doctrine:schema:validate --env=test --em=relational_model
     deps:
       - api-dependencies
 
@@ -239,7 +239,7 @@ tasks:
   api-layers-check:
     desc: Check dependencies between API layers with deptrac
     cmds:
-      - docker-compose run --rm --no-deps api-cli vendor/bin/deptrac analyze depfile.yaml
+      - docker-compose run --rm --no-deps api-cli vendor/bin/deptrac analyze
     deps:
       - api-dependencies
 
@@ -281,24 +281,10 @@ tasks:
     cmds:
       - docker-compose run --rm --no-deps frontend-cli npm update
 
-  frontend-cypress-binary:
-    desc: Install cypress binary
-    cmds:
-      - docker-compose run --rm --no-deps frontend-cli npx cypress install
-    sources:
-      - frontend/package-lock.json
-    generates:
-      - frontend/.cypress/**/*
-    deps:
-      - frontend-dependencies
-
   frontend-e2e-test:
     desc: Execute frontend end to end test suites
     cmds:
-      - docker-compose run --rm frontend-cli npx ng e2e
-    deps:
-      - frontend-dependencies
-      - frontend-cypress-binary
+      - docker-compose run --rm cypress
 
   frontend-unit-test:
     desc: Execute frontend unit test suites

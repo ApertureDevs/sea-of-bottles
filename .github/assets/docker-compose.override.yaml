@@ -3,3 +3,6 @@ version: '3.7'
 services:
   frontend-cli:
     user: 1000:1000
+
+  frontend-webserver:
+    user: 1000:1000

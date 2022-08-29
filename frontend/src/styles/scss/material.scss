@@ -13,7 +13,7 @@
 // hue. Available color palettes: https://material.io/design/color/
 
 $sea-of-bottles-primary: mat.define-palette(mat.$blue-palette);
-$sea-of-bottles-accent: mat.define-palette(mat.$green-palette, a200, a100, a400);
+$sea-of-bottles-accent: mat.define-palette(mat.$green-palette, "A200", "A100", "A400");
 
 // The warn palette is optional (defaults to red).
 $sea-of-bottles-warn: mat.define-palette(mat.$red-palette);

@@ -1,9 +1,9 @@
-FROM php:8.0 AS symfony-installer
+FROM php:8.1 AS symfony-installer
 RUN apt update \
     && apt install -y wget \
     && wget https://get.symfony.com/cli/installer -O - | bash
 
-FROM php:8.0
+FROM php:8.1
 RUN apt update \
     && apt install -y git \
     && rm -rf /var/lib/apt/lists/*
@@ -29,5 +29,5 @@ RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
 RUN docker-php-ext-install opcache
 COPY php.ini /usr/local/etc/php/
-COPY --from=symfony-installer /root/.symfony/bin/symfony /usr/local/bin/symfony
+COPY --from=symfony-installer /root/.symfony5/bin/symfony /usr/local/bin/symfony
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer

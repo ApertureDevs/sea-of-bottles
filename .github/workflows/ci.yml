@@ -36,16 +36,16 @@ jobs:
           curl -sL https://taskfile.dev/install.sh | sh && echo "./bin" >> $GITHUB_PATH
       - name: Frontend Install
         run: |
-          task install --summary
           cp .github/assets/docker-compose.override.yaml docker-compose.override.yaml
+          task install --summary
           mkdir frontend/node_modules
           chmod -R 777 frontend/node_modules
           mkdir frontend/var
           chmod -R 777 frontend/var
           mkdir frontend/dist
           chmod -R 777 frontend/dist
-          mkdir frontend/.cypress
-          chmod -R 777 frontend/.cypress
+          mkdir frontend/coverage
+          chmod -R 777 frontend/coverage
           mkdir frontend/.angular
           chmod -R 777 frontend/.angular
           task install

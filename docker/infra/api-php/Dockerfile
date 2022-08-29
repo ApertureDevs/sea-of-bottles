@@ -5,7 +5,7 @@ RUN git clone https://github.com/ApertureDevs/sea-of-bottles.git /app \
     && cd /app \
     && git checkout $COMMIT_HASH
 
-FROM php:8.0-cli as builder
+FROM php:8.1-cli as builder
 ARG APP_ENV
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN apt update \
@@ -32,7 +32,7 @@ RUN cd /app \
     && if [ "$APP_ENV" = "dev" ]; then composer install --prefer-dist --no-suggest; else composer install --prefer-dist --no-suggest --no-dev --optimize-autoloader --classmap-authoritative; fi \
     && bin/console cache:warmup
 
-FROM php:8.0-fpm
+FROM php:8.1-fpm
 RUN apt update \
     && apt install -y libpq-dev \
     && rm -rf /var/lib/apt/lists/* \

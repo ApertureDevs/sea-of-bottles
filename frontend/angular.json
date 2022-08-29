@@ -149,19 +149,6 @@
               "src/**/*.html"
             ]
           }
-        },
-        "e2e": {
-          "builder": "@cypress/schematic:cypress",
-          "options": {
-            "devServerTarget": "sea-of-bottles:serve",
-            "watch": false,
-            "headless": true
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "sea-of-bottles:serve:production"
-            }
-          }
         }
       }
     }

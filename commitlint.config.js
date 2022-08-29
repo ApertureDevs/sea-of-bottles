@@ -18,5 +18,8 @@ module.exports = {
         'infra'
       ],
     ],
+    'body-max-line-length': [
+      0
+    ]
   }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Core\SharedKernel\Domain\Event;
 
+use Traversable;
+
 /**
  * @implements \IteratorAggregate<EventRecord>
  */
@@ -19,9 +21,9 @@ class EventRecords implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @return iterable<EventRecord>
+     * @return Traversable<EventRecord>
      */
-    public function getIterator(): iterable
+    public function getIterator(): Traversable
     {
         return new \ArrayIterator($this->eventRecords);
     }
